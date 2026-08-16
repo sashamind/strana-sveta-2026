@@ -287,7 +287,11 @@ function listDir(){
   }).then(function(html){
     var names=[], re=/href="([^"?#]+)"/gi, m;
     while((m=re.exec(html))) names.push(decodeURIComponent(m[1]).split('/').pop().toLowerCase());
-    return names;
+    /* Оставляем только имена вида s01.jpg. Если таких нет — это не листинг
+       каталога, а другая страница: GitHub Pages, например, отдаёт на папку
+       отрендеренный Jekyll'ом README. Возвращаем null, чтобы уйти на перебор. */
+    names=names.filter(function(n){ return /^s\d\d\.[a-z0-9]+$/.test(n); });
+    return names.length?names:null;
   }).catch(function(){ return null; });
 }
 
