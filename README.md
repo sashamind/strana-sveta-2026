@@ -12,7 +12,7 @@
 ## Структура
 
 ```
-priruchenny-ogon/
+strana-sveta-2026/
 ├── index.html            — разметка и весь текст презентации
 ├── css/styles.css        — стили, включая слайды для PDF
 ├── js/main.js            — шкала, скраббер, кадры, лайтбокс, появление блоков
@@ -154,19 +154,27 @@ assets/scenes/s04.mp4   → сцена 04
 высокий. Разрыв именно «перед»: с `break-after` Chrome терял один из четырёх. Перенести `pb` на другие сцены =
 другая разбивка, но тогда надо поправить и ожидаемое число страниц в `build-pdf.sh`.
 
-## Публикация на GitHub Pages
+## Репозиторий и публикация
+
+Код лежит на GitHub: **https://github.com/sashamind/strana-sveta-2026**
 
 ```bash
-git init
-git add .
-git commit -m "Приручённый огонь — презентация проекта"
-git branch -M main
-git remote add origin https://github.com/ПОЛЬЗОВАТЕЛЬ/priruchenny-ogon.git
-git push -u origin main
+git add -A
+git commit -m "что изменилось"
+git push
 ```
 
-Затем в настройках репозитория: **Settings → Pages → Source: main / (root)**.
-Сайт появится по адресу `https://ПОЛЬЗОВАТЕЛЬ.github.io/priruchenny-ogon/`.
+Чтобы выложить страницу живой ссылкой, включить GitHub Pages:
+**Settings → Pages → Source: Deploy from a branch → main / (root)**.
+Или одной командой:
+
+```bash
+gh api -X POST repos/sashamind/strana-sveta-2026/pages \
+  -f "source[branch]=main" -f "source[path]=/"
+```
+
+Сайт появится по адресу `https://sashamind.github.io/strana-sveta-2026/`.
+Там же заработает и кнопка «Скачать PDF» — по `file://` она не работает.
 
 ## Технические заметки
 
