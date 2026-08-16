@@ -272,7 +272,7 @@ function syncTimeline(){
    Если файла нет, остаётся плейсхолдер.                                   */
 
 var DIR='assets/scenes/';
-var STUB='assets/setup.png';   /* рабочая модель фасада вместо пустого слота */
+var STUB='assets/setup.webp';   /* рабочая модель фасада вместо пустого слота */
 var VIDEO=['mp4','webm','mov'];
 var IMAGE=['jpg','jpeg','png','webp','avif','gif'];
 
