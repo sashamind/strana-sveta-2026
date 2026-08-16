@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тула — отражение огня. Страна СВЕТА 2026</title>
+<link rel="icon" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300&family=Manrope:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="tint" id="tint" aria-hidden="true"></div>
+<div class="cursorglow" id="cursorGlow" aria-hidden="true"></div>
+
+<!-- шкала укрощения: прогресс + навигация по разделам -->
+<nav class="rail" id="rail" aria-label="Разделы">
+  <div class="rail__track"><div class="rail__fill" id="railFill"></div></div>
+  <ul class="rail__ticks" id="railTicks"></ul>
+</nav>
+
+<div class="tools">
+  <a class="pdf" id="pdfBtn" href="priruchenny-ogon.pdf"
+     download="Тула — отражение огня. Страна СВЕТА 2026.pdf">Скачать PDF</a>
+</div>
+
+<!-- ============ 1. HERO ============ -->
+<section class="hero" id="s-hero" data-nav="Обложка">
+  <canvas class="hero__embers" id="embers" aria-hidden="true"></canvas>
+  <div class="wrap hero__inner">
+    <div class="hero__meta">Страна СВЕТА 2026 · Второй тур · 3D-мэппинг · Концепция</div>
+    <h1 class="magma">Тула&nbsp;— отражение огня</h1>
+    <figure class="hero__stage">
+      <img src="assets/setup.png" alt="Штаб Гвардейского корпуса — рабочая 3D-модель фасада под мэппинг">
+    </figure>
+    <div class="hero__facts">
+      <div>Автор&nbsp;— <b>Александр Миндрин</b></div>
+      <div>Регион&nbsp;— <b>Тула</b></div>
+    </div>
+  </div>
+  <div class="hero__hint" aria-hidden="true"><span></span>Листайте</div>
+  <div class="veil" aria-hidden="true"></div>
+</section>
+
+<!-- ============ 2. CONTEXT ============ -->
+<section class="band" id="s-city" data-nav="Город">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>01</i>Город</div>
+    <div class="rule"></div>
+    <div class="ctx">
+      <div class="fb">
+        <h2>Всё тульское<br>прошло через огонь</h2>
+        <p class="lead">Тулу принято перечислять: оружие, самовар, пряник, гармонь, игрушка. Но&nbsp;это не&nbsp;список сувениров&nbsp;— это одна история, рассказанная разными материалами.</p>
+        <p class="mt">У&nbsp;всех тульских ремёсел общий корень&nbsp;— горн. Оружейный завод 1712&nbsp;года дал городу не&nbsp;только оружие: первые самовары начали делать на&nbsp;его дворах, первую гармонную фабрику оружейник Тимофей Воронцов открыл в&nbsp;подвале собственной самоварной мастерской. Пряник печётся в&nbsp;печи. Филимоновская глина обжигается при&nbsp;950&nbsp;градусах.</p>
+        <p class="mt">Огонь&nbsp;— то, что&nbsp;человек приручил первым. Из&nbsp;слепой опасной стихии он стал инструментом: греет, плавит, обжигает, печёт. Тула&nbsp;— город, который довёл это приручение до&nbsp;искусства.</p>
+      </div>
+      <div class="ctx__aside fb">
+        <div class="eyebrow eyebrow--sub">Семь огней</div>
+        <ul class="crafts">
+          <li class="craft" style="--i:0"><span class="craft__n">01</span><span class="craft__t"><b>Всечка</b>&nbsp;— металлическая нить, вбитая в&nbsp;дерево ребром. Тульское изобретение, из&nbsp;которого вырос образ Левши</span></li>
+          <li class="craft" style="--i:1"><span class="craft__n">02</span><span class="craft__t"><b>Самовар</b>&nbsp;— около 150&nbsp;форм, первая фабрика 1778&nbsp;года</span></li>
+          <li class="craft" style="--i:2"><span class="craft__n">03</span><span class="craft__t"><b>Печатный пряник</b>&nbsp;— узор режется зеркально, оттискивается доской</span></li>
+          <li class="craft" style="--i:3"><span class="craft__n">04</span><span class="craft__t"><b>Филимоновская игрушка</b>&nbsp;— три цвета: малиновый, жёлтый, зелёный</span></li>
+          <li class="craft" style="--i:4"><span class="craft__n">05</span><span class="craft__t"><b>Гармонь-хромка</b>&nbsp;— изобретена в&nbsp;Туле, стала баяном</span></li>
+          <li class="craft" style="--i:5"><span class="craft__n">06</span><span class="craft__t"><b>Белёвское кружево</b>&nbsp;— узор и&nbsp;фон неразделимы</span></li>
+          <li class="craft" style="--i:6"><span class="craft__n">07</span><span class="craft__t"><b>Ясная Поляна</b>&nbsp;— слово как&nbsp;высшая форма ремесла</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. THEME ============ -->
+<section class="band band--tint" id="s-theme" data-nav="Тема">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>02</i>Тема</div>
+    <div class="rule"></div>
+    <h2>Отражение&nbsp;— трижды</h2>
+    <p class="lead lead--wide">Тема конкурса раскрывается в&nbsp;проекте на&nbsp;трёх уровнях одновременно: буквальном, ремесленном и&nbsp;смысловом.</p>
+    <div class="layers">
+      <div class="layer fb" style="--i:0">
+        <div class="layer__k">Буквально</div>
+        <h3 class="mir">Зеркало<span class="mir__g" aria-hidden="true">Зеркало</span></h3>
+        <p>Укрощённый огонь в&nbsp;финале становится зеркалом. Бушующая стихия успокаивается до&nbsp;неподвижной глади&nbsp;— полированной латуни, глазури, воды Оки.</p>
+      </div>
+      <div class="layer fb" style="--i:1">
+        <div class="layer__k">В&nbsp;ремесле</div>
+        <h3 class="mir">Оттиск<span class="mir__g" aria-hidden="true">Оттиск</span></h3>
+        <p>Пряничная доска режется зеркально: мастер вырезает то, чего не&nbsp;увидит, ради&nbsp;отпечатка. Отражение здесь&nbsp;— сама технология.</p>
+      </div>
+      <div class="layer fb" style="--i:2">
+        <div class="layer__k">По&nbsp;смыслу</div>
+        <h3 class="mir">Город в&nbsp;своём деле<span class="mir__g" aria-hidden="true">Город в&nbsp;своём деле</span></h3>
+        <p>Искусство&nbsp;— то, в&nbsp;чём город узнаёт себя. В&nbsp;последнем кадре фасад петербургского здания на&nbsp;мгновение отражает Тулу.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. METAPHORS ============ -->
+<section class="band" id="s-lang" data-nav="Язык">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>03</i>Визуальный язык</div>
+    <div class="rule"></div>
+    <h2>Пять решений</h2>
+    <div class="meta-grid">
+      <div class="meta fb" style="--i:0">
+        <span class="meta__i">I</span>
+        <h3>Приручение как&nbsp;смена состояния</h3>
+        <p>Огонь не&nbsp;побеждают&nbsp;— его обучают. На&nbsp;фасаде это видно буквально: часть здания ещё холодный камень, часть в&nbsp;переходе, часть уже преображена. У&nbsp;каждой сцены свой тип градиента&nbsp;— нагревание, затвердевание, прогревание, расцветание, успокоение.</p>
+      </div>
+      <div class="meta fb" style="--i:1">
+        <span class="meta__i">II</span>
+        <h3>Архитектура как&nbsp;участник</h3>
+        <p>Колонна плавится сверху вниз, потому что&nbsp;вертикальная. Карниз собирает стекающее, потому что&nbsp;это выступ. Окна дышат вразнобой, как&nbsp;угли. Порталы работают устьями печи. Изображение рождено формой здания, а&nbsp;не&nbsp;наложено на&nbsp;неё.</p>
+      </div>
+      <div class="meta fb" style="--i:2">
+        <span class="meta__i">III</span>
+        <h3>Огонь без&nbsp;лица</h3>
+        <p>У&nbsp;стихии есть характер, но&nbsp;нет мультипликационных глаз. Огонь тянется, упирается, отшатывается, успокаивается&nbsp;— интонация передаётся движением и&nbsp;ритмом. Четыре момента оживления на&nbsp;всю работу, между ними&nbsp;— чистая материя.</p>
+      </div>
+      <div class="meta fb" style="--i:3">
+        <span class="meta__i">IV</span>
+        <h3>Растворение верха</h3>
+        <p>Кровля уходит в&nbsp;марево, пар и&nbsp;искры&nbsp;— здание перестаёт быть коробкой и&nbsp;теряет границу с&nbsp;ночью. Одна рифма звучит дважды в&nbsp;разных интонациях: сначала жар и&nbsp;угли, позже&nbsp;— домашний пар над&nbsp;самоваром.</p>
+      </div>
+      <div class="meta meta--wide fb" style="--i:4">
+        <span class="meta__i">V</span>
+        <h3>Золото по&nbsp;чёрному</h3>
+        <p>Палитра взята у&nbsp;палехской лаковой миниатюры: тёплый свет, идущий изнутри тёмной поверхности. Единственная вспышка открытого цвета&nbsp;— филимоновская триада&nbsp;— приходится на&nbsp;кульминацию и&nbsp;работает как&nbsp;событие.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. COLOUR ============ -->
+<section class="band" id="s-color" data-nav="Цвет">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>04</i>Цвет</div>
+    <div class="rule"></div>
+    <h2>Цвет как&nbsp;температура</h2>
+    <p class="lead lead--wide">Палитра взята у&nbsp;палехской лаковой миниатюры: тёплый свет, идущий изнутри тёмной поверхности. Цвет здесь не&nbsp;украшает, а&nbsp;измеряет&nbsp;— по&nbsp;нему видно, на&nbsp;какой стадии приручения находится огонь.</p>
+
+    <div class="grad fb">
+      <div class="grad__bar" aria-hidden="true"></div>
+      <div class="grad__ends">
+        <span>0:00&nbsp;· холодный камень</span>
+        <span>2:30&nbsp;· зеркало</span>
+      </div>
+    </div>
+
+    <ul class="swatches fb">
+      <li style="--c:var(--coal)"><i></i><b>Уголь</b><span>#2A1408</span><em>Фон всей работы и&nbsp;первая сцена</em></li>
+      <li style="--c:var(--flame)"><i></i><b>Пламя</b><span>#7A2E0C</span><em>Дикий огонь, 0:15&nbsp;—&nbsp;0:35</em></li>
+      <li style="--c:var(--ember)"><i></i><b>Жар</b><span>#F2A03D</span><em>Горн и&nbsp;расплав, 0:35&nbsp;—&nbsp;1:15</em></li>
+      <li style="--c:var(--gold)"><i></i><b>Золото</b><span>#E8C87A</span><em>Всечка, застывший металл</em></li>
+      <li style="--c:var(--brass)"><i></i><b>Латунь</b><span>#B07B32</span><em>Самовар и&nbsp;пар, 1:35</em></li>
+      <li style="--c:var(--crimson)"><i></i><b>Малиновый</b><span>#C8365A</span><em>Филимоновский пик, 2:05</em></li>
+      <li style="--c:var(--mirror)"><i></i><b>Зеркало</b><span>#7FA4B8</span><em>Финал, 2:20&nbsp;—&nbsp;2:30</em></li>
+    </ul>
+
+    <div class="layers">
+      <div class="layer fb" style="--i:0">
+        <div class="layer__k">Правило&nbsp;I</div>
+        <h3>Один источник</h3>
+        <p>Свет всегда идёт изнутри материала: раскалённый камень, тлеющая нить всечки, глазурь на&nbsp;прянике. Наружной подсветки нет ни&nbsp;в&nbsp;одной сцене&nbsp;— фасад светится сам.</p>
+      </div>
+      <div class="layer fb" style="--i:1">
+        <div class="layer__k">Правило&nbsp;II</div>
+        <h3>Открытый цвет&nbsp;— событие</h3>
+        <p>Чистые цвета филимоновской росписи звучат один раз, на&nbsp;кульминации. Всё до&nbsp;неё&nbsp;— оттенки нагрева.</p>
+        <div class="triad" aria-hidden="true">
+          <span style="background:var(--crimson)"></span>
+          <span style="background:var(--yellow)"></span>
+          <span style="background:var(--leaf)"></span>
+        </div>
+      </div>
+      <div class="layer fb" style="--i:2">
+        <div class="layer__k">Правило&nbsp;III</div>
+        <h3>Тёмное, но&nbsp;не&nbsp;чёрное</h3>
+        <p>Фон держится на&nbsp;угле, а&nbsp;не&nbsp;на&nbsp;нуле: в&nbsp;нём остаётся тепло. Поэтому здание не&nbsp;выглядит вырезанным из&nbsp;ночи&nbsp;— оно в&nbsp;ней стоит.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. STORYBOARD ============ -->
+<section class="band band--tint" id="storyboard" data-nav="Раскадровка">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>05</i>Раскадровка · 2:30</div>
+    <div class="rule"></div>
+    <h2>Путь огня</h2>
+    <p class="lead lead--wide lead--tight">Девять состояний: от&nbsp;слепой стихии до&nbsp;тихого зеркала. Драматургия ведёт зрителя через страх, усилие, восхищение, тепло и&nbsp;радость&nbsp;— к&nbsp;покою.</p>
+    <div class="factline">
+      <span>Площадка&nbsp;— <b>Штаб Гвардейского корпуса</b></span>
+      <span>Хронометраж&nbsp;— <b>2&nbsp;мин 30&nbsp;сек</b></span>
+    </div>
+  </div>
+
+  <!-- скраббер: липнет к верху, пока идёт раскадровка -->
+  <div class="tl" id="tl">
+    <div class="wrap">
+      <div class="tl__head">
+        <span class="tl__now" id="tlNow">0:00</span>
+        <span class="tl__title" id="tlTitle">Тьма и&nbsp;первая искра</span>
+        <span class="tl__total">2:30</span>
+      </div>
+      <div class="tl__bar" id="tlBar" role="tablist" aria-label="Сцены"></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="scene fb" data-start="0" data-dur="15" style="--accent:#9A6B3C">
+      <div class="scene__tc">0:00—0:15<span>Сцена 01</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Потенциал</div>
+          <h3>Тьма и&nbsp;первая искра</h3>
+          <p>Площадь темна, фасад почти не&nbsp;читается. Одна искра выхватывает фрагмент капители, гаснет, появляется в&nbsp;другом месте. Зритель вглядывается&nbsp;— работа начинается с&nbsp;тишины.</p>
+        </div>
+        <div class="frame" data-slot="s01"></div>
+      </div>
+    </div>
+
+    <div class="scene fb" data-start="15" data-dur="20" style="--accent:#E2591F">
+      <div class="scene__tc">0:15—0:35<span>Сцена 02</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Хаос · стихия</div>
+          <h3>Дикий огонь</h3>
+          <p>Пламя вырывается из&nbsp;оконных проёмов и&nbsp;взбирается по&nbsp;каннелюрам. Движение рваное, несимметричное, неуправляемое. Огонь ведёт себя как&nbsp;зверь, которого ещё никто не&nbsp;трогал.</p>
+        </div>
+        <div class="frame" data-slot="s02"></div>
+      </div>
+    </div>
+
+    <div class="scene fb pb" data-start="35" data-dur="20" style="--accent:#F2A03D">
+      <div class="scene__tc">0:35—0:55<span>Сцена 03</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Сопротивление · подчинение</div>
+          <h3>Горн: приручение</h3>
+          <p>В&nbsp;портале разгорается горн. Мех дышит&nbsp;— и&nbsp;пламя впервые подчиняется ритму. Оно упирается, вырывается, но&nbsp;возвращается в&nbsp;такт. Поворотная точка всей работы.</p>
+        </div>
+        <div class="frame" data-slot="s03"></div>
+      </div>
+    </div>
+
+    <div class="scene fb" data-start="55" data-dur="20" style="--accent:#F5C15A">
+      <div class="scene__tc">0:55—1:15<span>Сцена 04</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Послушная стихия</div>
+          <h3>Расплав по&nbsp;колоннаде</h3>
+          <p>Камень теряет плотность и&nbsp;течёт. Расплав идёт сверху вниз по&nbsp;колоннам, скапливается на&nbsp;карнизах, срывается каплями. Одни колонны ещё холодны, другие раскалены добела&nbsp;— градиент превращения по&nbsp;всему фасаду.</p>
+        </div>
+        <div class="frame frame--live" data-slot="s04"></div>
+      </div>
+    </div>
+
+    <div class="scene fb pb" data-start="75" data-dur="20" style="--accent:#E8C87A">
+      <div class="scene__tc">1:15—1:35<span>Сцена 05</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Огонь стал ремеслом</div>
+          <h3>Застывание во&nbsp;всечку</h3>
+          <p>Металл остывает и&nbsp;застывает тончайшей нитью. Спирали всечки прорастают по&nbsp;карнизам и&nbsp;каннелюрам, следуя линиям самой архитектуры. Золото переходит в&nbsp;серебро и&nbsp;медь вдоль одной линии.</p>
+        </div>
+        <div class="frame" data-slot="s05"></div>
+      </div>
+    </div>
+
+    <div class="scene fb" data-start="95" data-dur="15" style="--accent:#B07B32">
+      <div class="scene__tc">1:35—1:50<span>Сцена 06</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Огонь стал теплом</div>
+          <h3>Латунь и&nbsp;пар</h3>
+          <p>Фасад прогревается до&nbsp;полированной латуни. Из&nbsp;центра поднимается самовар, вращается, ловя блики. Над&nbsp;кровлей идёт пар. Опасность окончательно стала домашним теплом.</p>
+        </div>
+        <div class="frame frame--live" data-slot="s06"></div>
+      </div>
+    </div>
+
+    <div class="scene fb pb" data-start="110" data-dur="15" style="--accent:#C98A4B">
+      <div class="scene__tc">1:50—2:05<span>Сцена 07</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Огонь стал домом</div>
+          <h3>Пряничный рельеф</h3>
+          <p>Невидимый резец проходит по&nbsp;архитектурным членениям, углубляя их в&nbsp;контррельеф пряничной доски. Скользящий свет выявляет глубину резьбы. Поверхность заливается медовой глазурью.</p>
+        </div>
+        <div class="frame" data-slot="s07"></div>
+      </div>
+    </div>
+
+    <div class="scene peak fb" data-start="125" data-dur="15" style="--accent:#C8365A">
+      <div class="scene__tc">2:05—2:20<span>Сцена 08 · пик</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Огонь стал радостью</div>
+          <h3>Филимоновская вспышка</h3>
+          <p>Единственный взрыв открытого цвета. Малиновые, жёлтые и&nbsp;зелёные полосы бегут по&nbsp;колоннаде, попадая в&nbsp;её собственный вертикальный ритм. Кульминация: ремесло обернулось праздником.</p>
+        </div>
+        <div class="frame" data-slot="s08"></div>
+      </div>
+    </div>
+
+    <div class="scene final fb pb" data-start="140" data-dur="10" style="--accent:#7FA4B8">
+      <div class="scene__tc">2:20—2:30<span>Сцена 09 · финал</span></div>
+      <div class="scene__body">
+        <div>
+          <div class="scene__state">Покой</div>
+          <h3>Зеркало</h3>
+          <p>Всё стихает. Фасад становится неподвижной отражающей гладью&nbsp;— и&nbsp;на&nbsp;мгновение отражает не&nbsp;Дворцовую площадь, а&nbsp;Тулу: башни кремля, горн, силуэты промыслов. Город смотрит на&nbsp;собственное искусство.</p>
+        </div>
+        <div class="frame" data-slot="s09"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. SOUND ============ -->
+<section class="band" id="s-sound" data-nav="Звук">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>06</i>Звук</div>
+    <div class="rule"></div>
+    <div class="two">
+      <div class="fb">
+        <h2>Гармонь<br>и&nbsp;молот</h2>
+        <p>Аудиоряд строится на&nbsp;тульской хромке&nbsp;— инструменте, изобретённом в&nbsp;этом городе в&nbsp;1870-х. Народный тембр звучит в&nbsp;современной аранжировке, не&nbsp;как&nbsp;цитата, а&nbsp;как&nbsp;живой голос места.</p>
+        <p class="mt">Ритмическая основа приходит из&nbsp;кузни: удар молота задаёт темп монтажа в&nbsp;первой половине работы. К&nbsp;финалу ударные исчезают, остаётся один затихающий тон.</p>
+      </div>
+      <div class="cues">
+        <div class="cue fb" style="--from:0;--to:23.3;--i:0">
+          <h3>0:00—0:35</h3>
+          <div class="cue__bar"><span></span></div>
+          <p>Гул, низкие частоты, дыхание меха. Ни&nbsp;одного узнаваемого инструмента.</p>
+        </div>
+        <div class="cue fb" style="--from:23.3;--to:63.3;--i:1">
+          <h3>0:35—1:35</h3>
+          <div class="cue__bar"><span></span></div>
+          <p>Молот входит как&nbsp;бит. Первые голоса гармони&nbsp;— отдельными нотами.</p>
+        </div>
+        <div class="cue fb" style="--from:63.3;--to:93.3;--i:2">
+          <h3>1:35—2:20</h3>
+          <div class="cue__bar"><span></span></div>
+          <p>Хромка ведёт мелодию. К&nbsp;пику добавляется свистулька и&nbsp;частушечный ритм.</p>
+        </div>
+        <div class="cue fb" style="--from:93.3;--to:100;--i:3">
+          <h3>2:20—2:30</h3>
+          <div class="cue__bar"><span></span></div>
+          <p>Всё смолкает. Один тон, затухающий до&nbsp;тишины.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. CLOSING ============ -->
+<section class="closing" id="s-end" data-nav="Финал">
+  <div class="wrap rv">
+    <div class="closing__q fb">
+      <q class="magma">Огонь перестал быть опасностью и&nbsp;стал теплом, узором, цветом&nbsp;— искусством</q>
+    </div>
+    <div class="credits fb">
+      <div><b>Александр Миндрин</b></div>
+      <div>Тула · 2026</div>
+      <div class="mt-s">Конкурс современного медиаискусства «Страна СВЕТА»</div>
+      <div>Штаб Гвардейского корпуса · Дворцовая площадь</div>
+    </div>
+  </div>
+</section>
+
+<!-- лайтбокс кадров -->
+<div class="lb" id="lb" hidden>
+  <button class="lb__x" id="lbX" aria-label="Закрыть">×</button>
+  <div class="lb__stage" id="lbStage"></div>
+  <div class="lb__cap" id="lbCap"></div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
