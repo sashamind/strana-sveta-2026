@@ -33,7 +33,7 @@
     <div class="hero__meta">Страна СВЕТА 2026 · Второй тур · 3D-мэппинг · Концепция</div>
     <h1 class="magma">Тула&nbsp;— отражение огня</h1>
     <figure class="hero__stage">
-      <img src="assets/setup.webp" alt="Штаб Гвардейского корпуса — рабочая 3D-модель фасада под мэппинг">
+      <img class="render" src="assets/setup.webp" alt="Штаб Гвардейского корпуса — рабочая 3D-модель фасада под мэппинг">
     </figure>
     <div class="hero__facts">
       <div>Автор&nbsp;— <b>Александр Миндрин</b></div>
@@ -44,10 +44,34 @@
   <div class="veil" aria-hidden="true"></div>
 </section>
 
-<!-- ============ 2. CONTEXT ============ -->
-<section class="band" id="s-city" data-nav="Город">
+<!-- ============ 2. SETUP ============ -->
+<section class="band" id="s-setup" data-nav="Сетап">
   <div class="wrap rv">
-    <div class="eyebrow"><i>01</i>Город</div>
+    <div class="eyebrow"><i>01</i>Сетап</div>
+    <div class="rule"></div>
+    <div class="setup">
+      <div class="fb">
+        <h2>С&nbsp;чего начинается кадр</h2>
+        <p class="lead">Работа собирается не&nbsp;на&nbsp;плоскости, а&nbsp;на&nbsp;трёхмерной модели фасада: сначала строится геометрия здания, по&nbsp;ней выставляются камера и&nbsp;свет, и&nbsp;уже в&nbsp;этих координатах рисуется каждая сцена.</p>
+        <p class="mt">Серый рендер без текстур&nbsp;— исходное состояние площадки. Это тот самый холодный камень, с&nbsp;которого начинается первая сцена и&nbsp;от&nbsp;которого отсчитываются все девять состояний огня. Ни&nbsp;одна из&nbsp;них не&nbsp;добавляет на&nbsp;фасад ничего, чего нет в&nbsp;его собственной форме.</p>
+      </div>
+      <ul class="specs fb">
+        <li><b>Площадка</b><span>Штаб Гвардейского корпуса, Дворцовая площадь</span></li>
+        <li><b>Маска фасада</b><span>8880&nbsp;× 1920&nbsp;px</span></li>
+        <li><b>Модель</b><span>Серый clay-рендер без текстур и&nbsp;материалов</span></li>
+        <li><b>Свет</b><span>Только проекция: наружной подсветки в&nbsp;работе нет</span></li>
+      </ul>
+    </div>
+    <figure class="setup__view fb">
+      <img class="render" src="assets/setup.webp" alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 3. CONTEXT ============ -->
+<section class="band band--tint" id="s-city" data-nav="Город">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>02</i>Город</div>
     <div class="rule"></div>
     <div class="ctx">
       <div class="fb">
@@ -72,10 +96,10 @@
   </div>
 </section>
 
-<!-- ============ 3. THEME ============ -->
-<section class="band band--tint" id="s-theme" data-nav="Тема">
+<!-- ============ 4. THEME ============ -->
+<section class="band" id="s-theme" data-nav="Тема">
   <div class="wrap rv">
-    <div class="eyebrow"><i>02</i>Тема</div>
+    <div class="eyebrow"><i>03</i>Тема</div>
     <div class="rule"></div>
     <h2>Отражение&nbsp;— трижды</h2>
     <p class="lead lead--wide">Тема конкурса раскрывается в&nbsp;проекте на&nbsp;трёх уровнях одновременно: буквальном, ремесленном и&nbsp;смысловом.</p>
@@ -99,10 +123,10 @@
   </div>
 </section>
 
-<!-- ============ 4. METAPHORS ============ -->
-<section class="band" id="s-lang" data-nav="Язык">
+<!-- ============ 5. METAPHORS ============ -->
+<section class="band band--tint" id="s-lang" data-nav="Язык">
   <div class="wrap rv">
-    <div class="eyebrow"><i>03</i>Визуальный язык</div>
+    <div class="eyebrow"><i>04</i>Визуальный язык</div>
     <div class="rule"></div>
     <h2>Пять решений</h2>
     <div class="meta-grid">
@@ -135,10 +159,10 @@
   </div>
 </section>
 
-<!-- ============ 5. COLOUR ============ -->
+<!-- ============ 6. COLOUR ============ -->
 <section class="band" id="s-color" data-nav="Цвет">
   <div class="wrap rv">
-    <div class="eyebrow"><i>04</i>Цвет</div>
+    <div class="eyebrow"><i>05</i>Цвет</div>
     <div class="rule"></div>
     <h2>Цвет как&nbsp;температура</h2>
     <p class="lead lead--wide">Палитра взята у&nbsp;палехской лаковой миниатюры: тёплый свет, идущий изнутри тёмной поверхности. Цвет здесь не&nbsp;украшает, а&nbsp;измеряет&nbsp;— по&nbsp;нему видно, на&nbsp;какой стадии приручения находится огонь.</p>
@@ -186,16 +210,16 @@
   </div>
 </section>
 
-<!-- ============ 6. STORYBOARD ============ -->
+<!-- ============ 7. STORYBOARD ============ -->
 <section class="band band--tint" id="storyboard" data-nav="Раскадровка">
   <div class="wrap rv">
-    <div class="eyebrow"><i>05</i>Раскадровка · 2:30</div>
+    <div class="eyebrow"><i>06</i>Раскадровка · 2:30</div>
     <div class="rule"></div>
     <h2>Путь огня</h2>
     <p class="lead lead--wide lead--tight">Девять состояний: от&nbsp;слепой стихии до&nbsp;тихого зеркала. Драматургия ведёт зрителя через страх, усилие, восхищение, тепло и&nbsp;радость&nbsp;— к&nbsp;покою.</p>
     <div class="factline">
-      <span>Площадка&nbsp;— <b>Штаб Гвардейского корпуса</b></span>
       <span>Хронометраж&nbsp;— <b>2&nbsp;мин 30&nbsp;сек</b></span>
+      <span>Кадров&nbsp;— <b>9&nbsp;сцен</b></span>
     </div>
   </div>
 
@@ -322,10 +346,10 @@
   </div>
 </section>
 
-<!-- ============ 7. SOUND ============ -->
+<!-- ============ 8. SOUND ============ -->
 <section class="band" id="s-sound" data-nav="Звук">
   <div class="wrap rv">
-    <div class="eyebrow"><i>06</i>Звук</div>
+    <div class="eyebrow"><i>07</i>Звук</div>
     <div class="rule"></div>
     <div class="two">
       <div class="fb">
@@ -359,7 +383,7 @@
   </div>
 </section>
 
-<!-- ============ 8. CLOSING ============ -->
+<!-- ============ 9. CLOSING ============ -->
 <section class="closing" id="s-end" data-nav="Финал">
   <div class="wrap rv">
     <div class="closing__q fb">

@@ -183,18 +183,17 @@ p{max-width:64ch; color:var(--muted)}
 /* рабочая модель фасада — держит центр обложки.
    Высота задана через vh, чтобы вся обложка всегда оставалась одним экраном */
 .hero__stage{margin:40px 0 0; position:relative}
-.hero__stage img{
-  /* width/height именно auto: с заданной шириной ограничение max-height
-     не пересчитывает ширину, коробка остаётся шире кадра — и маска,
-     которая считается по коробке, перестаёт совпадать с изображением.
-     С двумя max-* браузер вписывает картинку, сохраняя пропорции,
-     и коробка совпадает с кадром точно */
+/* Общая подача рендера: и на обложке, и в разделе «Сетап».
+   width/height именно auto: с заданной шириной ограничение max-height
+   не пересчитывает ширину, коробка остаётся шире кадра — и маска,
+   которая считается по коробке, перестаёт совпадать с изображением.
+   С двумя max-* браузер вписывает картинку, сохраняя пропорции.
+   Края растворяются в фоне: два слоя маски пересекаются, поэтому бока, верх
+   и низ настраиваются независимо. Низ гасим длиннее: там светлый пол.
+   Screen: чёрный фон рендера растворяется в фоне страницы. */
+.render{
   display:block; margin:0 auto;
   width:auto; height:auto;
-  max-width:min(1460px,100%); max-height:52vh;
-  /* Края растворяются в фоне. Два слоя маски пересекаются, поэтому бока, верх
-     и низ настраиваются независимо: горизонтальный слой — левый и правый край,
-     вертикальный — верхний и нижний. Низ гасим длиннее: там светлый пол. */
   -webkit-mask-image:
     linear-gradient(to right,  transparent 0%, #000 16%, #000 84%, transparent 100%),
     linear-gradient(to bottom, transparent 0%, #000 12%, #000 78%, transparent 100%);
@@ -203,10 +202,20 @@ p{max-width:64ch; color:var(--muted)}
     linear-gradient(to right,  transparent 0%, #000 16%, #000 84%, transparent 100%),
     linear-gradient(to bottom, transparent 0%, #000 12%, #000 78%, transparent 100%);
   mask-composite:intersect;
-  /* Screen: чёрный фон рендера растворяется в фоне страницы,
-     остаётся только освещённый объём */
   mix-blend-mode:screen;
 }
+.hero__stage img{max-width:min(1460px,100%); max-height:52vh}
+
+/* ---------- сетап ---------- */
+.setup{display:grid; grid-template-columns:1.25fr 1fr; gap:64px; align-items:start; margin-bottom:38px}
+.specs{list-style:none; display:flex; flex-direction:column; gap:17px}
+.specs li{border-left:1px solid var(--line-2); padding-left:18px}
+.specs b{
+  display:block; font-family:var(--f-mono); font-size:9.5px; font-weight:400;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--brass); margin-bottom:5px;
+}
+.specs span{font-size:14.5px; color:var(--muted)}
+.setup__view img{max-width:min(1200px,100%); max-height:44vh}
 /* на низких экранах модель ужимается, чтобы обложка осталась одним экраном */
 @media screen and (max-height:900px){ .hero__stage img{max-height:44vh} }
 @media screen and (max-height:720px){ .hero__stage img{max-height:34vh} }
