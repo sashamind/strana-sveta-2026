@@ -5,6 +5,17 @@ var reduced=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 var coarse=window.matchMedia('(pointer:coarse)').matches;
 var doc=document.documentElement;
 
+/* Обложка ждёт шрифты: пока они грузятся, её сборка стоит на паузе (см. CSS),
+   иначе заголовок мелькает запасной гарнитурой и прыгает на Cormorant.
+   Таймаут — страховка: если шрифты не пришли, показываем как есть. */
+(function(){
+  var go=function(){ doc.classList.add('fonts'); };
+  if(document.fonts&&document.fonts.ready){
+    document.fonts.ready.then(go);
+    setTimeout(go,2500);
+  } else go();
+})();
+
 function clamp(v,a,b){return v<a?a:v>b?b:v}
 function scrollMax(){return Math.max(1,doc.scrollHeight-window.innerHeight)}
 

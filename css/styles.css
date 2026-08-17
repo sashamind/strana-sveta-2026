@@ -105,7 +105,10 @@ p{max-width:64ch; color:var(--muted)}
   justify-content:center; position:relative; overflow:hidden;
   padding-bottom:92px;   /* место для подсказки «Листайте» */
 }
-.hero__embers{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:.9}
+/* холст идёт после текста намеренно: позади модели искры просвечивали
+   сквозь фасад — режим Screen делает тёмное прозрачным, и подложка видна.
+   Теперь они летят перед сценой и на саму модель не влияют */
+.hero__embers{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:.75}
 
 /* Сборка обложки при загрузке. Порядок: здание → заголовок → искры →
    подписи → «Листайте». Здание единственное идёт с масштабом, остальное
@@ -117,14 +120,26 @@ p{max-width:64ch; color:var(--muted)}
 @keyframes fadeIn{ from{opacity:0} }
 @keyframes growIn{ from{opacity:0; transform:scale(calc(var(--s,1) * .8))} }
 
+/* Пока шрифты не пришли, сборка обложки стоит на паузе: с display=swap
+   заголовок иначе успевает мелькнуть запасной гарнитурой и на глазах
+   перепрыгивает на Cormorant. Заливка backwards держит элементы в стартовом
+   кадре, то есть невидимыми. Класс fonts ставит main.js, там же страховка
+   по таймауту — если шрифты не придут, обложка всё равно соберётся. */
+.hero__stage img,.hero__embers,.hero__meta,.hero__facts,.hero__hint,.hero h1{
+  animation-play-state:paused;
+}
+html.fonts .hero__stage img,html.fonts .hero__embers,html.fonts .hero__meta,
+html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
+  animation-play-state:running;
+}
+
 .hero__stage img{animation:growIn 2s cubic-bezier(.16,.6,.22,1) .1s backwards}
 .hero__embers{animation:fadeIn 1.4s ease-out 2.3s backwards}
 .hero__meta{animation:fadeIn .9s ease-out 2.7s backwards}
 .hero__facts{animation:fadeIn .9s ease-out 2.9s backwards}
 .hero__hint{animation:fadeIn .9s ease-out 3.2s backwards}
 /* без z-index намеренно: он создавал контекст наложения и отключал
-   mix-blend-mode у модели. Текст и так выше искр — холст идёт раньше
-   в разметке, а позиционированные элементы рисуются по порядку */
+   mix-blend-mode у модели */
 .hero__inner{position:relative; text-align:center}
 .hero__meta{
   font-family:var(--f-mono); font-size:10px; letter-spacing:.3em;
@@ -242,7 +257,56 @@ p{max-width:64ch; color:var(--muted)}
   letter-spacing:.2em; text-transform:uppercase; color:var(--brass); margin-bottom:5px;
 }
 .specs span{font-size:14.5px; color:var(--muted)}
-.setup__view img{max-width:min(1200px,100%); max-height:44vh}
+/* без класса fb: затемнение фокуса задаёт opacity < 1, а это создаёт контекст
+   наложения и отключает mix-blend-mode — чёрная плашка рендера проступала,
+   пока блок не попадал в фокус */
+.renderview img{max-width:min(1200px,100%); max-height:44vh}
+
+/* параллельная хроника: одни и те же годы в двух городах */
+/* Рамка залита градиентом: границе цвет-градиент не задать, поэтому две
+   подложки — внутренняя под padding-box красит фоном страницы, внешняя под
+   border-box проступает только в толщине границы. Двигаем вторую.
+   Градиент строго горизонтальный, период 50% — ровно два повтора на ширину слоя,
+   то есть одна тёплая волна на всю рамку. При наклонном градиенте цвет на левом и правом краю слоя не совпадал,
+   и на стыке замощения была видна ступенька. */
+.syncbox{
+  padding:56px 40px 48px; margin:0 0 42px;
+  border:1px solid transparent;
+  background:
+    linear-gradient(var(--ink),var(--ink)) padding-box,
+    repeating-linear-gradient(to right,
+      rgba(176,123,50,.20) 0%, var(--brass) 14%, var(--gold) 22%,
+      var(--ember) 29%, var(--brass) 38%, rgba(176,123,50,.20) 50%) border-box;
+  background-size:auto, 200% 100%;
+  animation:syncflow 34s linear infinite;
+}
+@keyframes syncflow{
+  from{background-position:0 0, 0 0}
+  to  {background-position:0 0, 200% 0}
+}
+.syncbox .sync{border-top:0; margin-bottom:0}
+.syncbox .sync__row:last-child{border-bottom:0; padding-bottom:0}
+.syncbox .sync__head{padding-top:0}
+.sync__lead{margin:0 0 14px}
+.sync{border-top:1px solid var(--line); margin-bottom:40px}
+.sync__head,.sync__row{
+  display:grid; grid-template-columns:76px .92fr 1.34fr; gap:24px;
+  padding:13px 0; border-bottom:1px solid var(--line);
+}
+.sync__head{
+  font-family:var(--f-mono); font-size:9px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--brass); padding:9px 0;
+}
+.sync__row > b{font-family:var(--f-mono); font-size:13px; font-weight:400; color:var(--ember)}
+.sync__row span{font-size:14px; color:var(--muted); line-height:1.5}
+.sync__row span b{color:var(--paper); font-weight:500}
+.sync__row a{
+  color:var(--muted); text-decoration:none;
+  border-bottom:1px solid var(--line-2); transition:color .25s, border-color .25s;
+}
+/* неразрывный пробел: с обычным стрелка отрывалась на отдельную строку */
+.sync__row a::after{content:"\00a0↗"; color:var(--brass); font-size:11px}
+.sync__row a:hover,.sync__row a:focus-visible{color:var(--gold); border-bottom-color:var(--gold)}
 /* на низких экранах модель ужимается, чтобы обложка осталась одним экраном */
 @media screen and (max-height:900px){ .hero__stage img{max-height:44vh} }
 @media screen and (max-height:720px){ .hero__stage img{max-height:34vh} }
@@ -554,7 +618,7 @@ body.scrolling{--dim:.26}
   .hero__hint span{animation:none}
   .hero h1,.magma{animation:none}
   .hero__stage img,.hero__embers,.hero__meta,.hero__facts,.hero__hint{animation:none}
-  .hero h1::after{animation:none}
+  .hero h1::after,.syncbox{animation:none}
   html{scroll-behavior:auto}
 }
 
@@ -608,6 +672,17 @@ body.scrolling{--dim:.26}
   }
   section:last-of-type{break-after:auto; page-break-after:auto}
   .band--tint{background:var(--ink-2)!important}
+
+  /* «Здание»: рендер и хронику ужимаем, иначе раздел не влезает в слайд */
+  .renderview img{max-height:250px}
+  .setup{margin-bottom:22px}
+  .syncbox{padding:34px 30px 30px; margin-bottom:24px;
+           border:1px solid var(--line-2); background:none; animation:none}
+  .sync__lead{margin:0 0 8px}
+  .sync{margin-bottom:22px}
+  .sync__head,.sync__row{padding:9px 0}
+  .sync__row span{font-size:15px}
+  .sync__row a::after{content:""}
 
   /* обложка */
   .hero{padding:0!important}

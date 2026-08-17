@@ -26,7 +26,6 @@
 
 <!-- ============ 1. HERO ============ -->
 <section class="hero" id="s-hero" data-nav="Обложка">
-  <canvas class="hero__embers" id="embers" aria-hidden="true"></canvas>
   <div class="wrap hero__inner">
     <div class="hero__meta">Страна СВЕТА 2026 · Второй тур · 3D-мэппинг · Концепция</div>
     <h1 class="magma">Тула&nbsp;— отражение огня</h1>
@@ -38,42 +37,19 @@
       <div>Регион&nbsp;— <b>Тула</b></div>
     </div>
   </div>
+  <canvas class="hero__embers" id="embers" aria-hidden="true"></canvas>
   <div class="hero__hint" aria-hidden="true"><span></span>Листайте</div>
   <div class="veil" aria-hidden="true"></div>
 </section>
 
-<!-- ============ 2. SETUP ============ -->
-<section class="band" id="s-setup" data-nav="Сетап">
+<!-- ============ 2. CONTEXT ============ -->
+<section class="band band--tint" id="s-city" data-nav="Тула">
   <div class="wrap rv">
-    <div class="eyebrow"><i>01</i>Сетап</div>
-    <div class="rule"></div>
-    <div class="setup">
-      <div class="fb">
-        <h2>С&nbsp;чего начинается кадр</h2>
-        <p class="lead">Работа собирается не&nbsp;на&nbsp;плоскости, а&nbsp;на&nbsp;трёхмерной модели фасада: сначала строится геометрия здания, по&nbsp;ней выставляются камера и&nbsp;свет, и&nbsp;уже в&nbsp;этих координатах рисуется каждая сцена.</p>
-        <p class="mt">Серый рендер без текстур&nbsp;— исходное состояние площадки. Это тот самый холодный камень, с&nbsp;которого начинается первая сцена и&nbsp;от&nbsp;которого отсчитываются все девять состояний огня. Ни&nbsp;одна из&nbsp;них не&nbsp;добавляет на&nbsp;фасад ничего, чего нет в&nbsp;его собственной форме.</p>
-      </div>
-      <ul class="specs fb">
-        <li><b>Площадка</b><span>Штаб Гвардейского корпуса, Дворцовая площадь</span></li>
-        <li><b>Маска фасада</b><span>8880&nbsp;× 1920&nbsp;px</span></li>
-        <li><b>Модель</b><span>Серый clay-рендер без текстур и&nbsp;материалов</span></li>
-        <li><b>Свет</b><span>Только проекция: наружной подсветки в&nbsp;работе нет</span></li>
-      </ul>
-    </div>
-    <figure class="setup__view fb">
-      <img class="render" src="assets/setup.webp" alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
-    </figure>
-  </div>
-</section>
-
-<!-- ============ 3. CONTEXT ============ -->
-<section class="band band--tint" id="s-city" data-nav="Город">
-  <div class="wrap rv">
-    <div class="eyebrow"><i>02</i>Город</div>
+    <div class="eyebrow"><i>01</i>Малая родина</div>
     <div class="rule"></div>
     <div class="ctx">
       <div class="fb">
-        <h2>Всё тульское<br>прошло через огонь</h2>
+        <h2>Тула</h2>
         <p class="lead">Тулу принято перечислять: оружие, самовар, пряник, гармонь, игрушка. Но&nbsp;это не&nbsp;список сувениров&nbsp;— это одна история, рассказанная разными материалами.</p>
         <p class="mt">У&nbsp;всех тульских ремёсел общий корень&nbsp;— горн. Оружейный завод 1712&nbsp;года дал городу не&nbsp;только оружие: первые самовары начали делать на&nbsp;его дворах, первую гармонную фабрику оружейник Тимофей Воронцов открыл в&nbsp;подвале собственной самоварной мастерской. Пряник печётся в&nbsp;печи. Филимоновская глина обжигается при&nbsp;950&nbsp;градусах.</p>
         <p class="mt">Огонь&nbsp;— то, что&nbsp;человек приручил первым. Из&nbsp;слепой опасной стихии он стал инструментом: греет, плавит, обжигает, печёт. Тула&nbsp;— город, который довёл это приручение до&nbsp;искусства.</p>
@@ -91,6 +67,52 @@
         </ul>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ 3. BUILDING ============ -->
+<section class="band" id="s-setup" data-nav="Здание">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>02</i>Контекст</div>
+    <div class="rule"></div>
+    <div class="setup">
+      <div class="fb">
+        <h2>Здание</h2>
+        <p class="lead">Памятник федерального значения и&nbsp;один из&nbsp;лучших образцов классицизма.</p>
+        <p class="mt">Для проекта это не&nbsp;справка, а&nbsp;подсказка: классицизм&nbsp;— тот&nbsp;же приручённый материал, камень, приведённый в&nbsp;строгий порядок. Огонь в&nbsp;работе проходит тот&nbsp;же путь: колоннада, карнизы и&nbsp;порталы задают ему ритм, и&nbsp;стихия принимает строй фасада, а&nbsp;не&nbsp;ложится поверх него.</p>
+      </div>
+      <ul class="specs fb">
+        <li><b>Город</b><span>Санкт-Петербург</span></li>
+        <li><b>Площадка</b><span>Штаб Гвардейского корпуса, Дворцовая площадь</span></li>
+        <li><b>Год</b><span>1837&nbsp;— 1843</span></li>
+        <li><b>Архитектор</b><span>Александр Брюллов</span></li>
+      </ul>
+    </div>
+    <div class="syncbox fb">
+    <div class="eyebrow eyebrow--sub sync__lead">Связь здания и&nbsp;Тулы</div>
+    <div class="sync">
+      <div class="sync__head"><span>Год</span><span>Петербург</span><span>Тула</span></div>
+      <div class="sync__row">
+        <b>1837</b>
+        <span>Закладывают здание Штаба гвардейского корпуса</span>
+        <span><a href="https://sergeytsvetkov.livejournal.com/57803.html" target="_blank" rel="noopener">Цесаревичу Александру Николаевичу <b>показывают оружейный завод</b></a></span>
+      </div>
+      <div class="sync__row">
+        <b>1840</b>
+        <span>Стройка идёт</span>
+        <span><a href="https://tulainpast.ru/fabriki_zavodyi/row1618/" target="_blank" rel="noopener">Оружейник Баташев <b>открывает самоварную фабрику</b></a></span>
+      </div>
+      <div class="sync__row">
+        <b>1843</b>
+        <span>Здание достроено, ансамбль площади закрыт</span>
+        <span><a href="https://museum-arms.ru/about/history/" target="_blank" rel="noopener">Палаты арсенала оружейного завода <b>покрывают золотыми надписями</b></a></span>
+      </div>
+    </div>
+    </div>
+
+    <figure class="renderview">
+      <img class="render" src="assets/setup.webp" alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
+    </figure>
   </div>
 </section>
 
