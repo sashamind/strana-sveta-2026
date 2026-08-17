@@ -20,7 +20,7 @@
   --line-2:rgba(176,123,50,.4);
   --f-display:"Cormorant",Georgia,serif;
   --f-body:"Manrope",system-ui,sans-serif;
-  --f-mono:"JetBrains Mono",monospace;
+  --f-mono:"IBM Plex Mono",monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -34,19 +34,6 @@ body{
 }
 section{position:relative}
 img,video,canvas{display:block;max-width:100%}
-
-/* ---------- сквозная температура: тёплое зарево снизу, цвет ведёт драматургия ---------- */
-.tint{
-  position:fixed; inset:0; pointer-events:none;
-  background:radial-gradient(125% 58% at 50% 108%, var(--tint,transparent) 0%, transparent 68%);
-  opacity:.6; transition:background .6s linear;
-}
-.cursorglow{
-  position:fixed; top:0; left:0; width:520px; height:520px; margin:-260px 0 0 -260px;
-  pointer-events:none; opacity:0; transition:opacity .5s;
-  background:radial-gradient(circle at center, rgba(242,160,61,.10) 0%, transparent 62%);
-}
-.cursorglow.on{opacity:1}
 
 /* ---------- шкала укрощения: прогресс + навигация ---------- */
 .rail{position:fixed; top:0; right:0; width:46px; height:100vh; z-index:60; pointer-events:none}
@@ -128,7 +115,7 @@ p{max-width:64ch; color:var(--muted)}
    Заливка backwards, а не both — иначе конечный кадр анимации перебил бы
    правила, которые прячут подсказку и кнопку при прокрутке. */
 @keyframes fadeIn{ from{opacity:0} }
-@keyframes growIn{ from{opacity:0; transform:scale(.8)} }
+@keyframes growIn{ from{opacity:0; transform:scale(calc(var(--s,1) * .8))} }
 
 .hero__stage img{animation:growIn 2s cubic-bezier(.16,.6,.22,1) .1s backwards}
 .hero__embers{animation:fadeIn 1.4s ease-out 2.3s backwards}
@@ -167,11 +154,43 @@ p{max-width:64ch; color:var(--muted)}
 }
 .hero h1{
   font-family:var(--f-display); font-weight:300;
-  font-size:clamp(30px,5.2vw,76px); line-height:1.02; letter-spacing:-.02em;
+  font-size:clamp(21px,3.6vw,53px); line-height:1.04; letter-spacing:-.015em;
+  position:relative;
+  /* Поля снизу и сверху: заливка обрезается коробкой элемента, и при плотном
+     межстрочном хвост «у» вылезал за неё — оставался один контур без заливки.
+     Отрицательные отступы гасят прибавку, чтобы вёрстка обложки не поехала. */
+  padding:.05em 0 .18em; margin:-.05em 0 -.18em;
   /* к общей магме добавляется своё появление при загрузке */
   animation:magma 22s linear infinite,
             fadeIn .9s ease-out 1.8s backwards;
 }
+/* Обводка с бегущим градиентом.
+   -webkit-text-stroke принимает только сплошной цвет, поэтому градиент даёт
+   второй слой того же текста: у него нет заливки, только контур, а поверх
+   идёт маска из повторяющегося градиента. Где маска плотная — обводка белая,
+   где прозрачная — её нет и виден тёмный фон. Сдвиг маски ровно на период,
+   поэтому петля незаметна. */
+.hero h1::after{
+  content:"Тула — отражение огня";
+  position:absolute; left:0; top:0; width:100%;
+  padding:inherit;
+  pointer-events:none;
+  -webkit-text-fill-color:transparent;
+  -webkit-text-stroke:.6px var(--paper);
+  /* период тот же 34% — от него зависит бесшовность петли, меняется только
+     раскладка внутри: тёмный участок длинный, светлый — короткая полоса */
+  -webkit-mask-image:repeating-linear-gradient(102deg,
+    rgba(0,0,0,.05) 0%, rgba(0,0,0,.05) 18%, #000 24%, #000 27%, rgba(0,0,0,.05) 34%);
+  mask-image:repeating-linear-gradient(102deg,
+    rgba(0,0,0,.05) 0%, rgba(0,0,0,.05) 18%, #000 24%, #000 27%, rgba(0,0,0,.05) 34%);
+  -webkit-mask-size:200% 100%; mask-size:200% 100%;
+  animation:strokeflow 30s linear infinite;
+}
+@keyframes strokeflow{
+  from{-webkit-mask-position:0 0;    mask-position:0 0}
+  to  {-webkit-mask-position:200% 0; mask-position:200% 0}
+}
+
 @keyframes magma{
   0%   {background-position:  0% 50%, 100% 50%,  50%  0%,   0% 100%, 100%  0%,  50% 100%}
   20%  {background-position: 55% 18%,  38% 84%,  12% 62%,  76% 26%,  34% 72%,  92% 38%}
@@ -204,7 +223,15 @@ p{max-width:64ch; color:var(--muted)}
   mask-composite:intersect;
   mix-blend-mode:screen;
 }
-.hero__stage img{max-width:min(1460px,100%); max-height:52vh}
+/* Модель на обложке увеличена масштабом, а не размером: в потоке она занимает
+   прежнее место, поэтому заголовок и подписи не сдвигаются.
+   --s задаёт итоговый масштаб, от него же считается стартовый кадр появления,
+   чтобы рост остался прежним — от 80% к 100% нового размера. */
+.hero__stage img{
+  --s:1.25;
+  max-width:min(1460px,100%); max-height:52vh;
+  transform:scale(var(--s));
+}
 
 /* ---------- сетап ---------- */
 .setup{display:grid; grid-template-columns:1.25fr 1fr; gap:64px; align-items:start; margin-bottom:38px}
@@ -224,7 +251,9 @@ p{max-width:64ch; color:var(--muted)}
   font-family:var(--f-mono); font-size:11px; letter-spacing:.14em;
   color:var(--ash); text-transform:uppercase;
 }
-.hero__facts b{color:var(--paper); font-weight:500}
+/* на обложке значения выделены приглушённо: --muted вместо белого --paper,
+   иначе строка перебивает модель */
+.hero__facts b{color:var(--muted); font-weight:500}
 .hero__hint{
   position:absolute; left:50%; bottom:34px; transform:translateX(-50%);
   display:flex; flex-direction:column; align-items:center; gap:10px;
@@ -525,7 +554,7 @@ body.scrolling{--dim:.26}
   .hero__hint span{animation:none}
   .hero h1,.magma{animation:none}
   .hero__stage img,.hero__embers,.hero__meta,.hero__facts,.hero__hint{animation:none}
-  .cursorglow{display:none}
+  .hero h1::after{animation:none}
   html{scroll-behavior:auto}
 }
 
@@ -542,7 +571,7 @@ body.scrolling{--dim:.26}
   .grad__ends{font-size:9px; gap:16px}
   .scene{grid-template-columns:1fr; gap:18px; padding:38px 0}
   .scene__body{grid-template-columns:1fr; gap:20px}
-  .rail,.cursorglow{display:none}
+  .rail{display:none}
   .hero__facts{gap:12px 26px}
   .tl__title{display:none}
   .tl__seg b{font-size:8px}
@@ -562,7 +591,7 @@ body.scrolling{--dim:.26}
   html,body{background:var(--ink)!important; color:var(--paper)!important}
 
   /* всё интерактивное из печати убирается */
-  .rail,.tools,.tint,.cursorglow,.lb,.tl,
+  .rail,.tools,.lb,.tl,
   .hero__embers,.hero__hint,.veil,.mir__g{display:none!important}
   .rv,.rv .craft,.fb{opacity:1!important; transform:none!important}
   .cue__bar span{transform:none!important}
@@ -585,7 +614,10 @@ body.scrolling{--dim:.26}
   .hero__meta,.hero__stage img,.hero__facts{animation:none!important; transform:none!important}
   /* магма в печать не идёт: заливка текста прозрачная, заголовок ушёл бы пустым */
   .magma{animation:none!important; background:none!important}
-  .hero h1{font-size:120px; -webkit-text-fill-color:var(--paper)!important; color:var(--paper)!important}
+  /* дубль-слой обводки в печати не нужен: он лёг бы вторым контуром поверх заголовка */
+  .hero h1::after{display:none!important}
+  .hero h1{font-size:84px; -webkit-text-stroke:0!important;
+           -webkit-text-fill-color:var(--paper)!important; color:var(--paper)!important}
   .closing q{-webkit-text-fill-color:var(--gold)!important; color:var(--gold)!important}
   .hero__stage{margin-top:34px}
   .hero__stage img{max-height:330px}

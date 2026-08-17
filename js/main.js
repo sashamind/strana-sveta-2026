@@ -12,7 +12,6 @@ function scrollMax(){return Math.max(1,doc.scrollHeight-window.innerHeight)}
 
 var railFill=document.getElementById('railFill');
 var railTicks=document.getElementById('railTicks');
-var tint=document.getElementById('tint');
 var hero=document.querySelector('.hero');
 var sections=[].slice.call(document.querySelectorAll('section[data-nav]'));
 var ticks=[];
@@ -64,25 +63,9 @@ function fadeSections(){
   });
 }
 
-/* цвет зарева ведёт ту же драматургию, что и градиент шкалы */
-var STOPS=[[0,'#2A1408'],[.14,'#7A2E0C'],[.34,'#F2A03D'],[.55,'#E8C87A'],
-           [.68,'#B07B32'],[.82,'#C8365A'],[1,'#7FA4B8']];
-function hex(c){return [parseInt(c.substr(1,2),16),parseInt(c.substr(3,2),16),parseInt(c.substr(5,2),16)]}
-function tintAt(p){
-  var i=1;
-  while(i<STOPS.length-1&&p>STOPS[i][0]) i++;
-  var a=STOPS[i-1],b=STOPS[i];
-  var k=(p-a[0])/(b[0]-a[0]||1);
-  var ca=hex(a[1]),cb=hex(b[1]);
-  return 'rgba('+Math.round(ca[0]+(cb[0]-ca[0])*k)+','
-               +Math.round(ca[1]+(cb[1]-ca[1])*k)+','
-               +Math.round(ca[2]+(cb[2]-ca[2])*k)+',.20)';
-}
-
 function onScroll(){
   var p=clamp(window.scrollY/scrollMax(),0,1);
   railFill.style.height=p*100+'%';
-  tint.style.setProperty('--tint',tintAt(p));
   document.body.classList.toggle('scrolled',window.scrollY>40);
 
   fadeSections();
@@ -133,21 +116,9 @@ function applyFocus(){
 
 applyFocus();
 
-/* ============ 2. Свет под курсором и подсветка карточек ============ */
+/* ============ 2. Подсветка карточек за курсором ============ */
 
 if(!reduced&&!coarse){
-  var glow=document.getElementById('cursorGlow');
-  var gx=0,gy=0,tx=0,ty=0,raf=0;
-  window.addEventListener('pointermove',function(e){
-    tx=e.clientX; ty=e.clientY;
-    glow.classList.add('on');
-    if(!raf) raf=requestAnimationFrame(moveGlow);
-  },{passive:true});
-  function moveGlow(){
-    gx+=(tx-gx)*.12; gy+=(ty-gy)*.12;
-    glow.style.transform='translate3d('+gx+'px,'+gy+'px,0)';
-    raf=(Math.abs(tx-gx)>.5||Math.abs(ty-gy)>.5)?requestAnimationFrame(moveGlow):0;
-  }
   document.querySelectorAll('.meta,.layer').forEach(function(card){
     card.addEventListener('pointermove',function(e){
       var r=card.getBoundingClientRect();
