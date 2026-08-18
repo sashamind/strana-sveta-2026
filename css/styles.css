@@ -761,8 +761,14 @@ body.scrolling{--dim:.26}
   .hero__stage img{--s:1.1}
   /* «Автор» и «Регион» держим в одну строку: два блока в две строки
      на узком экране выглядели обрывком списка, а не подписью. */
-  .hero__facts{margin-top:22px; flex-wrap:nowrap; gap:0 18px;
+  .hero__facts{margin-top:46px; flex-wrap:nowrap; gap:0 18px;
                font-size:9px; letter-spacing:.1em; white-space:nowrap}
+  /* 100vh в мобильном Safari — это высота БЕЗ нижней панели, поэтому низ обложки
+     уезжал под неё вместе с подсказкой. svh — наоборот, самый маленький вариант
+     вьюпорта: подсказка видна и когда панель развёрнута, и высота не скачет
+     при её сворачивании (в отличие от dvh). */
+  .hero{min-height:100vh; min-height:100svh}
+  .hero__hint{bottom:calc(58px + env(safe-area-inset-bottom,0px))}
   .tl__title{display:none}
   .tl__seg b{font-size:8px}
   .tools{bottom:16px; right:16px; gap:8px}
