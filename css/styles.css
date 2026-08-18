@@ -197,7 +197,7 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
    где прозрачная — её нет и виден тёмный фон. Сдвиг маски ровно на период,
    поэтому петля незаметна. */
 .hero h1::after{
-  content:"Тула — отражение огня";
+  content:"Тула — отражение Огня";
   position:absolute; left:0; top:0; width:100%;
   padding:inherit;
   pointer-events:none;
@@ -744,7 +744,7 @@ body.scrolling{--dim:.26}
 @media screen and (max-width:900px){
   .wrap{padding:0 20px}
   .band{padding:84px 0}
-  .ctx,.two{grid-template-columns:1fr; gap:40px}
+  .ctx,.two,.setup{grid-template-columns:1fr; gap:40px}   /* .setup тоже: в две колонки текст рвался по два слова */
   .layers,.meta-grid{grid-template-columns:1fr}
   .swatches{grid-template-columns:repeat(2,1fr)}
   .grad__bar{height:56px}
@@ -752,11 +752,29 @@ body.scrolling{--dim:.26}
   .scene{grid-template-columns:1fr; gap:18px; padding:38px 0}
   .scene__body{grid-template-columns:1fr; gap:20px}
   .rail{display:none}
-  .hero__facts{gap:12px 26px}
+  /* Обложка: центрируется по контентной коробке, поэтому лишний нижний отступ
+     поднимает весь блок вверх — заодно уходит пустота над строкой конкурса. */
+  .hero{padding-bottom:210px}
+  .hero__meta{font-size:9px; letter-spacing:.2em; margin-bottom:30px; text-wrap:balance}
+  /* Модель увеличена масштабом 1.25 — на узком экране она вылезала за вьюпорт
+     и срезала углы здания. Здесь показываем её целиком. */
+  .hero__stage img{--s:1.1}
+  /* «Автор» и «Регион» держим в одну строку: два блока в две строки
+     на узком экране выглядели обрывком списка, а не подписью. */
+  .hero__facts{margin-top:22px; flex-wrap:nowrap; gap:0 18px;
+               font-size:9px; letter-spacing:.1em; white-space:nowrap}
   .tl__title{display:none}
   .tl__seg b{font-size:8px}
   .tools{bottom:16px; right:16px; gap:8px}
-  .pdf{padding:12px 15px}
+  .pdf{padding:11px 14px; font-size:9px; letter-spacing:.14em}
+  /* карта в полный рост занимала пол-экрана и забивала текст */
+  .mapline{height:200px}
+  .meta{padding:30px 22px}
+  .sync__note{max-width:none}
+  .specs{gap:14px}
+  /* финал: цитата держала 68vh пустоты, на телефоне это лишний экран прокрутки */
+  .closing{padding:90px 0 130px}
+  .closing__q{min-height:50vh}
 }
 
 /* ============ PDF: тёмные слайды 1920×1080 ============ */
