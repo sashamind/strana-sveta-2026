@@ -182,6 +182,27 @@ if(cvs&&!reduced){
 
 /* ============ 4. Появление блоков ============ */
 
+/* Контур области подставляется инлайном: обводку (stroke-dashoffset) можно
+   анимировать только у настоящего SVG в документе, у <img> она недоступна.
+   Файл остаётся один — assets/map.svg; не подгрузился, останется картинка. */
+(function(){
+  var img=document.querySelector('.mapfig .mapline');
+  if(!img || !window.fetch) return;
+  fetch(img.getAttribute('src')).then(function(r){
+    return r.ok ? r.text() : Promise.reject();
+  }).then(function(txt){
+    var box=document.createElement('div'); box.innerHTML=txt;
+    var svg=box.querySelector('svg'); if(!svg) return;
+    svg.setAttribute('class','mapline');
+    svg.removeAttribute('width'); svg.removeAttribute('height');
+    svg.setAttribute('role','img');
+    svg.setAttribute('aria-label',img.getAttribute('alt')||'');
+    /* доли длины вместо пикселей: любой новый контур нарисуется так же */
+    svg.querySelectorAll('path').forEach(function(p){ p.setAttribute('pathLength','1'); });
+    img.parentNode.replaceChild(svg,img);
+  }).catch(function(){});
+})();
+
 var io=new IntersectionObserver(function(es){
   es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 },{threshold:.12});

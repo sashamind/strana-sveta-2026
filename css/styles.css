@@ -23,7 +23,18 @@
   --f-mono:"IBM Plex Mono",monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* системный ползунок: тонкий и в палитре проекта.
+   scrollbar-width — современное свойство, ::-webkit-scrollbar оставлен
+   для браузеров, которые его ещё не понимают */
+html{
+  scroll-behavior:smooth;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(176,123,50,.45) transparent;
+}
+::-webkit-scrollbar{width:7px; height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(176,123,50,.45)}
+::-webkit-scrollbar-thumb:hover{background:rgba(176,123,50,.75)}
 body{
   background:var(--ink);
   color:var(--paper);
@@ -260,6 +271,7 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
 /* без класса fb: затемнение фокуса задаёт opacity < 1, а это создаёт контекст
    наложения и отключает mix-blend-mode — чёрная плашка рендера проступала,
    пока блок не попадал в фокус */
+.renderview{margin-bottom:44px}
 .renderview img{max-width:min(1200px,100%); max-height:44vh}
 
 /* параллельная хроника: одни и те же годы в двух городах */
@@ -284,10 +296,20 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
   from{background-position:0 0, 0 0}
   to  {background-position:0 0, 200% 0}
 }
-.syncbox .sync{border-top:0; margin-bottom:0}
+.syncbox .sync{border-top:0; margin-bottom:36px}
 .syncbox .sync__row:last-child{border-bottom:0; padding-bottom:0}
 .syncbox .sync__head{padding-top:0}
-.sync__lead{margin:0 0 14px}
+/* заголовок хроники: не подпись мелким моношрифтом, а полноценный
+   заголовок блока — иначе он терялся рядом с таблицей */
+.sync__lead{
+  display:flex; align-items:center; gap:16px;
+  font-family:var(--f-display); font-weight:600; font-size:23px;
+  letter-spacing:.01em; color:var(--gold); margin:0 0 22px;
+}
+.sync__lead::before{
+  content:""; flex:none; width:30px; height:1px;
+  background:linear-gradient(to right,var(--ember),var(--brass));
+}
 .sync{border-top:1px solid var(--line); margin-bottom:40px}
 .sync__head,.sync__row{
   display:grid; grid-template-columns:76px .92fr 1.34fr; gap:24px;
@@ -307,6 +329,18 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
 /* неразрывный пробел: с обычным стрелка отрывалась на отдельную строку */
 .sync__row a::after{content:"\00a0↗"; color:var(--brass); font-size:11px}
 .sync__row a:hover,.sync__row a:focus-visible{color:var(--gold); border-bottom-color:var(--gold)}
+/* вполовину ширины рамки: строка на всю ширину читалась тяжело,
+   да и таблица выше держит текст в колонках */
+.sync__note{font-size:15px; color:var(--muted); max-width:50%; margin:0}
+/* ссылка внутри — та же подача, что в таблице выше */
+.sync__note a{
+  color:var(--muted); text-decoration:none;
+  border-bottom:1px solid var(--line-2); transition:color .25s, border-color .25s;
+}
+.sync__note a::after{content:"\00a0↗"; color:var(--brass); font-size:11px}
+.sync__note a:hover,.sync__note a:focus-visible{color:var(--gold); border-bottom-color:var(--gold)}
+.sync__note b{color:var(--paper); font-weight:500}
+.sync__note a:hover b,.sync__note a:focus-visible b{color:var(--gold)}
 /* на низких экранах модель ужимается, чтобы обложка осталась одним экраном */
 @media screen and (max-height:900px){ .hero__stage img{max-height:44vh} }
 @media screen and (max-height:720px){ .hero__stage img{max-height:34vh} }
@@ -346,7 +380,60 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .band{padding:132px 0}
 .band--tint{background:linear-gradient(180deg,transparent,var(--ink-2) 30%,var(--ink-2) 70%,transparent)}
 
+/* панорама Тулы под разделом. Поверх — тёмная вуаль: сама фотография светлеет
+   вправо, а там стоит колонка «Семь огней», и без затемнения текст на ней
+   не читался бы. По краям фон уходит в цвет страницы, чтобы секция
+   не выглядела вырезанным прямоугольником */
+/* Панорама Тулы под разделом. Лежит на отдельном слое (::before + translateZ),
+   иначе Chrome переращивает тяжёлый фон при каждом hover внутри секции — картинка мигает. */
+#s-city::before{
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  transform:translateZ(0);
+  background:
+    linear-gradient(180deg, var(--ink) 0%, rgba(10,7,5,.34) 22%,
+                    rgba(10,7,5,.34) 74%, var(--ink) 100%),
+    linear-gradient(90deg, rgba(10,7,5,.80) 0%, rgba(10,7,5,.40) 45%,
+                    rgba(10,7,5,.58) 100%),
+    url("../assets/bg-tula.webp") center/cover no-repeat;
+}
+#s-city > .wrap{position:relative; z-index:1}
+
 /* ---------- город ---------- */
+/* Контур области под заголовком: обведён тем же огнём, что и вся палитра.
+   Метка стоит в центроиде фигуры, острием в точку, и масштабируется вместе с картой. */
+.mapfig{position:relative; display:inline-block; margin:20px 0 30px}
+.mapline{display:block; height:360px; width:auto; opacity:.85;
+  filter:drop-shadow(0 0 14px rgba(255,107,0,.28))}
+.mapfig__pin{
+  position:absolute; left:54.84%; top:50.93%;
+  transform:translate(-50%,-100%);
+  color:var(--gold); pointer-events:none;
+}
+.mapfig__pin svg{width:26px; height:34px; display:block;
+  filter:drop-shadow(0 0 7px rgba(227,178,60,.55))}
+/* Круги от острия метки: четыре волны с задержкой в четверть цикла — пока одна гаснет,
+   следующая уже вышла, диски плотно накладываются прозрачностью.
+   Базовая альфа занижена под четыре слоя: они перемножаются по остатку,
+   и при .17 центр вышел бы заметно ярче прежнего. */
+.mapfig__ping{position:absolute; left:54.84%; top:50.93%; width:0; height:0; pointer-events:none;
+  --t0:2.3s}   /* волны стартуют, когда метка уже встала в точку */
+.mapfig__ping i{
+  position:absolute; left:0; top:0; width:78px; height:78px; margin:-39px 0 0 -39px;
+  background:rgba(255,107,0,.14); border-radius:50%;
+  opacity:0; transform:scale(.1);
+  animation:ping 5.4s cubic-bezier(.18,.62,.3,1) infinite;
+}
+.mapfig__ping i:nth-child(1){animation-delay:var(--t0)}
+.mapfig__ping i:nth-child(2){animation-delay:calc(var(--t0) + 1.35s)}
+.mapfig__ping i:nth-child(3){animation-delay:calc(var(--t0) + 2.7s)}
+.mapfig__ping i:nth-child(4){animation-delay:calc(var(--t0) + 4.05s)}
+@keyframes ping{
+  0%  {opacity:0;   transform:scale(.08)}
+  8%  {opacity:.9}
+  60% {opacity:.45}
+  100%{opacity:0;   transform:scale(1)}
+}
+
 .ctx{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start}
 .ctx__aside{border-left:1px solid var(--line-2); padding-left:26px}
 .crafts{list-style:none; display:flex; flex-direction:column; gap:4px}
@@ -605,6 +692,31 @@ body.scrolling{--dim:.26}
 .fb{opacity:calc(var(--dim) + (1 - var(--dim)) * var(--f,1)); transition:opacity .32s ease}
 
 /* ---------- появление ---------- */
+/* ---------- «Малая родина»: последовательное появление ----------
+   Обычный .rv поднимает блок целиком. Здесь блок не гасится, гасятся его части:
+   у каждой своя задержка в --d, и раздел собирается по шагам —
+   метка → линейка → заголовок → прорисовка контура → метка на карте → волны,
+   а текст выходит параллельно с прорисовкой, чтобы не ждать её конца. */
+.seq.rv{opacity:1; transform:none; transition:none}
+.seq .sq{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease}
+.seq.in .sq{opacity:1; transform:none; transition-delay:var(--d,0s)}
+.seq .rule.sq{transform:scaleX(0); transform-origin:left;
+              transition:opacity .35s ease, transform .75s cubic-bezier(.2,.7,.25,1)}
+.seq.in .rule.sq{transform:scaleX(1)}
+
+/* Контур рисуется обводкой: pathLength="1" задаёт скрипт, поэтому штрих и сдвиг
+   считаются в долях длины и не зависят от того, какой файл лежит в assets. */
+/* Штрих держим всегда: если снять stroke-dasharray вместе с появлением,
+   пунктир исчезнет и контур проявится разом, не дорисовываясь. */
+.seq .mapline path{stroke-dasharray:1; transition:stroke-dashoffset 1.7s ease .55s}
+.seq:not(.in) .mapline path{stroke-dashoffset:1}
+
+.seq .mapfig__pin{transition:opacity .5s ease, transform .55s cubic-bezier(.2,.9,.3,1.4);
+                  transition-delay:1.95s}
+.seq:not(.in) .mapfig__pin{opacity:0;
+  transform:translate(-50%,-100%) translateY(-12px) scale(.8); transition-delay:0s}
+.seq:not(.in) .mapfig__ping i{animation-play-state:paused}
+
 .rv{opacity:0; transform:translateY(22px); transition:opacity .8s ease, transform .8s ease}
 .rv.in{opacity:1; transform:none}
 .craft{transition-delay:calc(var(--i,0) * .06s)}
@@ -613,12 +725,16 @@ body.scrolling{--dim:.26}
 
 @media (prefers-reduced-motion:reduce){
   .rv,.rv .craft{opacity:1; transform:none; transition:none}
+  .seq .sq{opacity:1; transform:none; transition:none}
+  .seq .mapline path{stroke-dasharray:none; stroke-dashoffset:0}
+  .seq .mapfig__pin{opacity:1; transform:translate(-50%,-100%); transition:none}
   .fb{opacity:1!important}
   .cue__bar span{transform:none; transition:none}
   .hero__hint span{animation:none}
   .hero h1,.magma{animation:none}
   .hero__stage img,.hero__embers,.hero__meta,.hero__facts,.hero__hint{animation:none}
   .hero h1::after,.syncbox{animation:none}
+  .mapfig__ping{display:none}
   html{scroll-behavior:auto}
 }
 
@@ -657,7 +773,14 @@ body.scrolling{--dim:.26}
   /* всё интерактивное из печати убирается */
   .rail,.tools,.lb,.tl,
   .hero__embers,.hero__hint,.veil,.mir__g{display:none!important}
-  .rv,.rv .craft,.fb{opacity:1!important; transform:none!important}
+  .mapline{height:300px}
+  .mapfig{margin:12px 0 18px}
+  .mapfig__pin svg{width:23px;height:30px}
+  .mapfig__ping{display:none}
+  .rv,.rv .craft,.fb,.seq .sq{opacity:1!important; transform:none!important}
+  .seq .mapline path{stroke-dasharray:none!important; stroke-dashoffset:0!important}
+  /* метке transform не сбрасываем: им она посажена остриём в точку */
+  .seq .mapfig__pin{opacity:1!important; transform:translate(-50%,-100%)!important}
   .cue__bar span{transform:none!important}
     .frame--filled::after{display:none!important}
 
@@ -674,15 +797,18 @@ body.scrolling{--dim:.26}
   .band--tint{background:var(--ink-2)!important}
 
   /* «Здание»: рендер и хронику ужимаем, иначе раздел не влезает в слайд */
-  .renderview img{max-height:250px}
+  .renderview{margin-bottom:20px}
+  .renderview img{max-height:200px}
   .setup{margin-bottom:22px}
-  .syncbox{padding:34px 30px 30px; margin-bottom:24px;
+  .syncbox{padding:22px 24px 20px; margin-bottom:18px;
            border:1px solid var(--line-2); background:none; animation:none}
-  .sync__lead{margin:0 0 8px}
+  .syncbox .sync{margin-bottom:18px}
+  .sync__note{font-size:15px; max-width:50%}
+  .sync__lead{font-size:19px; margin:0 0 12px}
   .sync{margin-bottom:22px}
   .sync__head,.sync__row{padding:9px 0}
   .sync__row span{font-size:15px}
-  .sync__row a::after{content:""}
+  .sync__row a::after,.sync__note a::after{content:""}
 
   /* обложка */
   .hero{padding:0!important}

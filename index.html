@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300&family=Manrope:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="preload" as="image" href="assets/setup.webp">
+<link rel="preload" as="image" href="assets/bg-tula.webp">
 </head>
 <body>
 
@@ -43,17 +45,25 @@
 </section>
 
 <!-- ============ 2. CONTEXT ============ -->
-<section class="band band--tint" id="s-city" data-nav="Тула">
-  <div class="wrap rv">
-    <div class="eyebrow"><i>01</i>Малая родина</div>
-    <div class="rule"></div>
+<section class="band band--tint" id="s-city" data-nav="Тульский регион">
+  <div class="wrap rv seq">
+    <div class="eyebrow sq" style="--d:0s"><i>01</i>Малая родина</div>
+    <div class="rule sq" style="--d:.12s"></div>
     <div class="ctx">
       <div class="fb">
-        <h2>Тула</h2>
-        <p class="lead">Тулу принято перечислять: оружие, самовар, пряник, гармонь, игрушка. Но&nbsp;это не&nbsp;список сувениров&nbsp;— это одна история, рассказанная разными материалами.</p>
-        <p class="mt">У&nbsp;всех тульских ремёсел общий корень&nbsp;— горн. Оружейный завод 1712&nbsp;года дал городу не&nbsp;только оружие: первые самовары начали делать на&nbsp;его дворах, первую гармонную фабрику оружейник Тимофей Воронцов открыл в&nbsp;подвале собственной самоварной мастерской. Пряник печётся в&nbsp;печи. Филимоновская глина обжигается при&nbsp;950&nbsp;градусах.</p>
-        <p class="mt">Огонь&nbsp;— то, что&nbsp;человек приручил первым. Из&nbsp;слепой опасной стихии он стал инструментом: греет, плавит, обжигает, печёт. Тула&nbsp;— город, который довёл это приручение до&nbsp;искусства.</p>
+        <h2 class="sq" style="--d:.28s">Тульский регион</h2>
+        <div class="mapfig">
+          <img class="mapline" src="assets/map.svg" alt="Контур Тульской области" width="677" height="714" loading="lazy">
+          <span class="mapfig__ping" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="mapfig__pin" aria-hidden="true"><svg viewBox="0 0 24 32" fill="none"><path d="M12 1.7c-5 0-9.1 4.1-9.1 9.1 0 6.7 9.1 19.5 9.1 19.5s9.1-12.8 9.1-19.5c0-5-4.1-9.1-9.1-9.1Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10.8" r="3.2" fill="currentColor"/></svg></span>
+        </div>
+        <p class="lead sq" style="--d:.95s">Тулу принято перечислять: оружие, самовар, пряник, гармонь, игрушка. Но&nbsp;это не&nbsp;список сувениров&nbsp;— это одна история, рассказанная разными материалами.</p>
+        <p class="mt sq" style="--d:1.15s">У&nbsp;всех тульских ремёсел общий корень&nbsp;— горн. Оружейный завод 1712&nbsp;года дал городу не&nbsp;только оружие: первые самовары начали делать на&nbsp;его дворах, первую гармонную фабрику оружейник Тимофей Воронцов открыл в&nbsp;подвале собственной самоварной мастерской. Пряник печётся в&nbsp;печи. Филимоновская глина обжигается при&nbsp;950&nbsp;градусах.</p>
+        <p class="mt sq" style="--d:1.35s">Огонь&nbsp;— то, что&nbsp;человек приручил первым. Из&nbsp;слепой опасной стихии он стал инструментом: греет, плавит, обжигает, печёт. Тула&nbsp;— город, который довёл это приручение до&nbsp;искусства.</p>
       </div>
+      <!-- «Семь огней» временно сняты. Чтобы вернуть — раскомментировать;
+           стили .ctx__aside/.crafts/.craft в styles.css оставлены на месте. -->
+      <!--
       <div class="ctx__aside fb">
         <div class="eyebrow eyebrow--sub">Семь огней</div>
         <ul class="crafts">
@@ -66,6 +76,7 @@
           <li class="craft" style="--i:6"><span class="craft__n">07</span><span class="craft__t"><b>Ясная Поляна</b>&nbsp;— слово как&nbsp;высшая форма ремесла</span></li>
         </ul>
       </div>
+      -->
     </div>
   </div>
 </section>
@@ -88,8 +99,12 @@
         <li><b>Архитектор</b><span>Александр Брюллов</span></li>
       </ul>
     </div>
+    <figure class="renderview">
+      <img class="render" src="assets/setup.webp" alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
+    </figure>
+
     <div class="syncbox fb">
-    <div class="eyebrow eyebrow--sub sync__lead">Связь здания и&nbsp;Тулы</div>
+    <div class="sync__lead">Связь здания и&nbsp;Тульского региона во&nbsp;времени</div>
     <div class="sync">
       <div class="sync__head"><span>Год</span><span>Петербург</span><span>Тула</span></div>
       <div class="sync__row">
@@ -108,11 +123,10 @@
         <span><a href="https://museum-arms.ru/about/history/" target="_blank" rel="noopener">Палаты арсенала оружейного завода <b>покрывают золотыми надписями</b></a></span>
       </div>
     </div>
-    </div>
 
-    <figure class="renderview">
-      <img class="render" src="assets/setup.webp" alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
-    </figure>
+    <div class="sync__lead">Связь архитектора с&nbsp;Тульским регионом</div>
+    <p class="sync__note"><b>Александр Брюллов</b>&nbsp;— автор проекта <a href="https://kulpole.ru/places/memorial-na-krasnom-holme#video" target="_blank" rel="noopener">мемориала <b>на&nbsp;Красном холме</b></a>, главного символа Куликовской битвы. Памятник поставлен <b>в&nbsp;1850&nbsp;году</b>, через семь лет после Штаба гвардейского корпуса.</p>
+    </div>
   </div>
 </section>
 
