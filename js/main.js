@@ -151,24 +151,24 @@ if(cvs&&!reduced){
   }
   function spawn(y){
     return {x:Math.random()*w, y:y===undefined?h+Math.random()*h*.4:y,
-            r:Math.random()*1.6+.5, v:Math.random()*.34+.12,
+            r:Math.random()*1.1+.34, v:Math.random()*.52+.2,
             sway:Math.random()*Math.PI*2, a:Math.random()*.5+.18};
   }
   function draw(){
     ctx.clearRect(0,0,w,h);
     parts.forEach(function(p){
-      p.y-=p.v; p.sway+=.012; p.x+=Math.sin(p.sway)*.24;
-      if(p.y<h*.18) p.a-=.004;
+      p.y-=p.v; p.sway+=.016; p.x+=Math.sin(p.sway)*.22;
+      if(p.y<h*.18) p.a-=.006;   /* искры стали быстрее — гасим их резче, иначе долетают до верха */
       if(p.y<-10||p.a<=0){ var n=spawn(); p.x=n.x; p.y=n.y; p.r=n.r; p.v=n.v; p.a=n.a; }
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,6.2832);
-      ctx.fillStyle='rgba(242,'+Math.round(150+p.r*30)+',80,'+p.a+')';
+      ctx.fillStyle='rgba(242,'+Math.round(150+p.r*44)+',80,'+p.a+')';
       ctx.fill();
     });
     if(alive) anim=requestAnimationFrame(draw);
   }
   size();
-  for(var i=0;i<46;i++) parts.push(spawn(Math.random()*h));
+  for(var i=0;i<76;i++) parts.push(spawn(Math.random()*h));
   draw();
   window.addEventListener('resize',size);
   /* не крутить анимацию, когда обложка ушла из вида */

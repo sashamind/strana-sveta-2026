@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300&family=Manrope:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
-<link rel="preload" as="image" href="assets/setup.webp">
+<link rel="preload" as="image" href="assets/hero.webp">
 <link rel="preload" as="image" href="assets/bg-tula.webp">
 </head>
 <body>
@@ -32,7 +32,7 @@
     <div class="hero__meta">Страна СВЕТА 2026 · Второй тур · 3D-мэппинг · Концепция</div>
     <h1 class="magma">Тула&nbsp;— отражение Огня</h1>
     <figure class="hero__stage">
-      <img class="render" src="assets/setup.webp" alt="Штаб Гвардейского корпуса — рабочая 3D-модель фасада под мэппинг">
+      <img class="render" src="assets/hero.webp" alt="Штаб Гвардейского корпуса: фасад с проекцией — в колоннаде горит слово «Тула»">
     </figure>
     <div class="hero__facts">
       <div>Автор&nbsp;— <b>Александр Миндрин</b></div>
@@ -50,13 +50,19 @@
     <div class="eyebrow sq" style="--d:0s"><i>01</i>Малая родина</div>
     <div class="rule sq" style="--d:.12s"></div>
     <div class="ctx">
-      <div class="fb">
+      <div class="fb ctx__head">
         <h2 class="sq" style="--d:.28s">Тульский регион</h2>
+      </div>
+
+      <div class="fb">
         <div class="mapfig">
           <img class="mapline" src="assets/map.svg" alt="Контур Тульской области" width="677" height="714" loading="lazy">
           <span class="mapfig__ping" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="mapfig__pin" aria-hidden="true"><svg viewBox="0 0 24 32" fill="none"><path d="M12 1.7c-5 0-9.1 4.1-9.1 9.1 0 6.7 9.1 19.5 9.1 19.5s9.1-12.8 9.1-19.5c0-5-4.1-9.1-9.1-9.1Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10.8" r="3.2" fill="currentColor"/></svg></span>
         </div>
+      </div>
+
+      <div class="fb ctx__text">
         <p class="lead sq" style="--d:.95s">Тулу принято перечислять: оружие, самовар, пряник, гармонь, игрушка. Но&nbsp;это не&nbsp;список сувениров&nbsp;— это одна история, рассказанная разными материалами.</p>
         <p class="mt sq" style="--d:1.15s">У&nbsp;всех тульских ремёсел общий корень&nbsp;— горн. Оружейный завод 1712&nbsp;года дал городу не&nbsp;только оружие: первые самовары начали делать на&nbsp;его дворах, первую гармонную фабрику оружейник Тимофей Воронцов открыл в&nbsp;подвале собственной самоварной мастерской. Пряник печётся в&nbsp;печи. Филимоновская глина обжигается при&nbsp;950&nbsp;градусах.</p>
         <p class="mt sq" style="--d:1.35s">Огонь&nbsp;— то, что&nbsp;человек приручил первым. Из&nbsp;слепой опасной стихии он стал инструментом: греет, плавит, обжигает, печёт. Тула&nbsp;— город, который довёл это приручение до&nbsp;искусства.</p>
@@ -109,23 +115,23 @@
       <div class="sync__head"><span>Год</span><span>Петербург</span><span>Тула</span></div>
       <div class="sync__row">
         <b>1837</b>
-        <span>Закладывают здание Штаба гвардейского корпуса</span>
-        <span><a href="https://sergeytsvetkov.livejournal.com/57803.html" target="_blank" rel="noopener">Цесаревичу Александру Николаевичу <b>показывают оружейный завод</b></a></span>
+        <span data-col="Петербург">Закладывают здание Штаба гвардейского корпуса</span>
+        <span data-col="Тула"><a href="https://sergeytsvetkov.livejournal.com/57803.html" target="_blank" rel="noopener">Цесаревичу Александру Николаевичу <b>показывают оружейный завод</b></a></span>
       </div>
       <div class="sync__row">
         <b>1840</b>
-        <span>Стройка идёт</span>
-        <span><a href="https://tulainpast.ru/fabriki_zavodyi/row1618/" target="_blank" rel="noopener">Оружейник Баташев <b>открывает самоварную фабрику</b></a></span>
+        <span data-col="Петербург">Стройка идёт</span>
+        <span data-col="Тула"><a href="https://tulainpast.ru/fabriki_zavodyi/row1618/" target="_blank" rel="noopener">Оружейник Баташев <b>открывает самоварную фабрику</b></a></span>
       </div>
       <div class="sync__row">
         <b>1843</b>
-        <span>Здание достроено, ансамбль площади закрыт</span>
-        <span><a href="https://museum-arms.ru/about/history/" target="_blank" rel="noopener">Палаты арсенала оружейного завода <b>покрывают золотыми надписями</b></a></span>
+        <span data-col="Петербург">Здание достроено, ансамбль площади закрыт</span>
+        <span data-col="Тула"><a href="https://museum-arms.ru/about/history/" target="_blank" rel="noopener">Палаты арсенала оружейного завода <b>покрывают золотыми надписями</b></a></span>
       </div>
     </div>
 
     <div class="sync__lead">Связь архитектора с&nbsp;Тульским регионом</div>
-    <p class="sync__note"><b>Александр Брюллов</b>&nbsp;— автор проекта <a href="https://kulpole.ru/places/memorial-na-krasnom-holme#video" target="_blank" rel="noopener">мемориала <b>на&nbsp;Красном холме</b></a>, главного символа Куликовской битвы. Памятник поставлен <b>в&nbsp;1850&nbsp;году</b>, через семь лет после Штаба гвардейского корпуса.</p>
+    <p class="sync__note"><b>Александр Брюллов</b>, архитектор Штаба гвардейского корпуса,&nbsp;— автор проекта <a href="https://kulpole.ru/places/memorial-na-krasnom-holme#video" target="_blank" rel="noopener">мемориала <b>на&nbsp;Красном холме</b></a>, главного символа Куликовской битвы. Памятник поставлен <b>в&nbsp;1850&nbsp;году</b>, через семь лет после петербургского здания.</p>
     </div>
   </div>
 </section>
@@ -417,11 +423,26 @@
   </div>
 </section>
 
-<!-- ============ 9. CLOSING ============ -->
+<!-- ============ 9. TOOLS ============ -->
+<section class="band band--tint" id="s-tools" data-nav="Инструменты">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>08</i>Стек</div>
+    <div class="rule"></div>
+    <div class="two">
+      <ul class="specs fb">
+        <li><b>3D и 2D анимация</b>Blender, After Effects, нейросети</li>
+        <li><b>Композ и сборка</b>After Effects</li>
+        <li><b>Звук</b>Нейросети</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. CLOSING ============ -->
 <section class="closing" id="s-end" data-nav="Финал">
   <div class="wrap rv">
     <div class="closing__q fb">
-      <q class="magma">Огонь перестал быть опасностью и&nbsp;стал теплом, узором, цветом&nbsp;— искусством</q>
+      <q class="magma">Огонь перестал быть опасностью и&nbsp;стал узором, теплом, вкусом, светом&nbsp;— искусством.</q>
     </div>
     <div class="credits fb">
       <div><b>Александр Миндрин</b></div>
