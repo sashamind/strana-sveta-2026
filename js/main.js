@@ -9,11 +9,174 @@ var doc=document.documentElement;
    иначе заголовок мелькает запасной гарнитурой и прыгает на Cormorant.
    Таймаут — страховка: если шрифты не пришли, показываем как есть. */
 (function(){
-  var go=function(){ doc.classList.add('fonts'); };
+  var go=function(){ doc.classList.add('fonts'); startHeroVideo(); };
   if(document.fonts&&document.fonts.ready){
     document.fonts.ready.then(go);
     setTimeout(go,2500);
   } else go();
+})();
+
+/* Ролик обложки. Запускается тем же сигналом, что снимает паузу с анимаций
+   появления, — классом fonts. Раньше запуск висел на animationstart самого
+   видео, и в Safari это не срабатывало: у анимации, которая стартует уже
+   в состоянии paused, событие не приходит, и ролик стоял на первом кадре.
+   Через autoplay нельзя: он отыграл бы свои 2,4 секунды, пока кадр прозрачен.
+
+   Если браузер откажет в воспроизведении (в iOS так делает режим
+   энергосбережения даже для беззвучного видео) или файл не проиграется —
+   показываем статичный кадр: первый кадр ролика почти чёрный. */
+var heroVideoStarted=false;
+function startHeroVideo(){
+  /* Ворота шрифтов срабатывают дважды — по fonts.ready и по своему таймауту.
+     Без защёлки второй вызов запускал бы ролик поверх уже отработавшего отказа:
+     видео играло скрытым, а на экране оставался статичный кадр. */
+  if(heroVideoStarted) return;
+  var v=document.querySelector('.hero__vid');
+  if(!v||reduced) return;
+  heroVideoStarted=true;
+  var im=document.querySelector('.hero__still');
+
+  function show(vid){
+    if(!im) return;
+    v.style.display = vid ? '' : 'none';
+    im.style.display = vid ? '' : 'block';   /* '' возвращает display из CSS */
+  }
+
+  /* Отказ автозапуска — это почти всегда энергосбережение, а не поломка файла.
+     В нём Safari блокирует даже беззвучное видео, но разрешает его после жеста
+     пользователя. Поэтому: сразу показываем статичный кадр, чтобы обложка
+     не осталась почти чёрной, и вешаем разовую попытку на первое касание. */
+  function fallback(){
+    show(false);
+    var retry=function(){
+      document.removeEventListener('pointerdown',retry);
+      document.removeEventListener('keydown',retry);
+      var again=v.play();
+      if(again&&again.then) again.then(function(){ show(true); },function(){});
+    };
+    document.addEventListener('pointerdown',retry);
+    document.addEventListener('keydown',retry);
+  }
+
+  v.addEventListener('error',fallback);
+  var pr=v.play();
+  if(pr&&pr.catch) pr.catch(fallback);
+}
+
+/* Модель в разделе «Здание» проматывается прокруткой: вниз — камера обходит
+   фасад вперёд, вверх — назад. Кадр берётся не от таймера, а от положения
+   рамки в окне, поэтому направление задаёт сам зритель.
+
+   Перемотка идёт через currentTime и всегда в кадре rAF: события прокрутки
+   сыплются чаще, чем экран успевает перерисоваться, и без сборки в один кадр
+   браузер захлебнулся бы в перемотках.
+
+   iOS не декодирует первый кадр, пока ролик не тронули: помогает короткий
+   play() с немедленной паузой. Откажет — покажем статичный кадр. */
+function setupScrub(){
+  var v=document.querySelector('.setup__vid');
+  if(!v||reduced) return;
+  var box=v.closest('.renderview'), im=document.querySelector('.setup__still');
+  var dur=0, want=0, raf=0;
+
+  function fallback(){ if(im){ v.style.display='none'; im.style.display='block'; } }
+  v.addEventListener('error',fallback);
+
+  function apply(){
+    raf=0;
+    if(!dur) return;
+    var t=clamp(want,0,1)*(dur-0.001);
+    /* порог меньше половины кадра: без него мелкие движения дёргали бы перемотку */
+    if(Math.abs(v.currentTime-t)>0.008) v.currentTime=t;
+  }
+  /* START — какая доля рамки видна в момент, когда облёт трогается: 1 значит
+     «вошла целиком», .5 — «показалась наполовину», сейчас середина между ними.
+     SPAN — сколько пикселей прокрутки занимает весь облёт.
+     Начало привязано к высоте самой рамки, а длина задана в абсолютных пикселях:
+     доля прохода по экрану растягивала бы облёт на высоком мониторе. */
+  var START=.75, SPAN=200;
+  function update(){
+    var r=box.getBoundingClientRect(), vh=window.innerHeight;
+    var from=vh-r.height*START;
+    want=(from-r.top)/SPAN;
+    if(!raf) raf=requestAnimationFrame(apply);
+  }
+
+  v.addEventListener('loadedmetadata',function(){
+    dur=v.duration||0;
+    var pr=v.play();
+    if(pr&&pr.then) pr.then(function(){ v.pause(); update(); },fallback);
+    else { v.pause(); update(); }
+  });
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  if(v.readyState>=1){ dur=v.duration||0; update(); }
+}
+setupScrub();
+
+/* Сводки у символов и промыслов. На тач-экранах наведения нет, поэтому там
+   пункт раскрывается касанием; одновременно открыт только один, повторное
+   касание закрывает, клик мимо — тоже. На мыши хватает :hover, вешать клик
+   не нужно: раскрытый пункт оставался бы гореть после ухода курсора. */
+if(coarse){
+  var lore=[].slice.call(document.querySelectorAll('.lore__item'));
+  if(lore.length){
+    lore.forEach(function(el){
+      el.addEventListener('click',function(e){
+        e.stopPropagation();
+        var was=el.classList.contains('is-open');
+        lore.forEach(function(o){ o.classList.remove('is-open'); });
+        if(!was) el.classList.add('is-open');
+      });
+    });
+    document.addEventListener('click',function(){
+      lore.forEach(function(o){ o.classList.remove('is-open'); });
+    });
+  }
+}
+
+/* Иконки символов и промыслов. Пока файла нет, в слоте стоит пунктирная рамка;
+   достаточно положить assets/icons/<имя>.svg — скрипт подхватит его сам, как это
+   уже сделано с кадрами раскадровки. Имя слота лежит в data-ico. */
+(function(){
+  var slots=[].slice.call(document.querySelectorAll('.lore__ico[data-ico]'));
+  if(!slots.length) return;
+  var EXT=['webp','png','svg'];   /* растровые иконки попадаются чаще — их и пробуем первыми */
+  slots.forEach(function(slot){
+    var name=slot.getAttribute('data-ico');
+    EXT.reduce(function(chain,ext){
+      return chain.then(function(found){
+        if(found) return found;
+        return new Promise(function(res){
+          var im=new Image();
+          im.onload=function(){ res(im.src); };
+          im.onerror=function(){ res(null); };
+          im.src='assets/icons/'+name+'.'+ext;
+        });
+      });
+    },Promise.resolve(null)).then(function(src){
+      if(!src) return;
+      var im=new Image(); im.src=src; im.alt='';
+      slot.appendChild(im); slot.classList.add('is-filled');
+    });
+  });
+})();
+
+/* Касание по карте подбрасывает метку. На мыши это делает :hover, но на
+   тач-экранах он залипает, поэтому там прыжок вешается классом и снимается
+   по окончании анимации — иначе повторное касание её не перезапустит. */
+(function(){
+  var fig=document.querySelector('.mapfig'), pin=fig&&fig.querySelector('.mapfig__pin');
+  if(!fig||!pin||reduced) return;
+  pin.addEventListener('animationend',function(e){
+    if(e.animationName==='pindrop') pin.classList.add('pin-set');   /* появление отыграло */
+    else pin.classList.remove('is-hop');
+  });
+  fig.addEventListener('click',function(){
+    pin.classList.remove('is-hop');
+    void pin.offsetWidth;              /* перезапуск анимации */
+    pin.classList.add('is-hop');
+  });
 })();
 
 function clamp(v,a,b){return v<a?a:v>b?b:v}
@@ -149,26 +312,51 @@ if(cvs&&!reduced){
     w=r.width; h=r.height;
     cvs.width=w*d; cvs.height=h*d; ctx.setTransform(d,0,0,d,0,0);
   }
-  function spawn(y){
+  function spawn(y,burst){
     return {x:Math.random()*w, y:y===undefined?h+Math.random()*h*.4:y,
             r:Math.random()*1.1+.34, v:Math.random()*.52+.2,
-            sway:Math.random()*Math.PI*2, a:Math.random()*.5+.18};
+            sway:Math.random()*Math.PI*2, a:Math.random()*.5+.18, burst:!!burst};
   }
+  /* Жар первых секунд: сразу после появления обложки искр втрое больше,
+     они быстрее и мечутся из стороны в сторону, потом поток успокаивается
+     до ровного подъёма. Затухание по времени, а не по кадрам: на слабой
+     машине покадровое шло бы дольше и разогрев растянулся бы. */
+  var BASE=76, t0=performance.now();
+  function heat(){ return Math.exp(-(performance.now()-t0)/2600); }
+  /* отсчёт с момента, когда канвас реально начал проявляться: у него своя
+     задержка в 2,3 с, и без этого всплеск отгорел бы ещё до появления */
+  cvs.addEventListener('animationstart',function(){ t0=performance.now(); },{once:true});
+
   function draw(){
+    var k=heat();
     ctx.clearRect(0,0,w,h);
-    parts.forEach(function(p){
-      p.y-=p.v; p.sway+=.016; p.x+=Math.sin(p.sway)*.22;
-      if(p.y<h*.18) p.a-=.006;   /* искры стали быстрее — гасим их резче, иначе долетают до верха */
-      if(p.y<-10||p.a<=0){ var n=spawn(); p.x=n.x; p.y=n.y; p.r=n.r; p.v=n.v; p.a=n.a; }
+    for(var i=parts.length-1;i>=0;i--){
+      var p=parts[i];
+      p.y-=p.v*(1+k*1.7);
+      p.sway+=.016+k*.06;
+      p.x+=Math.sin(p.sway)*(.22+k*1.2)+(Math.random()-.5)*k*1.1;
+      if(p.y<h*.18) p.a-=.006;   /* искры быстрые — гасим резче, иначе долетают до верха */
+      /* Искры всплеска гаснут по мере остывания, а не когда долетят до верха:
+         при обычной скорости подъёма это заняло бы полминуты, и всплеск
+         рассасывался бы весь первый экран. */
+      if(p.burst) p.a-=.006*(1-k);
+      if(p.y<-10||p.a<=0){
+        if(p.burst){ parts.splice(i,1); continue; }
+        var n=spawn(); p.x=n.x; p.y=n.y; p.r=n.r; p.v=n.v; p.a=n.a; p.sway=n.sway;
+      }
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,6.2832);
-      ctx.fillStyle='rgba(242,'+Math.round(150+p.r*44)+',80,'+p.a+')';
+      /* на жару искры краснее и ярче */
+      ctx.fillStyle='rgba(242,'+Math.round(150+p.r*44)+','+Math.round(80-k*34)+','
+                    +Math.min(1,p.a*(1+k*.6))+')';
       ctx.fill();
-    });
+    }
     if(alive) anim=requestAnimationFrame(draw);
   }
   size();
-  for(var i=0;i<76;i++) parts.push(spawn(Math.random()*h));
+  for(var i=0;i<BASE;i++) parts.push(spawn(Math.random()*h));
+  /* всплеск стартует снизу, от огня */
+  for(var j=0;j<105;j++) parts.push(spawn(h*(.5+Math.random()*.55),true));
   draw();
   window.addEventListener('resize',size);
   /* не крутить анимацию, когда обложка ушла из вида */

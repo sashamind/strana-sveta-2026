@@ -129,27 +129,27 @@ p{max-width:64ch; color:var(--muted)}
    Заливка backwards, а не both — иначе конечный кадр анимации перебил бы
    правила, которые прячут подсказку и кнопку при прокрутке. */
 @keyframes fadeIn{ from{opacity:0} }
-/* Здание не вырастает, а наплывает: стартует на 130% итогового размера
+/* Здание не вырастает, а наплывает: стартует на 150% итогового размера
    и садится в свои 100%. Множитель считается от --s, чтобы приём не зависел
    от того, каким задан конечный масштаб.
    Прозрачность вынесена в отдельную анимацию: масштабу нужен быстрый выход
    с торможением, проявлению — вдвое более долгий и ровный ход. */
-@keyframes growIn{ from{transform:scale(calc(var(--s,1) * 1.3))} }
+@keyframes growIn{ from{transform:scale(calc(var(--s,1) * 1.5))} }
 
 /* Пока шрифты не пришли, сборка обложки стоит на паузе: с display=swap
    заголовок иначе успевает мелькнуть запасной гарнитурой и на глазах
    перепрыгивает на Cormorant. Заливка backwards держит элементы в стартовом
    кадре, то есть невидимыми. Класс fonts ставит main.js, там же страховка
    по таймауту — если шрифты не придут, обложка всё равно соберётся. */
-.hero__stage img,.hero__embers,.hero__meta,.hero__facts,.hero__hint,.hero h1{
+.hero__stage img,.hero__stage video,.hero__embers,.hero__meta,.hero__facts,.hero__hint,.hero h1{
   animation-play-state:paused;
 }
-html.fonts .hero__stage img,html.fonts .hero__embers,html.fonts .hero__meta,
+html.fonts .hero__stage img,html.fonts .hero__stage video,html.fonts .hero__embers,html.fonts .hero__meta,
 html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
   animation-play-state:running;
 }
 
-.hero__stage img{animation:growIn 2s cubic-bezier(.16,.6,.22,1) .1s backwards,
+.hero__stage img,.hero__stage video{animation:growIn 2s cubic-bezier(.16,.6,.22,1) .1s backwards,
                           fadeIn 3.6s cubic-bezier(.35,0,.5,1) .1s backwards}
 .hero__embers{animation:fadeIn 1.4s ease-out 2.3s backwards}
 .hero__meta{animation:fadeIn .9s ease-out 2.7s backwards}
@@ -161,6 +161,11 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
 .hero__meta{
   font-family:var(--f-mono); font-size:10px; letter-spacing:.3em;
   text-transform:uppercase; color:var(--ash); margin-bottom:44px;
+  /* Строка приглушена целиком, а не цветом: opacity гасит и обычный текст,
+     и выделенные имена в строке автора одинаково.
+     Появление это не ломает — у fadeIn задан только кадр from,
+     конечным значением остаётся собственная прозрачность элемента. */
+  opacity:.5;
 }
 /* Заголовок работает маской: под буквами медленно перетекает магма
    на палитре боковой шкалы — уголь, пламя, золото, латунь, филимоновский
@@ -194,7 +199,7 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
   padding:.05em 0 .18em; margin:-.05em 0 -.18em;
   /* к общей магме добавляется своё появление при загрузке */
   animation:magma 22s linear infinite,
-            fadeIn .9s ease-out 1.8s backwards;
+            fadeIn 1.8s ease-out 1.8s backwards;
 }
 /* Обводка с бегущим градиентом.
    -webkit-text-stroke принимает только сплошной цвет, поэтому градиент даёт
@@ -234,6 +239,16 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
 /* рабочая модель фасада — держит центр обложки.
    Высота задана через vh, чтобы вся обложка всегда оставалась одним экраном */
 .hero__stage{margin:40px 0 0; position:relative}
+/* На экране живёт ролик, статика лежит запасным вариантом и включается там,
+   где видео не работает: в печати и при отключённой анимации. Обе картинки
+   в потоке одновременно сдвинули бы вёрстку, поэтому лишняя всегда display:none. */
+/* Селекторы с тегом: .render объявлен ниже и с равной силой перебил бы
+   простой .hero__still, снова показав картинку поверх ролика. */
+img.hero__still{display:none}
+@media (prefers-reduced-motion:reduce){
+  video.hero__vid{display:none}
+  img.hero__still{display:block}
+}
 /* Общая подача рендера: и на обложке, и в разделе «Сетап».
    width/height именно auto: с заданной шириной ограничение max-height
    не пересчитывает ширину, коробка остаётся шире кадра — и маска,
@@ -259,7 +274,7 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
    прежнее место, поэтому заголовок и подписи не сдвигаются.
    --s задаёт итоговый масштаб, от него же считается стартовый кадр появления,
    чтобы рост остался прежним — от 80% к 100% нового размера. */
-.hero__stage img{
+.hero__stage img,.hero__stage video{
   --s:1.25;
   max-width:min(1460px,100%); max-height:52vh;
   transform:scale(var(--s));
@@ -278,7 +293,14 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
    наложения и отключает mix-blend-mode — чёрная плашка рендера проступала,
    пока блок не попадал в фокус */
 .renderview{margin-bottom:44px}
-.renderview img{max-width:min(1200px,100%); max-height:44vh}
+.renderview img,.renderview video{max-width:min(1200px,100%); max-height:44vh}
+/* Тег в селекторе: .render объявлен ниже и с равной силой вернул бы картинку
+   на экран поверх ролика — так же, как это вышло на обложке. */
+img.setup__still{display:none}
+@media (prefers-reduced-motion:reduce){
+  video.setup__vid{display:none}
+  img.setup__still{display:block}
+}
 
 /* параллельная хроника: одни и те же годы в двух городах */
 /* Рамка залита градиентом: границе цвет-градиент не задать, поэтому две
@@ -354,12 +376,12 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
 .sync__note b{color:var(--paper); font-weight:500}
 .sync__note a:hover b,.sync__note a:focus-visible b{color:var(--gold)}
 /* на низких экранах модель ужимается, чтобы обложка осталась одним экраном */
-@media screen and (max-height:900px){ .hero__stage img{max-height:44vh} }
-@media screen and (max-height:720px){ .hero__stage img{max-height:34vh} }
+@media screen and (max-height:900px){ .hero__stage img,.hero__stage video{max-height:44vh} }
+@media screen and (max-height:720px){ .hero__stage img,.hero__stage video{max-height:34vh} }
 .hero__facts{
   margin-top:30px; display:flex; flex-wrap:wrap; justify-content:center; gap:14px 44px;
   font-family:var(--f-mono); font-size:11px; letter-spacing:.14em;
-  color:var(--ash); text-transform:uppercase;
+  color:var(--ash); text-transform:uppercase; opacity:.5;
 }
 /* на обложке значения выделены приглушённо: --muted вместо белого --paper,
    иначе строка перебивает модель */
@@ -411,6 +433,79 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 #s-city > .wrap{position:relative; z-index:1}
 
 /* ---------- город ---------- */
+/* Символы и промыслы: термины в строку через тире, сводка всплывает
+   при наведении. Разделители рисует CSS, а не разметка — иначе тире
+   попадали бы в текст для чтения с экрана как отдельные слова. */
+.lore{margin-bottom:152px}
+.lore:last-child{margin-bottom:0}
+.lore__lead{
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--brass); margin-bottom:14px;
+}
+/* Цвета берём из температурной шкалы работы, а не хексами: те же «Пламя»
+   и «Жар», что показаны образцами в разделе «Цвет».
+   Цвет несут только подписи рядов: на самих словах он забирал иерархию —
+   подпись переставала читаться как подпись, а ряд сливался в одно пятно. */
+.lore--flame .lore__lead{color:var(--flame)}
+.lore--ember .lore__lead{color:var(--ember)}
+.lore__list{list-style:none; display:flex; flex-wrap:wrap; align-items:flex-start; gap:34px 44px}
+/* Пункт — столбик: слово, под ним иконка. */
+.lore__item{
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:12px;
+  cursor:default; font-size:19px; color:var(--paper); transition:color .25s; outline:none;
+}
+.lore__item:hover,.lore__item:focus-visible,.lore__item.is-open{color:var(--gold)}
+/* подчёркивание намекает, что за словом что-то есть; висит на слове,
+   а не на пункте — иначе тянулось бы и под иконку */
+.lore__word{position:relative}
+.lore__word::after{
+  content:""; position:absolute; left:0; right:0; bottom:-3px; height:1px;
+  background:var(--line-2); transform:scaleX(0); transform-origin:left;
+  transition:transform .3s ease, background .3s;
+}
+.lore__item:hover .lore__word::after,
+.lore__item:focus-visible .lore__word::after,
+.lore__item.is-open .lore__word::after{transform:scaleX(1); background:var(--gold)}
+
+/* Слот под иконку. Пока файла нет — пунктирная рамка; как только он
+   появится в assets/icons/, скрипт вставит картинку и рамка уйдёт. */
+.lore__ico{
+  width:138px; height:138px; display:flex; align-items:center; justify-content:center;
+  border:1px dashed var(--line-2); border-radius:2px;
+  color:var(--brass); transition:color .25s, border-color .25s;
+}
+.lore__ico.is-filled{border-color:transparent}
+/* Иконка живёт на 80% размера слота и дорастает до полного при наведении.
+   Масштабируем картинку, а не слот: коробка остаётся прежней, и соседние
+   пункты не разъезжаются. */
+.lore__ico img{
+  width:100%; height:100%; object-fit:contain; display:block;
+  transform:scale(.8); transition:transform .3s cubic-bezier(.2,.7,.3,1);
+}
+.lore__item:hover .lore__ico img,
+.lore__item:focus-visible .lore__ico img,
+.lore__item.is-open .lore__ico img{transform:scale(1)}
+/* рамка подсвечивается только у пустых слотов: под картинкой пунктир не нужен */
+.lore__item:hover .lore__ico:not(.is-filled),
+.lore__item:focus-visible .lore__ico:not(.is-filled){border-color:var(--gold)}
+
+.lore__tip{
+  position:absolute; left:50%; bottom:calc(100% + 14px); transform:translateX(-50%) translateY(6px);
+  width:max-content; max-width:min(280px,62vw);
+  padding:12px 14px; background:var(--ink-2); border:1px solid var(--line-2);
+  font-family:var(--f-body); font-size:13.5px; line-height:1.5; color:var(--muted);
+  opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  z-index:5;
+}
+/* уголок к слову */
+.lore__tip::after{
+  content:""; position:absolute; left:50%; top:100%; margin-left:-5px;
+  border:5px solid transparent; border-top-color:var(--line-2);
+}
+.lore__item:hover .lore__tip,
+.lore__item:focus-visible .lore__tip,
+.lore__item.is-open .lore__tip{opacity:1; transform:translateX(-50%)}
+
 /* Контур области под заголовком: обведён тем же огнём, что и вся палитра.
    Метка стоит в центроиде фигуры, острием в точку, и масштабируется вместе с картой. */
 .mapfig{position:relative; display:inline-block; margin:20px 0 30px}
@@ -423,6 +518,17 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 }
 .mapfig__pin svg{width:26px; height:34px; display:block;
   filter:drop-shadow(0 0 7px rgba(227,178,60,.55))}
+/* Метка подпрыгивает при наведении на карту, а на тач-экранах — по касанию
+   (класс вешает main.js). Базовый сдвиг translate(-50%,-100%) повторён
+   в каждом кадре: анимация задаёт transform целиком и без него метка
+   отскочила бы от своей точки. */
+@keyframes pinhop{
+  0%,100%{transform:translate(-50%,-100%)}
+  28%    {transform:translate(-50%,-100%) translateY(-11px)}
+  52%    {transform:translate(-50%,-100%) translateY(0)}
+  74%    {transform:translate(-50%,-100%) translateY(-4px)}
+}
+
 /* Круги от острия метки: четыре волны с задержкой в четверть цикла — пока одна гаснет,
    следующая уже вышла, диски плотно накладываются прозрачностью.
    Базовая альфа занижена под четыре слоя: они перемножаются по остатку,
@@ -448,7 +554,10 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 
 /* Заголовок занимает обе колонки: так карта и текст начинаются с одной высоты,
    ниже него, а не вровень с ним. Ряды разведены меньше колонок. */
-.ctx{display:grid; grid-template-columns:1fr 1fr; gap:10px 64px; align-items:start}
+/* Колонки неравные: карта занимает 341 px и в половине ширины не нуждается,
+   а спискам с крупными иконками места не хватало — четвёртый пункт срывался
+   на вторую строку. */
+.ctx{display:grid; grid-template-columns:360px 1fr; gap:10px 64px; align-items:start}
 .ctx__head{grid-column:1 / -1}
 .ctx__head h2{margin-bottom:0}
 .ctx__aside{border-left:1px solid var(--line-2); padding-left:26px}
@@ -727,10 +836,24 @@ body.scrolling{--dim:.26}
 .seq .mapline path{stroke-dasharray:1; transition:stroke-dashoffset 1.7s ease .55s}
 .seq:not(.in) .mapline path{stroke-dashoffset:1}
 
-.seq .mapfig__pin{transition:opacity .5s ease, transform .55s cubic-bezier(.2,.9,.3,1.4);
-                  transition-delay:1.95s}
-.seq:not(.in) .mapfig__pin{opacity:0;
-  transform:translate(-50%,-100%) translateY(-12px) scale(.8); transition-delay:0s}
+/* Появление метки — анимацией, а не переходом. Переход остаётся висеть
+   на элементе и потом перехватывает возврат после прыжка: метка зависала
+   в верхней точке до конца своей задержки в 1,95 с и падала рывком. */
+@keyframes pindrop{
+  from{opacity:0; transform:translate(-50%,-100%) translateY(-12px) scale(.8)}
+}
+.seq:not(.in) .mapfig__pin{opacity:0}
+/* :not(.pin-set) обязателен. Снятие класса прыжка возвращает это правило
+   в силу, анимация появления считается новой и запускается заново — метка
+   на две секунды застревала в стартовом кадре. Класс ставит main.js,
+   когда появление отыграло, и правило перестаёт совпадать. */
+.seq.in .mapfig__pin:not(.pin-set){animation:pindrop .55s cubic-bezier(.2,.9,.3,1.4) 1.95s backwards}
+/* Прыжок объявлен ниже появления намеренно: силы селекторов равны,
+   и при равенстве побеждает последний. */
+@media (hover:hover){
+  .seq .mapfig:hover .mapfig__pin{animation:pinhop .72s cubic-bezier(.3,.7,.4,1)}
+}
+.seq .mapfig__pin.is-hop{animation:pinhop .72s cubic-bezier(.3,.7,.4,1)}
 .seq:not(.in) .mapfig__ping i{animation-play-state:paused}
 
 .rv{opacity:0; transform:translateY(22px); transition:opacity .8s ease, transform .8s ease}
@@ -748,9 +871,11 @@ body.scrolling{--dim:.26}
   .cue__bar span{transform:none; transition:none}
   .hero__hint span{animation:none}
   .hero h1,.magma{animation:none}
-  .hero__stage img,.hero__embers,.hero__meta,.hero__facts,.hero__hint{animation:none}
+  .hero__stage img,.hero__stage video,.hero__embers,.hero__meta,.hero__facts,.hero__hint{animation:none}
   .hero h1::after,.syncbox{animation:none}
   .mapfig__ping{display:none}
+  .seq.in .mapfig__pin:not(.pin-set),.seq .mapfig:hover .mapfig__pin,
+  .seq .mapfig__pin.is-hop{animation:none}
   html{scroll-behavior:auto}
 }
 
@@ -774,7 +899,7 @@ body.scrolling{--dim:.26}
   .hero__meta{font-size:9px; letter-spacing:.2em; margin-bottom:30px; text-wrap:balance}
   /* Модель увеличена масштабом 1.25 — на узком экране она вылезала за вьюпорт
      и срезала углы здания. Здесь показываем её целиком. */
-  .hero__stage img{--s:1.1}
+  .hero__stage img,.hero__stage video{--s:1.1}
   /* «Автор» и «Регион» держим в одну строку: два блока в две строки
      на узком экране выглядели обрывком списка, а не подписью. */
   .hero__facts{margin-top:46px; flex-wrap:nowrap; gap:0 18px;
@@ -793,6 +918,25 @@ body.scrolling{--dim:.26}
   /* Заголовки разделов по центру. Только h2: подзаголовки карточек (h3)
      стоят над левым текстом, по центру они бы от него оторвались. */
   h2{text-align:center}
+  /* На узком экране всплывающая сноска не помещается: центрированная по слову,
+     она вылезала за левый край. Плюс при переносе строка могла начинаться
+     с разделителя. Поэтому здесь список идёт в столбец, а сноска раскрывается
+     в потоке под словом — как в печати. */
+  .lore__list{display:block}
+  .lore__item{display:block; margin-bottom:11px}
+  .lore__item + .lore__item::before{content:none}
+  .lore__item::after{display:none}
+  .lore__tip{
+    position:static; display:none; opacity:1;
+    width:auto; max-width:none; margin-top:8px;
+  }
+  /* тем же весом, что базовые правила раскрытия: иначе они продолжают
+     сдвигать сноску на -50% ширины, и она уезжает за левый край */
+  .lore__item.is-open .lore__tip,
+  .lore__item:hover .lore__tip,
+  .lore__item:focus-visible .lore__tip{transform:none}
+  .lore__item.is-open .lore__tip{display:block}
+  .lore__tip::after{display:none}
   /* Базовый кегль на телефоне: 16px давали слишком крупный набор на узкой колонке. */
   p{font-size:15px}
   .lead{font-size:17px}
@@ -838,6 +982,22 @@ body.scrolling{--dim:.26}
   /* всё интерактивное из печати убирается */
   .rail,.tools,.lb,.tl,
   .hero__embers,.hero__hint,.veil,.mir__g{display:none!important}
+  /* Сводки в PDF раскрываем: всплывать там нечему, а факты терять нельзя. */
+  .lore__list{display:block}
+  .lore__item{display:block; font-size:17px; margin-bottom:9px}
+  .lore__ico:not(.is-filled){display:none}
+  .lore__ico{width:52px; height:52px; border:0; margin-top:4px}
+  .lore__ico img{transform:none}   /* наведения в печати нет — печатаем в полный размер */
+  .lore__item + .lore__item::before{content:none}
+  .lore__item::after{display:none}
+  .lore__tip{
+    position:static; opacity:1; transform:none; max-width:none; width:auto;
+    display:block; margin-top:2px; padding:0; border:0; background:none; font-size:13px;
+  }
+  .lore__tip::after{display:none}
+  /* видео в PDF не попадает — печатаем последний кадр статикой */
+  video.hero__vid{display:none!important}
+  img.hero__still{display:block!important}
   .mapline{height:300px}
   .mapfig{margin:12px 0 18px}
   .mapfig__pin svg{width:23px;height:30px}
@@ -863,7 +1023,10 @@ body.scrolling{--dim:.26}
 
   /* «Здание»: рендер и хронику ужимаем, иначе раздел не влезает в слайд */
   .renderview{margin-bottom:20px}
-  .renderview img{max-height:200px}
+  .renderview img,.renderview video{max-height:200px}
+  /* видео в PDF не попадает — печатаем кадр статикой */
+  video.setup__vid{display:none!important}
+  img.setup__still{display:block!important}
   .setup{margin-bottom:22px}
   /* Разделитель между двумя связями добавил 16px — компенсируем полями рамки,
      иначе раздел перерастает слайд на 13px и уезжает на лишнюю страницу. */
@@ -880,7 +1043,7 @@ body.scrolling{--dim:.26}
 
   /* обложка */
   .hero{padding:0!important}
-  .hero__meta,.hero__stage img,.hero__facts{animation:none!important; transform:none!important}
+  .hero__meta,.hero__stage img,.hero__stage video,.hero__facts{animation:none!important; transform:none!important}
   /* магма в печать не идёт: заливка текста прозрачная, заголовок ушёл бы пустым */
   .magma{animation:none!important; background:none!important}
   /* дубль-слой обводки в печати не нужен: он лёг бы вторым контуром поверх заголовка */
@@ -889,7 +1052,7 @@ body.scrolling{--dim:.26}
            -webkit-text-fill-color:var(--paper)!important; color:var(--paper)!important}
   .closing q{-webkit-text-fill-color:var(--gold)!important; color:var(--gold)!important}
   .hero__stage{margin-top:34px}
-  .hero__stage img{max-height:330px}
+  .hero__stage img,.hero__stage video{max-height:330px}
   .hero__facts{margin-top:30px; font-size:14px}
 
   /* типографика слайдов */

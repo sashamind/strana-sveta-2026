@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300&family=Manrope:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
-<link rel="preload" as="image" href="assets/hero.webp">
+<link rel="preload" as="video" href="assets/hero.mp4" type="video/mp4">
 <link rel="preload" as="image" href="assets/bg-tula.webp">
 </head>
 <body>
@@ -32,7 +32,15 @@
     <div class="hero__meta">Страна СВЕТА 2026 · Второй тур · 3D-мэппинг · Концепция</div>
     <h1 class="magma">Тула&nbsp;— отражение Огня</h1>
     <figure class="hero__stage">
-      <img class="render" src="assets/hero.webp" alt="Штаб Гвардейского корпуса: фасад с проекцией — в колоннаде горит слово «Тула»">
+      <!-- Ролик проигрывается один раз и замирает на последнем кадре: без loop.
+           muted и playsinline обязательны — иначе iOS не даст запустить его скриптом.
+           Запуск не через autoplay, а из main.js в момент появления обложки,
+           чтобы кадр не отыграл, пока картинка ещё прозрачная. -->
+      <video class="render hero__vid" src="assets/hero.mp4" muted playsinline preload="auto"
+             aria-label="Штаб Гвардейского корпуса: на фасаде разгорается проекция — в колоннаде загорается слово «Тула»"></video>
+      <!-- тот же последний кадр статикой: видео не печатается и не нужно
+           при системной настройке «уменьшить движение» -->
+      <img class="render hero__still" src="assets/hero.webp" alt="Штаб Гвардейского корпуса: фасад с проекцией — в колоннаде горит слово «Тула»">
     </figure>
     <div class="hero__facts">
       <div>Автор&nbsp;— <b>Александр Миндрин</b></div>
@@ -63,26 +71,26 @@
       </div>
 
       <div class="fb ctx__text">
-        <p class="lead sq" style="--d:.95s">Тулу принято перечислять: оружие, самовар, пряник, гармонь, игрушка. Но&nbsp;это не&nbsp;список сувениров&nbsp;— это одна история, рассказанная разными материалами.</p>
-        <p class="mt sq" style="--d:1.15s">У&nbsp;всех тульских ремёсел общий корень&nbsp;— горн. Оружейный завод 1712&nbsp;года дал городу не&nbsp;только оружие: первые самовары начали делать на&nbsp;его дворах, первую гармонную фабрику оружейник Тимофей Воронцов открыл в&nbsp;подвале собственной самоварной мастерской. Пряник печётся в&nbsp;печи. Филимоновская глина обжигается при&nbsp;950&nbsp;градусах.</p>
-        <p class="mt sq" style="--d:1.35s">Огонь&nbsp;— то, что&nbsp;человек приручил первым. Из&nbsp;слепой опасной стихии он стал инструментом: греет, плавит, обжигает, печёт. Тула&nbsp;— город, который довёл это приручение до&nbsp;искусства.</p>
+        <div class="lore lore--flame sq" style="--d:.95s">
+          <div class="lore__lead">Узнаваемые символы и&nbsp;образы</div>
+          <ul class="lore__list">
+            <li class="lore__item" tabindex="0"><span class="lore__word">Самовар</span><span class="lore__ico" data-ico="samovar" aria-hidden="true"></span><span class="lore__tip">Около 150&nbsp;форм. Первая фабрика открыта в&nbsp;1778&nbsp;году.</span></li>
+            <li class="lore__item" tabindex="0"><span class="lore__word">Пряник</span><span class="lore__ico" data-ico="pryanik" aria-hidden="true"></span><span class="lore__tip">Знаменитый тульский печатный пряник: узор режется на&nbsp;доске зеркально и&nbsp;оттискивается в&nbsp;тесте.</span></li>
+            <li class="lore__item" tabindex="0"><span class="lore__word">Оружие</span><span class="lore__ico" data-ico="oruzhie" aria-hidden="true"></span><span class="lore__tip">Казённый оружейный завод с&nbsp;1712&nbsp;года&nbsp;— корень остальных ремёсел.</span></li>
+            <li class="lore__item" tabindex="0"><span class="lore__word">Левша</span><span class="lore__ico" data-ico="levsha" aria-hidden="true"></span><span class="lore__tip">Герой Лескова, подковавший блоху. Вырос из&nbsp;тульского оружейного дела.</span></li>
+          </ul>
+        </div>
+
+        <div class="lore lore--ember sq" style="--d:1.2s">
+          <div class="lore__lead">Промыслы региона</div>
+          <ul class="lore__list">
+            <li class="lore__item" tabindex="0"><span class="lore__word">Керамика</span><span class="lore__ico" data-ico="keramika" aria-hidden="true"></span><span class="lore__tip">Глина разошлась по&nbsp;региону несколькими промыслами: филимоновская игрушка, тульская городская игрушка, яснополянская керамика, белёвская и&nbsp;богородицкая глиняные игрушки.</span></li>
+            <li class="lore__item" tabindex="0"><span class="lore__word">Всечка</span><span class="lore__ico" data-ico="vsechka" aria-hidden="true"></span><span class="lore__tip">Металлическая нить, вбитая в&nbsp;дерево ребром. Выросла из&nbsp;оружейного дела: так украшали ружейные ложа.</span></li>
+            <li class="lore__item" tabindex="0"><span class="lore__word">Гармонь</span><span class="lore__ico" data-ico="garmon" aria-hidden="true"></span><span class="lore__tip">Хромка, изобретена в&nbsp;Туле, из&nbsp;неё вырос баян. Дело подняли оружейники и&nbsp;самоварщики: первую фабрику открыл оружейник Тимофей Воронцов.</span></li>
+          </ul>
+        </div>
       </div>
-      <!-- «Семь огней» временно сняты. Чтобы вернуть — раскомментировать;
-           стили .ctx__aside/.crafts/.craft в styles.css оставлены на месте. -->
-      <!--
-      <div class="ctx__aside fb">
-        <div class="eyebrow eyebrow--sub">Семь огней</div>
-        <ul class="crafts">
-          <li class="craft" style="--i:0"><span class="craft__n">01</span><span class="craft__t"><b>Всечка</b>&nbsp;— металлическая нить, вбитая в&nbsp;дерево ребром. Тульское изобретение, из&nbsp;которого вырос образ Левши</span></li>
-          <li class="craft" style="--i:1"><span class="craft__n">02</span><span class="craft__t"><b>Самовар</b>&nbsp;— около 150&nbsp;форм, первая фабрика 1778&nbsp;года</span></li>
-          <li class="craft" style="--i:2"><span class="craft__n">03</span><span class="craft__t"><b>Печатный пряник</b>&nbsp;— узор режется зеркально, оттискивается доской</span></li>
-          <li class="craft" style="--i:3"><span class="craft__n">04</span><span class="craft__t"><b>Филимоновская игрушка</b>&nbsp;— три цвета: малиновый, жёлтый, зелёный</span></li>
-          <li class="craft" style="--i:4"><span class="craft__n">05</span><span class="craft__t"><b>Гармонь-хромка</b>&nbsp;— изобретена в&nbsp;Туле, стала баяном</span></li>
-          <li class="craft" style="--i:5"><span class="craft__n">06</span><span class="craft__t"><b>Белёвское кружево</b>&nbsp;— узор и&nbsp;фон неразделимы</span></li>
-          <li class="craft" style="--i:6"><span class="craft__n">07</span><span class="craft__t"><b>Ясная Поляна</b>&nbsp;— слово как&nbsp;высшая форма ремесла</span></li>
-        </ul>
       </div>
-      -->
     </div>
   </div>
 </section>
@@ -95,8 +103,7 @@
     <div class="setup">
       <div class="fb">
         <h2>Здание</h2>
-        <p class="lead">Памятник федерального значения и&nbsp;один из&nbsp;лучших образцов классицизма.</p>
-        <p class="mt">Для проекта это не&nbsp;справка, а&nbsp;подсказка: классицизм&nbsp;— тот&nbsp;же приручённый материал, камень, приведённый в&nbsp;строгий порядок. Огонь в&nbsp;работе проходит тот&nbsp;же путь: колоннада, карнизы и&nbsp;порталы задают ему ритм, и&nbsp;стихия принимает строй фасада, а&nbsp;не&nbsp;ложится поверх него.</p>
+        <p class="lead">Памятник федерального значения<br>и&nbsp;один из&nbsp;лучших образцов классицизма.</p>
       </div>
       <ul class="specs fb">
         <li><b>Город</b><span>Санкт-Петербург</span></li>
@@ -106,7 +113,13 @@
       </ul>
     </div>
     <figure class="renderview">
-      <img class="render" src="assets/setup.webp" alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
+      <!-- Модель проматывается прокруткой: вниз — камера обходит фасад вперёд,
+           вверх — назад. Ролик закодирован all-intra, каждый кадр ключевой,
+           иначе перемотка назад пересчитывала бы группу кадров и дёргалась. -->
+      <video class="render setup__vid" src="assets/setup-building.mp4" muted playsinline preload="auto"
+             aria-label="Модель Штаба Гвардейского корпуса без текстур: камера обходит фасад"></video>
+      <img class="render setup__still" src="assets/setup-frame.webp"
+           alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
     </figure>
 
     <div class="syncbox fb">
@@ -430,7 +443,8 @@
     <div class="rule"></div>
     <div class="two">
       <ul class="specs fb">
-        <li><b>3D и 2D анимация</b>Blender, After Effects, нейросети</li>
+        <li><b>3D и 2D анимация</b>Blender, After Effects, нейросети, Cavalry</li>
+        <li><b>2D статика</b>Figma, Adobe Illustrator</li>
         <li><b>Композ и сборка</b>After Effects</li>
         <li><b>Звук</b>Нейросети</li>
       </ul>
@@ -442,7 +456,7 @@
 <section class="closing" id="s-end" data-nav="Финал">
   <div class="wrap rv">
     <div class="closing__q fb">
-      <q class="magma">Огонь перестал быть опасностью и&nbsp;стал узором, теплом, вкусом, светом&nbsp;— искусством.</q>
+      <q class="magma">Огонь перестал быть хаосом и&nbsp;стал узором, теплом, вкусом, светом&nbsp;— искусством.</q>
     </div>
     <div class="credits fb">
       <div><b>Александр Миндрин</b></div>
