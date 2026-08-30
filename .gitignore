@@ -1,1 +1,13 @@
 .DS_Store
+
+# Исходники, из которых собраны файлы для сайта. В репозиторий не идут:
+# страница их не грузит, а весят они больше всего остального вместе взятого.
+# Textures_*.png  — мастер фактур, из него сведены tex-building.jpg и tex-strip.webp
+# hero_2.mp4      — исходник ролика обложки, в дело идёт пережатый hero.mp4
+# tolstoy.png     — исходник иконки, в дело идёт tolstoy.webp
+# Именно этот файл, а не assets/icons/*.png: класть иконку PNG'ом можно,
+# скрипт такое расширение понимает (см. assets/icons/README.md).
+assets/Textures_*.png
+assets/hero_2.mp4
+assets/v_1.png
+assets/icons/tolstoy.png
