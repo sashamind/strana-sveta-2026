@@ -87,6 +87,26 @@ img,video,canvas{display:block;max-width:100%}
 }
 .eyebrow--sub{margin-bottom:24px}
 .rule{height:1px; background:linear-gradient(to right,var(--brass),transparent); margin:0 0 48px}
+/* Повтор шапки раздела на продолжающих слайдах PDF. На экране раздел один
+   и сплошной — вторая «01 Малая родина» там была бы лишней; в презентации,
+   наоборот, каждый слайд должен сам говорить, из какого он раздела. */
+.eyebrow--cont,.rule--cont{display:none}
+.pslide{display:contents}
+/* На экране раздел «Почему Огонь?» читается одним куском: абзац про «искоусъ»
+   стоит над схемой, сноски — под ней. В разметке оба лежат внутри печатного
+   слайда (в PDF это вторая страница раздела), поэтому порядок на экране задаёт
+   флекс, а не разметка: так текст нигде не пришлось дублировать. */
+@media screen{
+  .ctx__next .flow{display:flex; flex-direction:column; margin-top:22px}
+  .flow .pslide > .mt{order:1; margin:0}
+  .flow__svg{order:2; margin-top:52px}
+  .flow .pslide > .flow__note{order:3}
+}
+.hero__note,.setup__print,.h2--cont{display:none}
+.pnum{display:none}
+/* Перенос строки только для слайда: на сайте сноска всплывает узкой
+   плашкой и ломается сама, а в презентации колонка широкая. */
+.pbr{display:none}
 
 h2{
   font-family:var(--f-display); font-weight:300; font-size:clamp(30px,4.4vw,54px);
@@ -96,9 +116,12 @@ h3{
   font-family:var(--f-display); font-weight:600; font-size:23px;
   letter-spacing:.01em; margin-bottom:10px; color:var(--paper);
 }
-p{max-width:64ch; color:var(--muted)}
+/* Мера набора одна на весь сайт: 44ch. Раньше было 64ch — строка тянулась
+   почти во всю колонку и читалась тяжело. Узкие колонки этим пределом
+   и так не ограничены, меняется только поведение широких блоков. */
+p{max-width:44ch; color:var(--muted)}
 .lead{font-size:19px; line-height:1.7; color:var(--paper)}
-.lead--wide{max-width:78ch; margin-bottom:52px}
+.lead--wide{max-width:52ch; margin-bottom:52px}   /* шире обычной меры, но в той же пропорции */
 .lead--tight{margin-bottom:22px}
 /* техническая строка раздела — та же подача, что у фактов на обложке */
 .factline{
@@ -365,6 +388,17 @@ img.setup__still{display:none}
 .sync__row a:hover,.sync__row a:focus-visible{color:var(--gold); border-bottom-color:var(--gold)}
 /* вполовину ширины рамки: строка на всю ширину читалась тяжело,
    да и таблица выше держит текст в колонках */
+/* Примечание про архитектора и памятник — в одной строке: текст слева,
+   мемориал по центру свободной половины. */
+.sync__arch{display:flex; align-items:center; gap:32px}
+/* Памятник с подписью — один блок: обёртка держит их вместе,
+   иначе подпись стала бы третьим элементом строки и встала сбоку. */
+.sync__fig{flex:none; margin:0 auto; text-align:center}
+.sync__ico{display:block; width:auto; height:234px; margin:0 auto; opacity:.92}
+.sync__cap{
+  margin-top:12px; font-family:var(--f-mono); font-size:9.5px;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--brass);
+}
 .sync__note{font-size:15px; color:var(--muted); max-width:50%; margin:0}
 /* ссылка внутри — та же подача, что в таблице выше */
 .sync__note a{
@@ -432,22 +466,64 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 }
 #s-city > .wrap{position:relative; z-index:1}
 
+/* Панорама ограничена «Малой родиной» — и на экране, и в печати. Раздел вместе
+   с блоками «Концепции» стал в пять раз выше самой «Малой родины», и cover
+   раздувал фотографию на всю эту высоту: на слайдах «Концепции» она читалась
+   как случайный кусок стены крупным планом. Поэтому фон переезжает на .ctx:
+   по вертикали — ровно по блоку, с выносом до границ раздела; по горизонтали —
+   во всю ширину окна (в печати — во всю ширину слайда).
+   Подложку band--tint снимаем заодно: она красила в коричневый весь раздел,
+   включая «Концепцию». Под «Малой родиной» её всё равно не видно — там лежит
+   панорама, и её вуаль по краям уходит в цвет страницы. */
+#s-city{overflow-x:clip; background:none}   /* 100vw шире окна на ширину полосы прокрутки */
+#s-city::before{display:none}
+#s-city .ctx{position:relative; z-index:0}
+#s-city .ctx::before{
+  content:''; position:absolute; z-index:-1; pointer-events:none;
+  top:-227px; bottom:-60px;          /* 227 = поле раздела + шапка; 60 = половина зазора до «Концепции» */
+  left:calc(50% - 50vw); right:calc(50% - 50vw);
+  transform:translateZ(0);
+  background:
+    linear-gradient(180deg, var(--ink) 0%, rgba(10,7,5,.34) 22%,
+                    rgba(10,7,5,.34) 74%, var(--ink) 100%),
+    linear-gradient(90deg, rgba(10,7,5,.80) 0%, rgba(10,7,5,.40) 45%,
+                    rgba(10,7,5,.58) 100%),
+    url("../assets/bg-tula.webp") center/cover no-repeat;
+}
+
 /* ---------- город ---------- */
 /* Символы и промыслы: термины в строку через тире, сводка всплывает
    при наведении. Разделители рисует CSS, а не разметка — иначе тире
    попадали бы в текст для чтения с экрана как отдельные слова. */
-.lore{margin-bottom:152px}
+.lore{margin-bottom:76px}
+/* Разъезд вокруг разделителя вдвое меньше, чем отступ под всем блоком:
+   там линия и подпись следующего ряда, а не переход к новому заголовку. */
+.lore:has(+ .lore){margin-bottom:38px}
 .lore:last-child{margin-bottom:0}
+/* Разделитель между рядами. Прежние 152px разъезда поделены пополам между
+   отступом снизу у первого ряда и полем сверху у второго — общий промежуток
+   не изменился, линия встала ровно посередине.
+   Сплошной цвет задан градиентом из двух одинаковых стопов: линию надо
+   прочерчивать, а анимировать ширину можно только у фона, не у границы. */
+.lore + .lore{
+  padding-top:38px;
+  background:linear-gradient(var(--line-2),var(--line-2)) left top / 0% 1px no-repeat;
+  transition:background-size .8s ease;
+}
+/* Линия прочерчивается слева направо, когда первый ряд уже вышел целиком:
+   последнее слово «символов» стартует на 2,83 с и доходит к 3,53 — линия
+   идёт следом, а за ней метка и слова «промыслов». */
+.seq.in .lore + .lore{background-size:100% 1px; transition-delay:3.4s}
 .lore__lead{
   font-family:var(--f-mono); font-size:9.5px; letter-spacing:.2em;
   text-transform:uppercase; color:var(--brass); margin-bottom:14px;
 }
-/* Цвета берём из температурной шкалы работы, а не хексами: те же «Пламя»
-   и «Жар», что показаны образцами в разделе «Цвет».
-   Цвет несут только подписи рядов: на самих словах он забирал иерархию —
-   подпись переставала читаться как подпись, а ряд сливался в одно пятно. */
-.lore--flame .lore__lead{color:var(--flame)}
-.lore--ember .lore__lead{color:var(--ember)}
+/* Цвет из температурной шкалы работы, а не хексом: тот же «Жар», что показан
+   образцом в разделе «Цвет». Обе подписи одним цветом: разные оттенки читались
+   как разный статус рядов, а ряды здесь равноправные.
+   Цвет несут только подписи: на самих словах он забирал иерархию — подпись
+   переставала читаться как подпись, а ряд сливался в одно пятно. */
+.lore__lead{color:var(--ember)}
 .lore__list{list-style:none; display:flex; flex-wrap:wrap; align-items:flex-start; gap:34px 44px}
 /* Пункт — столбик: слово, под ним иконка. */
 .lore__item{
@@ -475,16 +551,28 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
   color:var(--brass); transition:color .25s, border-color .25s;
 }
 .lore__ico.is-filled{border-color:transparent}
-/* Иконка живёт на 80% размера слота и дорастает до полного при наведении.
+/* Иконка живёт на 60% размера слота и дорастает до полного при наведении.
    Масштабируем картинку, а не слот: коробка остаётся прежней, и соседние
    пункты не разъезжаются. */
 .lore__ico img{
   width:100%; height:100%; object-fit:contain; display:block;
-  transform:scale(.8); transition:transform .3s cubic-bezier(.2,.7,.3,1);
+  transform:scale(.6); transition:transform .62s cubic-bezier(.22,.6,.25,1);
 }
+/* Угол наклона у каждой иконки свой — задаётся переменной на слоте,
+   так что новый предмет настраивается одной строкой. Оружие кренится влево,
+   Левша не поворачивается: фигура человека от наклона выглядит падающей. */
+.lore__ico{--rot:4deg}                            /* по умолчанию — вправо */
+.lore__ico[data-ico="samovar"] {--rot: 4deg}
+.lore__ico[data-ico="pryanik"] {--rot:-4deg}
+.lore__ico[data-ico="oruzhie"] {--rot:-5deg}
+.lore__ico[data-ico="levsha"]  {--rot: 0deg}      /* фигура человека от наклона падает */
+.lore__ico[data-ico="tolstoy"] {--rot: 0deg}
+.lore__ico[data-ico="keramika"]{--rot: 4deg}
+.lore__ico[data-ico="vsechka"] {--rot:-4deg}
+.lore__ico[data-ico="garmon"]  {--rot: 3deg}
 .lore__item:hover .lore__ico img,
 .lore__item:focus-visible .lore__ico img,
-.lore__item.is-open .lore__ico img{transform:scale(1)}
+.lore__item.is-open .lore__ico img{transform:scale(1) rotate(var(--rot))}
 /* рамка подсвечивается только у пустых слотов: под картинкой пунктир не нужен */
 .lore__item:hover .lore__ico:not(.is-filled),
 .lore__item:focus-visible .lore__ico:not(.is-filled){border-color:var(--gold)}
@@ -560,6 +648,146 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .ctx{display:grid; grid-template-columns:360px 1fr; gap:10px 64px; align-items:start}
 .ctx__head{grid-column:1 / -1}
 .ctx__head h2{margin-bottom:0}
+/* Второй заголовок раздела — под картой и словами, вне сетки колонок.
+   Отступ под ним общий, как у всех h2: обнулять его здесь незачем — это
+   нужно только .ctx__head, где зазор задаёт сама сетка. */
+.ctx__next{margin-top:120px}
+/* Блоки «Концепции» идут подряд одним разделом, поэтому между ними нужна
+   граница. Прежние 120px разъезда поделены пополам между отступом и полем,
+   линия встала посередине. Линия — фоном, а не border: у блока в печати
+   свой отступ сверху, и там она снимается одним background:none. */
+.ctx__next + .ctx__next{
+  margin-top:60px; padding-top:60px;
+  background:linear-gradient(var(--line-2),var(--line-2)) left top / 100% 1px no-repeat;
+}
+
+/* Схема «Огонь → ремесло → …». Рисуется инлайновым SVG: он масштабируется
+   без растра, печатается в вектор и красится теми же переменными, что и
+   остальная страница. Стрелки — ортогональные, как хайрлайны в макете. */
+/* Опорные слова абзаца — тем же золотом, что и заголовок раздела:
+   ведущая мысль читается до того, как глаз пройдёт строку целиком. */
+.hl{color:var(--gold); font-weight:inherit}
+/* Опора финальной фразы — «Огонь… стал… искусством». Остальное остаётся
+   в градиенте, эти три слова набраны сплошным светлым. Собственное
+   объявление у .ac бьёт наследование от q, в том числе печатное. */
+.closing q .ac{-webkit-text-fill-color:#FAF1C6; color:#FAF1C6; font-weight:inherit}
+/* Ведущая строка здесь короткая и должна читаться одним махом —
+   общая мера .lead ломала её ради одного слова «огонь». */
+.ctx__next .lead{max-width:none}
+.flow{margin-top:52px}
+.flow__svg{display:block; width:100%; height:auto}
+.flow--wide{max-width:916px}
+.flow--tall{display:none}
+
+/* Сноска под схемой: все варианты лежат стопкой друг на друге, показывается
+   один. Высота зарезервирована, чтобы схема не прыгала при наведении. */
+.flow__note{position:relative; margin-top:32px; max-width:820px; min-height:104px}
+.flow__nt{position:absolute; left:0; top:0; right:0; max-width:none; opacity:0;
+          transform:translateY(4px);
+          transition:opacity .3s ease, transform .3s ease}
+.flow__chain{display:block; margin-bottom:9px; font-family:var(--f-mono);
+             font-size:9.5px; letter-spacing:.18em; text-transform:uppercase;
+             color:var(--brass)}
+.flow__say{display:block; font-size:15px; line-height:1.65; color:var(--muted)}
+.flow__nt--hint{opacity:1; transform:none}
+.flow__nt--hint .flow__say{color:var(--ash)}
+.flow__say--tap{display:none}
+@media (hover:none){ .flow__say--hov{display:none} .flow__say--tap{display:block} }
+
+/* Выбор узла: схема гаснет целиком, а путь, ведущий к этому узлу, загорается,
+   и вместо подсказки встаёт сноска про сам узел. Ветка и сноска собираются
+   одним и тем же data-up — по правилу на узел, а не на связь.
+   :hover для мыши, data-lit ставит скрипт по касанию: на тач-экранах
+   наведения нет, а объяснения нужны и там. */
+.flow:has(.flow__n:hover),
+.flow[data-lit]{--fl-s:rgba(176,123,50,.15); --fl-t:rgba(207,193,172,.26)}
+.flow:has(.flow__n:hover) .flow__nt--hint,
+.flow[data-lit] .flow__nt--hint{opacity:0}
+:is(.flow:has([data-node="ogon"]:hover), .flow[data-lit="ogon"]) [data-up~="ogon"],
+:is(.flow:has([data-node="remeslo"]:hover), .flow[data-lit="remeslo"]) [data-up~="remeslo"],
+:is(.flow:has([data-node="keramika"]:hover), .flow[data-lit="keramika"]) [data-up~="keramika"],
+:is(.flow:has([data-node="kulinaria"]:hover), .flow[data-lit="kulinaria"]) [data-up~="kulinaria"],
+:is(.flow:has([data-node="metall"]:hover), .flow[data-lit="metall"]) [data-up~="metall"],
+:is(.flow:has([data-node="igrushka"]:hover), .flow[data-lit="igrushka"]) [data-up~="igrushka"],
+:is(.flow:has([data-node="posuda"]:hover), .flow[data-lit="posuda"]) [data-up~="posuda"],
+:is(.flow:has([data-node="pryanik"]:hover), .flow[data-lit="pryanik"]) [data-up~="pryanik"],
+:is(.flow:has([data-node="oruzhie"]:hover), .flow[data-lit="oruzhie"]) [data-up~="oruzhie"],
+:is(.flow:has([data-node="vsechka"]:hover), .flow[data-lit="vsechka"]) [data-up~="vsechka"],
+:is(.flow:has([data-node="samovar"]:hover), .flow[data-lit="samovar"]) [data-up~="samovar"],
+:is(.flow:has([data-node="garmon"]:hover), .flow[data-lit="garmon"]) [data-up~="garmon"]{
+  --fl-s:var(--ember); --fl-t:var(--gold); opacity:1; transform:none}
+/* Цвет линий и подписей идёт через наследуемые переменные: подсветка ветки
+   меняет их на одном элементе, а обводки и текст внутри подхватывают сами. */
+.flow{--fl-s:var(--line-2); --fl-t:var(--muted)}
+.flow__ln{fill:none; stroke:var(--fl-s); stroke-width:1;
+          stroke-linecap:round; stroke-linejoin:round;
+          transition:stroke .28s ease}
+/* pointer-events:all — иначе прямоугольник с fill:none ловит курсор
+   только тонкой обводкой, и навести на узел почти невозможно. */
+.flow__bx{fill:none; stroke:var(--fl-s); stroke-width:1;
+          pointer-events:all; transition:stroke .28s ease}
+.flow__tx{fill:var(--fl-t); font-family:var(--f-body); font-size:15px;
+          text-anchor:middle; transition:fill .28s ease}
+/* Подпись со схемой словами — только для скринридеров. */
+/* ---------- «Сюжетная основа»: два полюса и переход ---------- */
+.myth{margin:52px 0 0}
+.myth__svg{display:block; width:100%; height:auto; margin-inline:auto}
+.myth--wide{max-width:720px}
+.myth--tall{display:none}
+/* Прямой ход ведущий: линия ярче, подпись крупнее и золотом. Возврат тише
+   во всём — пунктир, кегль меньше, приглушённая латунь: он не спорит
+   с приручением, а напоминает, что равновесие приходится удерживать. */
+.myth__ln{fill:none; stroke:rgba(232,200,122,.5); stroke-width:1;
+          stroke-linecap:round; stroke-linejoin:round}
+.myth__ln--back{stroke:rgba(176,123,50,.4); stroke-dasharray:4 6}
+.myth__bx{fill:none; stroke-width:1}
+.myth__bx--chaos{stroke:rgba(242,160,61,.42)}
+.myth__bx--order{stroke:rgba(232,200,122,.38)}
+.myth__t{font-family:var(--f-display); font-size:30px; text-anchor:middle}
+.myth__t--chaos{fill:var(--ember)}
+.myth__t--order{fill:var(--gold)}
+.myth__k{font-family:var(--f-display); font-size:26px; fill:var(--gold); text-anchor:middle}
+.myth__k--back{font-size:19px; fill:rgba(176,123,50,.58)}
+.myth__s{font-family:var(--f-mono); font-size:12.5px; letter-spacing:.16em;
+         fill:var(--muted); text-anchor:middle}
+/* Круговая двойная стрелка между полюсами: вращается непрерывно — процесс
+   не заканчивается. Вращение сделано штатным SVG-шным animateTransform, а не
+   CSS-анимацией: у CSS-поворота внутри SVG точка отсчёта зависит от
+   transform-box, и в разных движках группа либо крутится на месте, либо стоит.
+   animateTransform поворачивает вокруг (0 0) собственных координат группы —
+   ровно вокруг центра круга. Снимается в main.js при prefers-reduced-motion. */
+.myth__cyc{fill:none; stroke:rgba(232,200,122,.42); stroke-width:1.6;
+           stroke-linecap:round; stroke-linejoin:round}
+
+/* ---------- «Адаптация мифа»: цепочка из пяти состояний ---------- */
+.scen{margin:52px 0 0}
+.scen__svg{display:block; width:100%; height:auto; margin-inline:auto}
+.scen--wide{max-width:768px}
+.scen--tall{display:none}
+.scen__ln{fill:none; stroke:rgba(232,200,122,.5); stroke-width:1;
+          stroke-linecap:round; stroke-linejoin:round}
+/* Возврат тише прямого хода: пунктир и приглушённая латунь — он не спорит
+   с цепочкой, а показывает, что она замыкается. */
+.scen__ln--back{stroke:rgba(176,123,50,.4); stroke-dasharray:4 6}
+.scen__bx{fill:none; stroke-width:1}
+.scen__bx--chaos{stroke:rgba(242,160,61,.42)}
+.scen__bx--turn{stroke:rgba(207,193,172,.34)}
+.scen__bx--order{stroke:rgba(232,200,122,.38)}
+.scen__t{font-family:var(--f-display); font-size:21px; text-anchor:middle}
+.scen__t--chaos{fill:var(--ember)}
+.scen__t--turn{fill:var(--muted)}
+.scen__t--order{fill:var(--gold)}
+/* Номер шага — той же мелкой моноширинной строкой, что и рубрики разделов. */
+.scen__n{font-family:var(--f-mono); font-size:10px; letter-spacing:.2em;
+         fill:rgba(207,193,172,.5); text-anchor:middle}
+.scen__s{font-family:var(--f-mono); font-size:10.5px; letter-spacing:.14em;
+         fill:var(--muted); text-anchor:middle}
+.scen__k{font-family:var(--f-display); font-size:19px; fill:var(--gold);
+         text-anchor:middle}
+.scen__k--back{font-size:17px; fill:rgba(176,123,50,.58)}
+
+.vh{position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap}
 .ctx__aside{border-left:1px solid var(--line-2); padding-left:26px}
 .crafts{list-style:none; display:flex; flex-direction:column; gap:4px}
 .craft{
@@ -636,6 +864,39 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
   letter-spacing:.14em; color:var(--brass); margin:5px 0 9px;
 }
 .swatches em{font-style:normal; font-size:12.5px; color:var(--muted); line-height:1.5; display:block}
+/* Ряд фактур повторяет раскладку образцов цвета, но без плашки: у материала
+   нет одного цвета — как он выглядит, показывает здание под рядом. */
+/* Все фактуры одним рядом — в том же порядке, что полосы на фасаде под ними.
+   Колонка получается узкой, зато соответствие «подпись ↔ полоса» читается
+   без счёта; высоту карточек задаёт самая длинная сводка. */
+.swatches--tex{grid-template-columns:repeat(9,minmax(0,1fr)); margin-bottom:0}
+.swatches--tex li{padding:24px 11px 22px}   /* колонка узкая — боковые поля уже, чем у образцов цвета */
+/* Здание растянуто до границ ряда фактур: в кадре фасад занимает 8,3…91,7%
+   ширины, поэтому картинка шире контейнера на 20% и сдвинута влево на 10% —
+   тогда его края приходятся ровно на левую границу «Камня» и правую «Теста».
+   Кадр подрезан: сверху уходит часть пустого неба, снизу — часть отражения.
+   Пропорции заданы через aspect-ratio и проценты — процент поля считается
+   от ширины контейнера, поэтому кроп держится на любой ширине окна. */
+/* Кадр обрезан по самому зданию, чёрных полей вокруг нет — иначе на слайде
+   картинка читалась бы тёмным прямоугольником поверх фона. Ширина рамки
+   поэтому и есть ширина фасада; контейнер срезает снизу часть отражения. */
+/* Лента фактур нужна только в мобильной вёрстке (см. медиазапрос ниже):
+   там карточки идут одной колонкой и шкале есть чему соответствовать. */
+.texstrip{display:none}
+.texview{margin:14px 0 0; aspect-ratio:100/46; overflow:hidden; position:relative}
+.texview img{display:block; width:100%; max-width:none; height:auto; margin:0;
+             mix-blend-mode:screen}   /* чёрное поле кадра растворяется в фоне страницы */
+/* Растворение нижнего среза в фоне: обрез кадра иначе читается как жёсткая
+   линия под зданием. Высота в процентах — от коробки, поэтому доля одна
+   и та же и на сайте, и на слайде.
+   Градиент — картинкой, а не linear-gradient: printToPDF теряет альфу
+   в градиентах (полупрозрачный стоп печатается сплошным), а альфу в PNG
+   переносит верно. Файл 8×256, растягивается по коробке. */
+.texview::after{
+  content:''; position:absolute; left:0; right:0; bottom:0; height:42%;
+  background:url("../assets/fade-down.png") 0 0 / 100% 100% no-repeat;
+  pointer-events:none;
+}
 /* филимоновская триада — единственный открытый цвет в работе */
 .triad{display:flex; gap:8px; margin-top:16px; position:relative}
 .triad span{width:38px; height:38px; display:block}
@@ -823,8 +1084,17 @@ body.scrolling{--dim:.26}
    метка → линейка → заголовок → прорисовка контура → метка на карте → волны,
    а текст выходит параллельно с прорисовкой, чтобы не ждать её конца. */
 .seq.rv{opacity:1; transform:none; transition:none}
-.seq .sq{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease}
-.seq.in .sq{opacity:1; transform:none; transition-delay:var(--d,0s)}
+/* Цвет в списке транзишенов не случайно: класс .sq перебивает собственный
+   transition пункта, и без него слово перестало бы плавно золотеть под курсором.
+   Задержка задана только для первых двух свойств — иначе подсветка при наведении
+   ждала бы свою --d, а у последнего слова это больше трёх секунд. */
+.seq .sq{opacity:0; transform:translateY(18px);
+         transition:opacity .7s ease, transform .7s ease, color .25s ease}
+.seq.in .sq{opacity:1; transform:none; transition-delay:var(--d,0s), var(--d,0s), 0s}
+/* Блоки «Концепции» уходят вниз на несколько экранов, а каскад раздела копится
+   до 7,8 с. Ждать его там нечего: пока до них доскроллят, задержка давно вышла,
+   а при быстрой прокрутке блок успевал показаться пустым. */
+.seq.in .ctx__next .sq{transition-delay:0s}
 .seq .rule.sq{transform:scaleX(0); transform-origin:left;
               transition:opacity .35s ease, transform .75s cubic-bezier(.2,.7,.25,1)}
 .seq.in .rule.sq{transform:scaleX(1)}
@@ -867,6 +1137,7 @@ body.scrolling{--dim:.26}
   .seq .sq{opacity:1; transform:none; transition:none}
   .seq .mapline path{stroke-dasharray:none; stroke-dashoffset:0}
   .seq .mapfig__pin{opacity:1; transform:translate(-50%,-100%); transition:none}
+  .lore + .lore{background-size:100% 1px; transition:none}
   .fb{opacity:1!important}
   .cue__bar span{transform:none; transition:none}
   .hero__hint span{animation:none}
@@ -883,13 +1154,108 @@ body.scrolling{--dim:.26}
    screen обязателен: без него правило срабатывает и при печати,
    схлопывая все сетки слайдов в одну колонку */
 @media screen and (max-width:900px){
+  /* поле раздела на мобильном 84px, шапка та же */
+  #s-city .ctx::before{top:-179px}
   .wrap{padding:0 20px}
   .band{padding:84px 0}
   .ctx,.two,.setup{grid-template-columns:1fr; gap:40px}   /* .setup тоже: в две колонки текст рвался по два слова */
   .layers,.meta-grid{grid-template-columns:1fr}
   .swatches{grid-template-columns:repeat(2,1fr)}
-  .grad__bar{height:56px}
-  .grad__ends{font-size:9px; gap:16px}
+  /* При нечётном числе образцов в сетке оставалась пустая ячейка — она
+     показывала цвет контейнера сплошным прямоугольником. Последняя карточка
+     растягивается на обе колонки ровно тогда, когда её индекс нечётный,
+     то есть когда карточек нечётное число. */
+  .swatches li:last-child:nth-child(odd){grid-column:1 / -1}
+  /* «Цвет» и «Текстуры» на мобильном строятся одинаково: вертикальная шкала
+     вдоль края экрана, карточки одной колонкой рядом — каждая карточка
+     оказывается напротив своего участка шкалы. Сетку задаём на .wrap:
+     заголовки занимают обе колонки, а шкала и список делят одну строку.
+     Ряд не прописан числом — при автораскладке шкала встаёт в первую
+     свободную строку своей колонки, а список с definite-колонкой
+     подхватывается в ту же строку.
+     Колонка карточек ограничена 520px: брейкпойнт мобильной вёрстки — 900px,
+     и на планшете карточка в одну колонку растягивалась на всю полосу,
+     оставляя пустоту справа от короткой подписи. На телефоне свободного
+     места меньше 520px, поэтому там колонка занимает всё как есть. */
+  #s-color .wrap,#s-tex .wrap{display:grid; column-gap:14px}
+  #s-color .wrap{grid-template-columns:30px minmax(0,520px)}
+  /* «Текстуры» зеркальны «Цвету»: лента уходит к правому краю экрана, кровля
+     фасада смотрит на карточки. Полоса шире, чем у цвета: фактуру в 30px
+     не разобрать. Колонку карточек здесь не ограничиваем 520px, как в «Цвете»:
+     лента должна упираться в край экрана, а карточки — стоять к ней вплотную,
+     и любой запас ширины пришлось бы оставлять зазором между ними. */
+  #s-tex .wrap{grid-template-columns:minmax(0,1fr) 44px}
+  #s-color .wrap > *,#s-tex .wrap > *{grid-column:1 / -1}
+  /* Нижний отступ списка снимаем: он входит в высоту строки сетки, и шкала
+     вытягивалась на эти 52px ниже последней карточки. Воздух перед
+     следующим разделом даёт padding самой секции. */
+  #s-color .swatches{grid-column:2; grid-template-columns:1fr; margin-bottom:0}
+  #s-tex .swatches{grid-column:1; grid-template-columns:1fr; margin-bottom:0}
+
+  #s-color .grad{grid-column:1; margin:0}
+  /* Полоса идёт от верхнего края первой плашки до нижнего края последней:
+     --head — поле карточки над плашкой, --tail — подпись под ней, оба
+     отмеряет скрипт (см. «Концы цветовой шкалы» в main.js). Без скрипта
+     полоса просто занимает всю высоту списка, как раньше. */
+  #s-color .grad__bar{
+    margin-top:var(--head,0px);
+    height:calc(100% - var(--head,0px) - var(--tail,0px));
+    background:linear-gradient(180deg,
+      var(--coal) 0%, var(--flame) 14%, var(--ember) 34%, var(--gold) 55%,
+      var(--brass) 68%, var(--crimson) 82%, var(--mirror) 100%);
+  }
+  /* Подписи концов шкалы в колонку 30px не помещаются, а то же самое
+     написано в первой и последней карточках («первая сцена» / «финал»). */
+  #s-color .grad__ends{display:none}
+
+  /* Лента фактур: срез по верхушке здания, повёрнутый на 90° против часовой.
+     При таком повороте правый край фасада становится верхом ленты — сверху
+     небо, снизу уголь, — а кровля уходит в левый край полосы и стоит
+     вплотную к карточкам. Полоса выпущена под правое поле .wrap, поэтому
+     лишнюю ширину среза срезает край экрана — справа и только справа.
+     Размер auto 100%: высота ложится целиком при любой длине списка,
+     подрезается только ширина (cover при узком срезе начал бы резать
+     по вертикали и терять крайние фактуры).
+     Ширина среза (240px при высоте 3264) выбрана из этого же расчёта:
+     на экран попадает только левая часть, 240 × высота_списка / 3264,
+     и она должна остаться шире полосы в 64px — на самом коротком варианте
+     списка (планшет, 1110px) это 82px. Если карточек станет заметно
+     меньше, срез надо взять шире, иначе справа появится пустая полоска. */
+  #s-tex .texstrip{
+    display:block; grid-column:2; margin-right:-20px;
+    background:url("../assets/tex-strip.webp") left center / auto 100% no-repeat;
+  }
+  /* Порядок карточек переворачиваем вслед за лентой: она идёт от неба
+     к углю, и подпись должна стоять напротив своей полосы. Порядок в DOM
+     остаётся прежним — тем же, что на фасаде и в презентации, — поэтому
+     на слайдах и в разметке ряд по-прежнему начинается с угля. */
+  #s-tex .swatches{display:flex; flex-direction:column-reverse}
+  /* Здание поднимаем под вводный текст: на телефоне лента с карточками
+     растягивается на несколько экранов, и кадр в конце доходил до читателя
+     через весь список — сначала девять названий фактур, и только потом сам
+     фасад, на котором они лежат. Переставляем порядком, а не в разметке:
+     в DOM кадр должен остаться после ряда, чтобы на слайдах и в печати
+     подписи шли перед картинкой.
+     Заголовочная часть держится выше кадра своим order; лента и карточки
+     остаются на 0 и сохраняют относительный порядок, от которого зависит
+     их раскладка в одну строку. */
+  #s-tex .eyebrow,#s-tex .rule,#s-tex h2,#s-tex .lead{order:-2}
+  /* Кадр не участвует в фокусе чтения: он стоит вплотную к вводному тексту,
+     и когда горел текст, здание рядом с ним гасло, а на подходе к центру
+     экрана снова разгоралось — на единственной картинке раздела это читалось
+     как мигание. Держим его в полную силу всегда. */
+  /* isolation + свой фон: у кадра mix-blend-mode:screen, и пока непрозрачность
+     была меньше единицы, она сама отсекала подложку блендинга. С opacity:1
+     группа раскрылась, фоном смешивания стал весь документ, и на прокрутке —
+     где каждый кадр перерисовываются вуали разделов — низ картинки, самая
+     тёмная её часть, помаргивал. Замыкаем смешивание на контейнер, а фон
+     контейнера берём тот же --ink, что у страницы под ним: результат
+     смешивания пиксель в пиксель прежний. */
+  #s-tex .texview{
+    grid-column:1 / -1; order:-1; margin:0 0 30px;
+    opacity:1; isolation:isolate; background:var(--ink);
+  }
+
   .scene{grid-template-columns:1fr; gap:18px; padding:38px 0}
   .scene__body{grid-template-columns:1fr; gap:20px}
   .rail{display:none}
@@ -901,15 +1267,28 @@ body.scrolling{--dim:.26}
      и срезала углы здания. Здесь показываем её целиком. */
   .hero__stage img,.hero__stage video{--s:1.1}
   /* «Автор» и «Регион» держим в одну строку: два блока в две строки
-     на узком экране выглядели обрывком списка, а не подписью. */
-  .hero__facts{margin-top:46px; flex-wrap:nowrap; gap:0 18px;
-               font-size:9px; letter-spacing:.1em; white-space:nowrap}
+     на узком экране выглядели обрывком списка, а не подписью.
+     И прижимаем к нижней границе экрана — строка работает подписью
+     к обложке, а не хвостом центрального блока. Отсчёт от секции,
+     а не от .hero__inner: обёртка высотой в свой контент, её низ
+     не совпадает с низом экрана, поэтому на телефоне снимаем у неё
+     position (стеканию это не мешает — z-index у обёртки и не было). */
+  .hero__inner{position:static}
+  .hero__facts{
+    position:absolute; left:0; right:0; z-index:2;
+    bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    margin-top:0; flex-wrap:nowrap; gap:0 18px;
+    font-size:9px; letter-spacing:.1em; white-space:nowrap;
+    transition:opacity .45s ease;
+  }
+  /* уходит вместе с подсказкой, как только начали листать */
+  body.scrolled .hero__facts{opacity:0; pointer-events:none}
   /* 100vh в мобильном Safari — это высота БЕЗ нижней панели, поэтому низ обложки
      уезжал под неё вместе с подсказкой. svh — наоборот, самый маленький вариант
      вьюпорта: подсказка видна и когда панель развёрнута, и высота не скачет
      при её сворачивании (в отличие от dvh). */
   .hero{min-height:100vh; min-height:100svh}
-  .hero__hint{bottom:calc(58px + env(safe-area-inset-bottom,0px))}
+  .hero__hint{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
   .tl__title{display:none}
   .tl__seg b{font-size:8px}
   .tools{bottom:16px; right:16px; gap:8px}
@@ -923,12 +1302,69 @@ body.scrolling{--dim:.26}
      с разделителя. Поэтому здесь список идёт в столбец, а сноска раскрывается
      в потоке под словом — как в печати. */
   .lore__list{display:block}
-  .lore__item{display:block; margin-bottom:11px}
+  /* Слово и иконка по центру колонки. Сводку не центрируем: несколько строк
+     текста по центру читаются заметно хуже. */
+  /* На телефоне широкая схема ужалась бы до нечитаемых 5 px кегля —
+     показываем вертикальный вариант той же цепочки. */
+  .flow{margin-top:38px}
+  .flow--wide{display:none}
+  .flow--tall{display:block; max-width:320px; margin-inline:auto}
+  /* Кегль только у узкой схемы: широкая делит с ней .flow__tx */
+  .flow--tall .flow__tx{font-size:13px}
+  .flow__note{min-height:176px; margin-top:26px}   /* самая длинная сноска — 173px */
+  .myth{margin-top:38px}
+  .myth--wide{display:none}
+  .myth--tall{display:block; max-width:300px; margin-inline:auto}
+  .myth--tall .myth__t{font-size:26px}
+  .myth--tall .myth__k{font-size:21px}
+  .myth--tall .myth__k--back{font-size:16px}
+  .myth--tall .myth__s{font-size:12px}
+  /* На телефоне пять узлов в ряд ужались бы до нечитаемого кегля —
+     показываем ту же цепочку сверху вниз. */
+  .scen{margin-top:38px}
+  .scen--wide{display:none}
+  .scen--tall{display:block; max-width:300px; margin-inline:auto}
+  .lore__lead{text-align:center}
+  .lore__item{display:block; text-align:center; margin-bottom:88px}
+  /* Общая обёртка на телефоне вытягивается на несколько экранов, и фокус
+     чтения гасил бы её целиком. Гасить нужно поштучно: обёртку выключаем,
+     а каждый пункт живёт своим --f — проявляется, когда доходит до центра
+     экрана, и уходит, когда сходит с него.
+     transition задан целиком, и это важно: он обнуляет transition-delay
+     каскада появления (у последнего пункта это 4,44 с), иначе затухание
+     при прокрутке отставало бы на те же секунды. */
+  .ctx__text{opacity:1}
+  .seq.in .lore__item{
+    --dim:.18;
+    opacity:calc(var(--dim) + (1 - var(--dim)) * var(--f,1));
+    transition:opacity .32s ease, transform .5s ease;
+  }
+  .lore__item:last-child{margin-bottom:0}
+  /* На тач-экранах наведения нет, и иконка навсегда осталась бы на 60%:
+     сорок процентов слота простаивали, а список растягивался на семь экранов.
+     Здесь слот ужат по картинке, а размер картинки ведёт прокрутка. */
+  .lore__ico{width:96px; height:96px; margin-left:auto; margin-right:auto}
+  /* Иконка дышит на прокрутке: у центра экрана она в полный слот, к краям
+     ужимается. Масштабируем картинку, а не слот, — коробка держит размер,
+     и слово под ней не гуляет по вертикали. --c ставит скрипт; без него
+     (нет JS, reduce) остаётся полный размер. */
+  .lore__ico img{
+    transform:scale(calc(.76 + .32 * var(--c,1)));
+    transition:transform .12s linear;
+  }
+  /* тем же весом, что базовые правила раскрытия: иначе «залипший» после
+     касания :hover вернул бы картинке постоянный полный размер */
+  .lore__item.is-open .lore__ico img,
+  .lore__item:hover .lore__ico img,
+  .lore__item:focus-visible .lore__ico img{transform:rotate(var(--rot)) scale(calc(.76 + .32 * var(--c,1)))}
+  .lore__tip{text-align:left}
   .lore__item + .lore__item::before{content:none}
   .lore__item::after{display:none}
+  /* Сводка на телефоне видна всегда: наведения нет, а прятать факты
+     за касанием на странице, которую листают, — терять их. */
   .lore__tip{
-    position:static; display:none; opacity:1;
-    width:auto; max-width:none; margin-top:8px;
+    position:static; display:block; opacity:1; transform:none;
+    width:auto; max-width:none; margin-top:14px;
   }
   /* тем же весом, что базовые правила раскрытия: иначе они продолжают
      сдвигать сноску на -50% ширины, и она уезжает за левый край */
@@ -961,6 +1397,9 @@ body.scrolling{--dim:.26}
     text-transform:uppercase; color:var(--brass);
   }
   .sync + .sync__lead{padding-top:26px}
+  .sync__arch{display:block}
+  .sync__fig{margin-top:18px}
+  .sync__ico{display:block; height:143px; margin:0 auto}
   .sync__note{max-width:none}
   .specs{gap:14px}
   /* финал: цитата держала 68vh пустоты, на телефоне это лишний экран прокрутки */
@@ -982,17 +1421,70 @@ body.scrolling{--dim:.26}
   /* всё интерактивное из печати убирается */
   .rail,.tools,.lb,.tl,
   .hero__embers,.hero__hint,.veil,.mir__g{display:none!important}
-  /* Сводки в PDF раскрываем: всплывать там нечему, а факты терять нельзя. */
-  .lore__list{display:block}
-  .lore__item{display:block; font-size:17px; margin-bottom:9px}
-  .lore__ico:not(.is-filled){display:none}
-  .lore__ico{width:52px; height:52px; border:0; margin-top:4px}
-  .lore__ico img{transform:none}   /* наведения в печати нет — печатаем в полный размер */
+  /* «Малая родина» — самый плотный слайд: второй заголовок и разъезд между
+     рядами в печати ужаты, иначе раздел уходит на лишнюю страницу. */
+  /* Со схемой второй заголовок на первую страницу раздела уже не влезает:
+     отдаём ему отдельный слайд, как это сделано со сценами раскадровки. */
+  .ctx__next,.ctx__next + .ctx__next{margin-top:0; break-before:page; page-break-before:always;
+             padding-top:60px; background:none}
+  .eyebrow--cont{display:flex}
+  .rule--cont{display:block; margin-bottom:44px}
+  /* Последний кусок «Малой родины» короче страницы, и фон секции обрывался
+     посреди слайда видимым стыком. Растягиваем блок до низа страницы:
+     1020 + 60 нижнего поля секции = ровно 1080. */
+  /* поле слайда 60px + шапка раздела 95px */
+  #s-city .ctx::before{top:-155px}
+  #s-city > .wrap > .ctx__next:last-child{min-height:1020px}
+  .flow{margin-top:64px}
+  .flow--wide{max-width:1500px}
+  .myth{margin-top:56px}
+  .myth--wide{max-width:1100px}
+  .scen{margin-top:56px}
+  .scen--wide{max-width:1100px}
+  /* Второй слайд раздела: сноски, которые на сайте всплывают по наведению,
+     здесь выложены разом — наводить в PDF нечем, а факты нужны. */
+  .h2--cont{display:block}
+  .pslide--why{padding-top:60px}
+  /* Колонки заполняются сверху вниз, а не построчно: grid-auto-flow:column
+     плюс явные шесть строк. Строки у колонок общие, поэтому соседние сноски
+     стоят на одной линии. */
+  .flow__note{
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:repeat(6,auto); grid-auto-flow:column;
+    gap:26px 64px; position:static; min-height:0; max-width:none; margin-top:44px;
+  }
+  .flow__nt{position:static; opacity:1; transform:none}
+  .flow__nt--hint{display:none}
+  .flow__chain{font-size:11px; letter-spacing:.16em; margin-bottom:7px}
+  .flow__say{font-size:15px; line-height:1.5}
+  .lore{margin-bottom:28px}
+  .lore:has(+ .lore){margin-bottom:28px}
+  .lore + .lore{padding-top:28px}
+  /* Разделитель прочерчивается по появлению раздела, а в печати появления нет —
+     держим его раскрытым, иначе линии в PDF просто не будет. */
+  .lore + .lore{background-size:100% 1px!important}
+  .lore__lead{font-size:13px; letter-spacing:.24em; margin-bottom:20px}
+  /* В презентации пункт читается карточкой: иконка — слово — факт, по колонке
+     на пункт. Строкой вподбор, как было, слово и его сводка расходились на всю
+     ширину слайда и глазом уже не связывались. Сводки в PDF раскрыты —
+     всплывать там нечему, а факты терять нельзя. */
+  .lore__list{display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
+              gap:0 34px; align-items:start}
+  .lore__item{display:block; text-align:left; margin:0; font-size:inherit}
   .lore__item + .lore__item::before{content:none}
   .lore__item::after{display:none}
+  .lore__ico{display:block; width:104px; height:104px; border:0; margin:0 0 14px}
+  /* visibility, а не display: пустой слот не печатается, но место держит,
+     иначе подпись пункта без иконки уезжает вверх и ломает ряд. */
+  .lore__ico:not(.is-filled){visibility:hidden}
+  /* на экране иконка лежит в слоте на 60% и растёт по наведению —
+     в печати наводить нечем, показываем сразу в полный размер */
+  .lore__ico img{transform:none}
+  .lore__word{display:block; font-size:24px; line-height:1.15; margin-bottom:9px}
   .lore__tip{
     position:static; opacity:1; transform:none; max-width:none; width:auto;
-    display:block; margin-top:2px; padding:0; border:0; background:none; font-size:13px;
+    display:block; margin:0; padding:0; border:0; background:none;
+    font-size:15px; line-height:1.55;
   }
   .lore__tip::after{display:none}
   /* видео в PDF не попадает — печатаем последний кадр статикой */
@@ -1009,51 +1501,142 @@ body.scrolling{--dim:.26}
   .cue__bar span{transform:none!important}
     .frame--filled::after{display:none!important}
 
-  .wrap{max-width:none; padding:0 90px}
+  /* margin:0 auto с базового .wrap отменяет растяжение флекс-элемента:
+     ширина слайда схлопывалась до содержимого, и поле слева гуляло
+     от 90 px до 600 px в зависимости от того, что на слайде лежит.
+     Обнуляем поля — все слайды получают одну сетку. */
+  .wrap{max-width:none; padding:0 90px; margin-left:0; margin-right:0; width:100%}
+
+  /* Нумерация слайдов. Считать страницы средствами CSS Chrome не умеет
+     (counter(page) в @page он не поддерживает), но со 2-го по 17-й слайд
+     на каждом ровно одна шапка раздела — по ней и считаем. Обложка шапки
+     не имеет и остаётся без номера, финалу номер ставит отдельный .pnum.
+     Счётчик стартует с 1, поэтому первая шапка получает 2. */
+  body{counter-reset:slide 1}
+  .eyebrow,.pnum{counter-increment:slide}
+  .eyebrow::after,.pnum::after{
+    content:counter(slide);
+    font-family:var(--f-mono); font-size:12px; letter-spacing:.14em;
+    color:var(--brass); opacity:.6;
+  }
+  .eyebrow::after{margin-left:auto}
+  .closing{position:relative}
+  .pbr{display:inline}
+  .pnum{display:block; position:absolute; top:60px; right:90px; line-height:1}
 
   /* каждая секция — слайд */
+  /* Слайды выравниваются по верху, а не по центру: при центрировании шапка
+     раздела гуляла по вертикали от 60 px до 353 px — на коротких слайдах она
+     уезжала к середине, и колода читалась рвано. Обложка и «Финал» —
+     исключение, там центр по смыслу. */
   section{
     min-height:285.75mm;
     break-after:page; page-break-after:always;
-    display:flex; flex-direction:column; justify-content:center;
+    display:flex; flex-direction:column; justify-content:flex-start;
     padding:60px 0!important;
   }
+  .closing{justify-content:center}
   section:last-of-type{break-after:auto; page-break-after:auto}
   .band--tint{background:var(--ink-2)!important}
 
-  /* «Здание»: рендер и хронику ужимаем, иначе раздел не влезает в слайд */
-  .renderview{margin-bottom:20px}
-  .renderview img,.renderview video{max-height:200px}
+  /* «Здание» разложено на два слайда: на первом — здание крупно и его
+     паспорт, на втором — хроника связей. В один слайд это влезало только
+     кеглями, которые с проекции не читаются. Маска на .render общая
+     с экраном, поэтому края рендера тают в фоне и в PDF тоже. */
+  /* padding-top тот же, что у разрывных блоков «Малой родины»: без него
+     слайд начинается вплотную к краю страницы и выбивается из ряда. */
+  .pslide{display:block; break-before:page; page-break-before:always;
+          padding-top:60px}
+  .renderview{margin-bottom:0}
+  .renderview img,.renderview video{max-height:620px; max-width:100%; width:auto}
   /* видео в PDF не попадает — печатаем кадр статикой */
   video.setup__vid{display:none!important}
   img.setup__still{display:block!important}
-  .setup{margin-bottom:22px}
+  /* Здание уходит вправо, текст — влево и ниже: на слайде это читается как
+     подпись к рендеру, а не как шапка над ним. Левую колонку делает именно
+     .setup: в разметке он стоит раньше рендера, а обтекать можно только тот
+     флоат, что объявлен до соседа. */
+  .setup{display:block; float:left; width:36%; margin:78px 0 0}
+  .setup .lead{font-size:25px; margin-bottom:50px}
+  .renderview{margin:0 0 0 40%; padding-top:72px}
+  .pslide{clear:both}
   /* Разделитель между двумя связями добавил 16px — компенсируем полями рамки,
      иначе раздел перерастает слайд на 13px и уезжает на лишнюю страницу. */
-  .syncbox{padding:12px 24px 10px; margin-bottom:14px;
+  .syncbox{padding:34px 40px 30px; margin-bottom:0;
            border:1px solid var(--line-2); background:none; animation:none}
-  .syncbox .sync{margin-bottom:8px}
-  .sync + .sync__lead{padding-top:10px}
-  .sync__note{font-size:15px; max-width:50%}
-  .sync__lead{font-size:19px; margin:0 0 12px}
-  .sync{margin-bottom:22px}
-  .sync__head,.sync__row{padding:9px 0}
-  .sync__row span{font-size:15px}
+  .syncbox .sync{margin-bottom:32px}
+  .sync + .sync__lead{padding-top:26px}
+  .sync__note{font-size:19px; line-height:1.62; max-width:40%}
+  .sync__ico{height:264px}
+  .sync__cap{margin-top:12px; font-size:12px}
+  .sync__lead{font-size:26px; margin:0 0 22px}
+  .sync{margin-bottom:32px}
+  .sync__head,.sync__row{padding:17px 0}
+  .sync__head{font-size:13px}
+  .sync__row > b{font-size:19px}
+  .sync__row span{font-size:20px; line-height:1.45}
   .sync__row a::after,.sync__note a::after{content:""}
 
-  /* обложка */
-  .hero{padding:0!important}
+  /* обложка.
+     Слайд раскладывается по высоте страницы: строка выходных данных и
+     заголовок прижаты к верху, подписи автора — к низу, а сцена забирает
+     всю середину. Поэтому .hero отдаёт ровно 1080 px, а .hero__inner
+     становится колонкой, где растягивается только сцена. */
+  .hero{padding:0!important; display:block; height:1080px; min-height:0}
+  .hero__inner{display:flex; flex-direction:column; height:100%; padding:74px 0 62px}
   .hero__meta,.hero__stage img,.hero__stage video,.hero__facts{animation:none!important; transform:none!important}
-  /* магма в печать не идёт: заливка текста прозрачная, заголовок ушёл бы пустым */
-  .magma{animation:none!important; background:none!important}
+  /* Магма идёт в печать статичной: снимаем анимацию, но не фон — заливка
+     текста прозрачная, и без градиента заголовок ушёл бы пустым. */
+  .magma{animation:none!important}
   /* дубль-слой обводки в печати не нужен: он лёг бы вторым контуром поверх заголовка */
   .hero h1::after{display:none!important}
-  .hero h1{font-size:84px; -webkit-text-stroke:0!important;
-           -webkit-text-fill-color:var(--paper)!important; color:var(--paper)!important}
+  .hero h1{font-size:84px; -webkit-text-stroke:0!important}
   .closing q{-webkit-text-fill-color:var(--gold)!important; color:var(--gold)!important}
-  .hero__stage{margin-top:34px}
-  .hero__stage img,.hero__stage video{max-height:330px}
-  .hero__facts{margin-top:30px; font-size:14px}
+  /* На экране под цитатой течёт магма тех же тёплых тонов, поэтому там акцент
+     светло-жёлтый. В печати цитата плоско-золотая — по ней читается оранжевый. */
+  .closing q .ac{-webkit-text-fill-color:var(--ember)!important; color:var(--ember)!important}
+  /* Кегли служебных строк заданы под слайд 1920×1080, а не под экран: на
+     проекции и в разложенном PDF десятипиксельный моношрифт не читается.
+     Прозрачность тоже поднята — на бумаге .5 уходит в фон. */
+  .hero__meta{font-size:17px; letter-spacing:.34em; margin-bottom:24px; opacity:.72}
+  .hero__stage{margin:0!important; flex:1 1 auto; min-height:0;
+               display:flex; align-items:center; justify-content:center}
+  .hero__stage img,.hero__stage video{max-height:660px; max-width:100%; width:auto}
+  .hero__facts{margin-top:0!important; font-size:19px; letter-spacing:.16em;
+               gap:14px 56px; opacity:.72}
+  /* Строчный кегль, а не моношрифт вразрядку: это связная фраза, а не
+     служебная метка, — и строки должны стоять плотно. */
+  .hero__note{
+    display:block!important; margin-top:24px; text-align:center;
+    font-size:16px; line-height:1.45; color:var(--ash);
+  }
+  .hero__note span{display:block}
+  .hero__note a{color:var(--gold); text-decoration:none;
+                border-bottom:1px solid rgba(176,123,50,.5)}
+  /* Заглушка: ссылки на материалы ещё нет, поэтому подчёркивание пунктиром
+     и приглушённый цвет — видно, что место занято, но вести пока некуда. */
+  .hero__note-soon{color:var(--brass)!important; border-bottom-style:dashed!important}
+
+  /* Растворение краёв кадра запечено в отдельный файл. printToPDF теряет
+     альфу и в mask-image, и в градиентах — оба обхода печатались сплошной
+     заливкой, — поэтому маску и screen свели с цветом страницы прямо
+     в setup-frame-print.webp (см. README, раздел про сборку PDF).
+     Обложку это не касается: там кадр сам уходит в чёрный по краям
+     и стык в PDF не читается. */
+  img.setup__still{display:none!important}
+  .setup__print{display:block!important; margin:0 auto;
+                max-height:620px; max-width:100%; width:auto}
+
+  /* «Текстуры»: ряд материалов плюс здание под ним — оба должны уложиться
+     в один слайд, поэтому рендер ниже, чем на слайде «Контекста». */
+  .swatches--tex li{padding:18px 12px 20px}
+  /* Лид «Текстур» — в половину ширины слайда: строка во всю полосу читалась
+     тяжело. Лишние две строки высоты снимаем с рендера здания ниже. */
+  #s-tex .lead{max-width:900px; margin-bottom:26px}
+  #s-tex h2{margin-bottom:22px}
+  /* Здание во всю ширину ряда фактур, как и на сайте; целиком по высоте оно
+     на слайд не влезает — низ уходит под обрез, растворение снизу его прячет. */
+  .texview{margin-top:14px; aspect-ratio:auto; height:468px}
 
   /* типографика слайдов */
   h2{font-size:62px; margin-bottom:30px}
@@ -1061,28 +1644,58 @@ body.scrolling{--dim:.26}
   p{max-width:70ch}
   .lead{font-size:22px}
   .lead--wide{margin-bottom:44px}
-  .craft__t,.layer p,.meta p,.scene p{font-size:16px}
+  .craft__t,.layer p,.scene p{font-size:16px}
+  .meta p{font-size:17px; line-height:1.6; max-width:60ch}
+  .specs{gap:25px}
+  .specs li{padding-left:24px}
+  .specs b{font-size:13px; margin-bottom:8px}
+  .specs span{font-size:21px}
   .eyebrow{font-size:12px}
-  .layer{padding:40px 32px}
+  /* «Цвет»: узкая мера набора добавила разделу строк — снимаем их
+     полем карточек, оно там чисто декоративное. */
+  .layer{padding:22px 32px}
+  /* «Тема» и «Визуальный язык» — короткие слайды. Пока колода центрировалась,
+     карточки приходилось ужимать; с выравниванием по верху место освободилось,
+     и кегли можно вернуть к презентационным. Правки адресные: те же .layers
+     собирают слайд «Цвет», а там запаса по высоте нет. */
+  #s-theme .layers{margin-top:44px}
+  #s-theme .layer{padding:46px 44px 54px}
+  #s-theme .layer__k{font-size:13px; margin-bottom:18px}
+  #s-theme .layer h3{font-size:34px; margin-bottom:16px}
+  #s-theme .layer p{font-size:21px; line-height:1.62}
 
   /* «Пять решений» — уплотнение, иначе пять карточек не влезают в слайд */
-  .meta{padding:24px 34px}
-  .meta__i{margin-bottom:12px}
-  .meta h3{margin-bottom:6px}
+  .meta{padding:26px 38px}
+  .meta__i{font-size:12px; margin-bottom:14px}
+  .meta h3{font-size:28px; margin-bottom:10px}
 
   /* раскадровка: по две сцены на слайд */
   #storyboard{display:block; min-height:0}
   .scene{break-inside:avoid; page-break-inside:avoid; padding:28px 0}
+  /* сцены делят высоту слайда поровну: два кадра на первой странице,
+     три — на остальных. Содержимое центрируется по вертикали, чтобы
+     запас высоты расходился равномерно, а не копился снизу. */
+  #storyboard .scene{min-height:268px; align-content:center}
+  /* описание кадра идёт колонкой, а не строкой во всю ширину слайда */
+  #storyboard .scene p{max-width:640px}
+  #storyboard .pslide .scene{min-height:285px}
   .scene__tc{opacity:1}
   /* разрыв ПЕРЕД сценой, а не после: с break-after Chrome терял один разрыв
      и склеивал два слайда раскадровки в один */
   .scene.pb{break-before:page; page-break-before:always}
+  /* Сцена, обёрнутая в печатный слайд, свой разрыв уже не ставит:
+     его делает обёртка вместе с повторной шапкой раздела. */
+  .pslide .scene.pb{break-before:auto; page-break-before:auto}
   .frame{background:var(--ink-2); max-width:690px; margin-left:auto}
   /* видео в печать идёт постером — одноимённым jpg из assets/scenes */
   .frame video{object-fit:contain}
 
   .closing{justify-content:center; text-align:center; padding:60px 0!important}
   .closing__q{min-height:0; display:block}
-  .credits{padding-top:0}
+  /* реквизиты — подвал слайда: кегль как у подписей обложки,
+     сам блок выведен из потока, чтобы цитата центрировалась по странице */
+  .credits{position:absolute; left:0; right:0; bottom:60px; padding-top:0;
+           font-size:19px; letter-spacing:.16em; line-height:1.9; opacity:.72}
+  .credits .mt-s{margin-top:22px}
   .closing q{font-size:52px}
 }

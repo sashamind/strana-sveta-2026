@@ -23,7 +23,7 @@
 
 <div class="tools">
   <a class="pdf" id="pdfBtn" href="priruchenny-ogon.pdf"
-     download="Тула — отражение Огня. Страна СВЕТА 2026.pdf">Скачать PDF</a>
+     download="Страна Света 2026 — Миндрин — Тула — отражение Огня.pdf">Скачать PDF</a>
 </div>
 
 <!-- ============ 1. HERO ============ -->
@@ -46,6 +46,13 @@
       <div>Автор&nbsp;— <b>Александр Миндрин</b></div>
       <div>Регион&nbsp;— <b>Тула</b></div>
     </div>
+    <!-- Только для PDF: на сайте эта сноска бессмысленна — читатель уже
+         в интерактивной версии. Ссылки встроены в текст; printToPDF
+         сохраняет их кликабельными. Ссылка на материалы пока заглушка. -->
+    <div class="hero__note">
+      <span>Вы смотрите PDF-версию презентации.</span>
+      <span>Подробная интерактивная версия&nbsp;— <a href="https://sashamind.github.io/strana-sveta-2026/">на&nbsp;сайте</a>, материалы к&nbsp;презентации&nbsp;— <a class="hero__note-soon">здесь</a>.</span>
+    </div>
   </div>
   <canvas class="hero__embers" id="embers" aria-hidden="true"></canvas>
   <div class="hero__hint" aria-hidden="true"><span></span>Листайте</div>
@@ -53,7 +60,7 @@
 </section>
 
 <!-- ============ 2. CONTEXT ============ -->
-<section class="band band--tint" id="s-city" data-nav="Тульский регион">
+<section class="band band--tint" id="s-city" data-nav="Малая родина">
   <div class="wrap rv seq">
     <div class="eyebrow sq" style="--d:0s"><i>01</i>Малая родина</div>
     <div class="rule sq" style="--d:.12s"></div>
@@ -71,34 +78,475 @@
       </div>
 
       <div class="fb ctx__text">
-        <div class="lore lore--flame sq" style="--d:.95s">
-          <div class="lore__lead">Узнаваемые символы и&nbsp;образы</div>
+        <div class="lore lore--flame">
+          <div class="lore__lead sq" style="--d:2.35s">Узнаваемые символы и&nbsp;образы</div>
           <ul class="lore__list">
-            <li class="lore__item" tabindex="0"><span class="lore__word">Самовар</span><span class="lore__ico" data-ico="samovar" aria-hidden="true"></span><span class="lore__tip">Около 150&nbsp;форм. Первая фабрика открыта в&nbsp;1778&nbsp;году.</span></li>
-            <li class="lore__item" tabindex="0"><span class="lore__word">Пряник</span><span class="lore__ico" data-ico="pryanik" aria-hidden="true"></span><span class="lore__tip">Знаменитый тульский печатный пряник: узор режется на&nbsp;доске зеркально и&nbsp;оттискивается в&nbsp;тесте.</span></li>
-            <li class="lore__item" tabindex="0"><span class="lore__word">Оружие</span><span class="lore__ico" data-ico="oruzhie" aria-hidden="true"></span><span class="lore__tip">Казённый оружейный завод с&nbsp;1712&nbsp;года&nbsp;— корень остальных ремёсел.</span></li>
-            <li class="lore__item" tabindex="0"><span class="lore__word">Левша</span><span class="lore__ico" data-ico="levsha" aria-hidden="true"></span><span class="lore__tip">Герой Лескова, подковавший блоху. Вырос из&nbsp;тульского оружейного дела.</span></li>
+            <li class="lore__item sq" style="--d:2.47s" tabindex="0"><span class="lore__word">Самовар</span><span class="lore__ico" data-ico="samovar" aria-hidden="true"></span><span class="lore__tip">Около 150&nbsp;форм. Первая фабрика открыта в&nbsp;1778&nbsp;году.</span></li>
+            <li class="lore__item sq" style="--d:2.59s" tabindex="0"><span class="lore__word">Пряник</span><span class="lore__ico" data-ico="pryanik" aria-hidden="true"></span><span class="lore__tip">Знаменитый тульский печатный пряник: узор режется на&nbsp;доске зеркально и&nbsp;оттискивается в&nbsp;тесте.</span></li>
+            <li class="lore__item sq" style="--d:2.71s" tabindex="0"><span class="lore__word">Оружие</span><span class="lore__ico" data-ico="oruzhie" aria-hidden="true"></span><span class="lore__tip">Казённый оружейный завод с&nbsp;1712&nbsp;года&nbsp;— корень многих ремёсел.</span></li>
+            <li class="lore__item sq" style="--d:2.83s" tabindex="0"><span class="lore__word">Левша</span><span class="lore__ico" data-ico="levsha" aria-hidden="true"></span><span class="lore__tip">Герой Лескова, подковавший блоху. <br class="pbr">Вырос из&nbsp;тульского оружейного дела.</span></li>
+            <li class="lore__item sq" style="--d:2.95s" tabindex="0"><span class="lore__word">Толстой</span><span class="lore__ico" data-ico="tolstoy" aria-hidden="true"></span><span class="lore__tip">Ясная Поляна под Тулой&nbsp;— дом, где он родился, писал и&nbsp;похоронен. Отсюда «Война и&nbsp;мир» и&nbsp;«Анна Каренина».</span></li>
           </ul>
         </div>
 
-        <div class="lore lore--ember sq" style="--d:1.2s">
-          <div class="lore__lead">Промыслы региона</div>
+        <div class="lore lore--ember">
+          <div class="lore__lead sq" style="--d:4.05s">Промыслы региона</div>
           <ul class="lore__list">
-            <li class="lore__item" tabindex="0"><span class="lore__word">Керамика</span><span class="lore__ico" data-ico="keramika" aria-hidden="true"></span><span class="lore__tip">Глина разошлась по&nbsp;региону несколькими промыслами: филимоновская игрушка, тульская городская игрушка, яснополянская керамика, белёвская и&nbsp;богородицкая глиняные игрушки.</span></li>
-            <li class="lore__item" tabindex="0"><span class="lore__word">Всечка</span><span class="lore__ico" data-ico="vsechka" aria-hidden="true"></span><span class="lore__tip">Металлическая нить, вбитая в&nbsp;дерево ребром. Выросла из&nbsp;оружейного дела: так украшали ружейные ложа.</span></li>
-            <li class="lore__item" tabindex="0"><span class="lore__word">Гармонь</span><span class="lore__ico" data-ico="garmon" aria-hidden="true"></span><span class="lore__tip">Хромка, изобретена в&nbsp;Туле, из&nbsp;неё вырос баян. Дело подняли оружейники и&nbsp;самоварщики: первую фабрику открыл оружейник Тимофей Воронцов.</span></li>
+            <li class="lore__item sq" style="--d:4.2s" tabindex="0"><span class="lore__word">Керамика</span><span class="lore__ico" data-ico="keramika" aria-hidden="true"></span><span class="lore__tip">Глина разошлась по&nbsp;региону несколькими промыслами: филимоновская игрушка, тульская городская игрушка, яснополянская керамика, белёвская и&nbsp;богородицкая глиняные игрушки.</span></li>
+            <li class="lore__item sq" style="--d:4.32s" tabindex="0"><span class="lore__word">Всечка</span><span class="lore__ico" data-ico="vsechka" aria-hidden="true"></span><span class="lore__tip">Металлическая нить, вбитая в&nbsp;дерево ребром. Выросла из&nbsp;оружейного дела: так украшали ружейные ложа.</span></li>
+            <li class="lore__item sq" style="--d:4.44s" tabindex="0"><span class="lore__word">Гармонь</span><span class="lore__ico" data-ico="garmon" aria-hidden="true"></span><span class="lore__tip">Хромка, изобретена в&nbsp;Туле, из&nbsp;неё вырос баян. Дело подняли оружейники и&nbsp;самоварщики: первую фабрику открыл оружейник Тимофей Воронцов.</span></li>
           </ul>
         </div>
       </div>
+    </div>
+
+    <div class="fb ctx__next" data-nav="Концепция">
+      <div class="eyebrow sq" style="--d:4.5s"><i>02</i>Концепция</div>
+      <div class="rule sq" style="--d:4.6s"></div>
+      <h2 class="sq" style="--d:4.7s">Почему Огонь?</h2>
+      <p class="lead sq" style="--d:4.9s"><b class="hl">Искусство&nbsp;—</b> следствие ремёсел,<br>в&nbsp;основе тульских&nbsp;<b class="hl">— огонь</b>.</p>
+
+      <!-- Цепочка ремёсел. Два варианта одной схемы: широкая раскладка слева
+           направо для экрана и печати, узкая ёлочка — для телефона, где
+           горизонтальная схема сжалась бы до нечитаемого кегля.
+           data-node — узел, на который наводят или по которому касаются;
+           data-up — список узлов, для которых этот элемент лежит выше по
+           цепочке. Список задан вручную, а не выведен транзитивно: гармонь
+           взяла от самовара металл, а не очаг, поэтому кулинария в её
+           подсветку не входит, хотя формально стоит выше самовара. Пара из них даёт и подсветку всего пути к узлу, и нужную
+           сноску под схемой — по одному правилу на узел, а не на связь.
+           В широкой раскладке каждая связь выходит из своей точки правого
+           края узла: с общим корешком две стрелки читались как одна разводка.
+           Стрелки нарисованы подпутями внутри самих связей, а не маркерами:
+           содержимое marker наследует цвет от defs, а не от линии, и при
+           подсветке оставалось бы тусклым. -->
+      <figure class="flow">
+        <svg class="flow__svg flow--wide" viewBox="0 0 916 306" aria-hidden="true">
+          <g class="sq" style="--d:5.25s">
+            <g class="flow__n" data-node="ogon" data-up="ogon remeslo keramika kulinaria metall igrushka posuda pryanik oruzhie vsechka samovar garmon">
+              <rect class="flow__bx" x="1" y="132" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="60" y="152" dy=".35em">Огонь</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.4s">
+            <path class="flow__ln" data-up="remeslo keramika kulinaria metall igrushka posuda pryanik oruzhie vsechka samovar garmon" d="M119 152H199 M193 148.4L199 152L193 155.6"/>
+            <g class="flow__n" data-node="remeslo" data-up="remeslo keramika kulinaria metall igrushka posuda pryanik oruzhie vsechka samovar garmon">
+              <rect class="flow__bx" x="199" y="132" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="258" y="152" dy=".35em">Ремесло</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.55s">
+            <path class="flow__ln" data-up="keramika igrushka posuda" d="M317 140H345V56H397 M391 52.4L397 56L391 59.6"/>
+            <path class="flow__ln" data-up="kulinaria pryanik posuda samovar" d="M317 152H397 M391 148.4L397 152L391 155.6"/>
+            <path class="flow__ln" data-up="metall oruzhie vsechka samovar garmon" d="M317 164H361V248H397 M391 244.4L397 248L391 251.6"/>
+            <g class="flow__n" data-node="keramika" data-up="keramika igrushka posuda">
+              <rect class="flow__bx" x="397" y="36" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="456" y="56" dy=".35em">Керамика</text>
+            </g>
+            <g class="flow__n" data-node="kulinaria" data-up="kulinaria pryanik posuda samovar">
+              <rect class="flow__bx" x="397" y="132" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="456" y="152" dy=".35em">Кулинария</text>
+            </g>
+            <g class="flow__n" data-node="metall" data-up="metall oruzhie vsechka samovar garmon">
+              <rect class="flow__bx" x="397" y="228" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="456" y="248" dy=".35em">Металл</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.7s">
+            <path class="flow__ln" data-up="igrushka" d="M515 48H549V24H595 M589 20.4L595 24L589 27.6"/>
+            <path class="flow__ln" data-up="posuda" d="M515 64H565V88H595 M589 84.4L595 88L589 91.6"/>
+            <path class="flow__ln" data-up="posuda" d="M515 140H565V88H595 M589 84.4L595 88L589 91.6"/>
+            <path class="flow__ln" data-up="pryanik" d="M515 152H595 M589 148.4L595 152L589 155.6"/>
+            <path class="flow__ln" data-up="samovar" d="M515 164H565V280H595 M589 276.4L595 280L589 283.6"/>
+            <path class="flow__ln" data-up="oruzhie vsechka garmon" d="M515 240H549V216H595 M589 212.4L595 216L589 219.6"/>
+            <path class="flow__ln" data-up="samovar garmon" d="M515 256H565V280H595 M589 276.4L595 280L589 283.6"/>
+            <g class="flow__n" data-node="igrushka" data-up="igrushka">
+              <rect class="flow__bx" x="595" y="4" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="654" y="24" dy=".35em">Игрушка</text>
+            </g>
+            <g class="flow__n" data-node="posuda" data-up="posuda">
+              <rect class="flow__bx" x="595" y="68" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="654" y="88" dy=".35em">Посуда</text>
+            </g>
+            <g class="flow__n" data-node="pryanik" data-up="pryanik">
+              <rect class="flow__bx" x="595" y="132" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="654" y="152" dy=".35em">Пряник</text>
+            </g>
+            <g class="flow__n" data-node="oruzhie" data-up="oruzhie vsechka garmon">
+              <rect class="flow__bx" x="595" y="196" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="654" y="216" dy=".35em">Оружие</text>
+            </g>
+            <g class="flow__n" data-node="samovar" data-up="samovar garmon">
+              <rect class="flow__bx" x="595" y="260" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="654" y="280" dy=".35em">Самовар</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.9s">
+            <path class="flow__ln" data-up="vsechka" d="M713 206H745V176H793 M787 172.4L793 176L787 179.6"/>
+            <path class="flow__ln" data-up="garmon" d="M713 226H761V248H793 M787 244.4L793 248L787 251.6"/>
+            <path class="flow__ln" data-up="garmon" d="M713 280H761V248H793 M787 244.4L793 248L787 251.6"/>
+            <g class="flow__n" data-node="vsechka" data-up="vsechka">
+              <rect class="flow__bx" x="793" y="156" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="852" y="176" dy=".35em">Всечка</text>
+            </g>
+            <g class="flow__n" data-node="garmon" data-up="garmon">
+              <rect class="flow__bx" x="793" y="228" width="118" height="40" rx="2"/>
+              <text class="flow__tx" x="852" y="248" dy=".35em">Гармонь</text>
+            </g>
+          </g>
+        </svg>
+
+        <!-- Узкий вариант: центральная ось, ветви расходятся симметрично влево
+             и вправо, чтение строго сверху вниз. Пропускающие связи идут
+             отдельными дорожками — по краям холста и в просветах между
+             колонками, — поэтому линии нигде не пересекаются.
+             Сетка: колонки 96 по центрам 58 / 176 / 294, ряды через 52,
+             дорожки на 4, 117, 235 и 348. -->
+        <svg class="flow__svg flow--tall" viewBox="0 0 352 362" aria-hidden="true">
+          <g class="sq" style="--d:5.25s">
+            <g class="flow__n" data-node="ogon" data-up="ogon remeslo keramika kulinaria metall igrushka posuda pryanik oruzhie vsechka samovar garmon">
+              <rect class="flow__bx" x="128" y="0" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="176" y="15" dy=".35em">Огонь</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.4s">
+            <path class="flow__ln" data-up="remeslo keramika kulinaria metall igrushka posuda pryanik oruzhie vsechka samovar garmon" d="M176 30V52 M173 47L176 52L179 47"/>
+            <g class="flow__n" data-node="remeslo" data-up="remeslo keramika kulinaria metall igrushka posuda pryanik oruzhie vsechka samovar garmon">
+              <rect class="flow__bx" x="128" y="52" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="176" y="67" dy=".35em">Ремесло</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.55s">
+            <path class="flow__ln" data-up="keramika igrushka posuda" d="M176 82V97H58V112 M55 107L58 112L61 107"/>
+            <path class="flow__ln" data-up="kulinaria pryanik posuda samovar" d="M176 82V164 M173 159L176 164L179 159"/>
+            <path class="flow__ln" data-up="metall oruzhie vsechka samovar garmon" d="M176 82V97H294V112 M291 107L294 112L297 107"/>
+            <g class="flow__n" data-node="keramika" data-up="keramika igrushka posuda">
+              <rect class="flow__bx" x="10" y="112" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="58" y="127" dy=".35em">Керамика</text>
+            </g>
+            <g class="flow__n" data-node="metall" data-up="metall oruzhie vsechka samovar garmon">
+              <rect class="flow__bx" x="246" y="112" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="294" y="127" dy=".35em">Металл</text>
+            </g>
+            <g class="flow__n" data-node="kulinaria" data-up="kulinaria pryanik posuda samovar">
+              <rect class="flow__bx" x="128" y="164" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="176" y="179" dy=".35em">Кулинария</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.7s">
+            <path class="flow__ln" data-up="igrushka" d="M58 142V216 M55 211L58 216L61 211"/>
+            <path class="flow__ln" data-up="pryanik" d="M176 194V216 M173 211L176 216L179 211"/>
+            <path class="flow__ln" data-up="oruzhie vsechka garmon" d="M294 142V216 M291 211L294 216L297 211"/>
+            <!-- «Посуда» принимает две связи с двух сторон: слева от «Керамики»
+                 краевой дорожкой, справа от «Кулинарии» — просветом колонок -->
+            <path class="flow__ln" data-up="posuda" d="M10 127H4V283H10 M5 280L10 283L5 286"/>
+            <path class="flow__ln" data-up="posuda" d="M128 179H117V283H106 M111 280L106 283L111 286"/>
+            <!-- «Самовар» — обе связи сходятся в одну стрелку -->
+            <path class="flow__ln" data-up="samovar" d="M224 179H235V283H224 M229 280L224 283L229 286"/>
+            <path class="flow__ln" data-up="samovar garmon" d="M246 127H235V283H224 M229 280L224 283L229 286"/>
+            <g class="flow__n" data-node="igrushka" data-up="igrushka">
+              <rect class="flow__bx" x="10" y="216" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="58" y="231" dy=".35em">Игрушка</text>
+            </g>
+            <g class="flow__n" data-node="pryanik" data-up="pryanik">
+              <rect class="flow__bx" x="128" y="216" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="176" y="231" dy=".35em">Пряник</text>
+            </g>
+            <g class="flow__n" data-node="oruzhie" data-up="oruzhie vsechka garmon">
+              <rect class="flow__bx" x="246" y="216" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="294" y="231" dy=".35em">Оружие</text>
+            </g>
+            <g class="flow__n" data-node="posuda" data-up="posuda">
+              <rect class="flow__bx" x="10" y="268" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="58" y="283" dy=".35em">Посуда</text>
+            </g>
+            <g class="flow__n" data-node="samovar" data-up="samovar garmon">
+              <rect class="flow__bx" x="128" y="268" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="176" y="283" dy=".35em">Самовар</text>
+            </g>
+          </g>
+
+          <g class="sq" style="--d:5.9s">
+            <path class="flow__ln" data-up="vsechka" d="M294 246V268 M291 263L294 268L297 263"/>
+            <!-- «Гармонь» собирает металл оружейников и меха самоварщиков:
+                 обе линии сходятся в общую стрелку -->
+            <path class="flow__ln" data-up="garmon" d="M176 298V330 M173 325L176 330L179 325"/>
+            <path class="flow__ln" data-up="garmon" d="M342 231H348V314H176V330 M173 325L176 330L179 325"/>
+            <g class="flow__n" data-node="vsechka" data-up="vsechka">
+              <rect class="flow__bx" x="246" y="268" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="294" y="283" dy=".35em">Всечка</text>
+            </g>
+            <g class="flow__n" data-node="garmon" data-up="garmon">
+              <rect class="flow__bx" x="128" y="330" width="96" height="30" rx="2"/>
+              <text class="flow__tx" x="176" y="345" dy=".35em">Гармонь</text>
+            </g>
+          </g>
+        </svg>
+
+        <!-- В печати всё, что ниже, — второй слайд «Почему Огонь?»: та же шапка
+             и тот же заголовок, абзац про «искоусъ» и все сноски разом.
+             На экране обёртка прозрачна, а порядок задаёт флекс (см. styles.css),
+             поэтому текст нигде не продублирован — только шапка и заголовок. -->
+        <div class="pslide pslide--why">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <h2 class="h2--cont" aria-hidden="true">Почему Огонь?</h2>
+  <p class="mt sq" style="--d:5.05s">Ремесленная суть искусства во&nbsp;многом отражает изначальный смысл слова: <i>искоусъ</i>&nbsp;— «испытание, проба, опыт». Искусство&nbsp;— не&nbsp;случайность, а&nbsp;результат отточенного мастерства многих поколений.</p>
+          <div class="flow__note sq" style="--d:6.05s">
+            <p class="flow__nt flow__nt--hint">
+              <span class="flow__say flow__say--hov">Наведите на&nbsp;узел&nbsp;— подсветится путь, которым к&nbsp;нему пришли.</span>
+              <span class="flow__say flow__say--tap">Коснитесь узла&nbsp;— подсветится путь, которым к&nbsp;нему пришли.</span>
+            </p>
+            <p class="flow__nt" data-up="ogon"><span class="flow__chain">Начало цепочки</span><span class="flow__say">Горн, печь, обжиг. Всё, что делает Тула, начинается с&nbsp;управляемого огня&nbsp;— дальше расходятся только материалы.</span></p>
+            <p class="flow__nt" data-up="remeslo"><span class="flow__chain">Огонь → Ремесло</span><span class="flow__say">Огонь становится ремеслом там, где им научились управлять: температура, выдержка, повтор. Отсюда расходятся многие тульские промыслы, а&nbsp;Тула становится кузницей.</span></p>
+            <p class="flow__nt" data-up="metall"><span class="flow__chain">Огонь → Ремесло → Металл</span><span class="flow__say">Ковка и&nbsp;литьё: металл берёт форму, пока горяч. Тула стояла на&nbsp;железной руде и&nbsp;воде&nbsp;— отсюда и&nbsp;заводы.</span></p>
+            <p class="flow__nt" data-up="keramika"><span class="flow__chain">Огонь → Ремесло → Керамика</span><span class="flow__say">Глина держит форму только после обжига: ремесло здесь&nbsp;— точный огонь и&nbsp;точное время. В&nbsp;Филимонове под Одоевом гончарили веками; тамошняя синяя «синика» так пластична, что фигурка при заглаживании сама вытягивается&nbsp;— отсюда длинные шеи филимоновской игрушки.</span></p>
+            <p class="flow__nt" data-up="kulinaria"><span class="flow__chain">Огонь → Ремесло → Кулинария</span><span class="flow__say">Печь&nbsp;— то&nbsp;же управление огнём, только для&nbsp;приготовления: форму задают руки, а&nbsp;жар закрепляет её и&nbsp;даёт цвет.</span></p>
+            <p class="flow__nt" data-up="oruzhie"><span class="flow__chain">Огонь → Ремесло → Металл → Оружие</span><span class="flow__say">Казённый оружейный завод с&nbsp;1712&nbsp;года. Здесь ремесло стало точностью&nbsp;— и&nbsp;подняло за&nbsp;собой всё остальное.</span></p>
+            <p class="flow__nt" data-up="samovar"><span class="flow__chain">Огонь → Ремесло → Металл + Кулинария → Самовар</span><span class="flow__say">Латунь, пайка, лужение&nbsp;— ремесло оружейных мастерских. Но&nbsp;топит его уголь, а&nbsp;делает он&nbsp;кипяток: самовар стоит и&nbsp;на&nbsp;металле, и&nbsp;на&nbsp;огне очага&nbsp;— вокруг него собирается стол.</span></p>
+            <p class="flow__nt" data-up="vsechka"><span class="flow__chain">Огонь → Ремесло → Металл → Оружие → Всечка</span><span class="flow__say">Металлическая нить, вбитая в&nbsp;дерево ребром. Приём пришёл прямо с&nbsp;оружейного дела: так украшали ружейные ложа.</span></p>
+            <p class="flow__nt" data-up="garmon"><span class="flow__chain">Огонь → Ремесло → Металл → Оружие + Самовар → Гармонь</span><span class="flow__say">Хромка. Первую фабрику открыл оружейник Тимофей Воронцов: гармонь свела вместе металл оружейников и&nbsp;меха самоварщиков.</span></p>
+            <p class="flow__nt" data-up="igrushka"><span class="flow__chain">Огонь → Ремесло → Керамика → Игрушка</span><span class="flow__say">Филимоновская, тульская городская, белёвская, богородицкая&nbsp;— вся глиняная игрушка&nbsp;— результат обжига.</span></p>
+            <p class="flow__nt" data-up="posuda"><span class="flow__chain">Огонь → Ремесло → Керамика + Кулинария → Посуда</span><span class="flow__say">Яснополянская керамика: та&nbsp;же глина и&nbsp;тот&nbsp;же обжиг. Но&nbsp;посуда стоит на&nbsp;двух ремёслах сразу: черепок ей даёт керамика, а&nbsp;форму и&nbsp;меру&nbsp;— кулинария. Под какую еду сделана&nbsp;— такой и&nbsp;получается: горшок под печь, крынка под молоко, миска под общий стол.</span></p>
+            <p class="flow__nt" data-up="pryanik"><span class="flow__chain">Огонь → Ремесло → Кулинария → Пряник</span><span class="flow__say">Печатный пряник: узор режут на&nbsp;доске зеркально и&nbsp;оттискивают в&nbsp;тесте. Рисунок закрепляет печь.</span></p>
+</div>
+        </div>
+      </figure>
+    </div>
+
+    <div class="fb ctx__next">
+      <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+      <div class="rule rule--cont" aria-hidden="true"></div>
+      <h2 class="sq" style="--d:6.2s">Сюжетная основа</h2>
+      <p class="lead sq" style="--d:6.35s">Приручение огня&nbsp;— первый миф,<br>который человечество рассказало о&nbsp;себе.</p>
+      <p class="vh">Два полюса в&nbsp;рамках: хаос&nbsp;— огонь, стихия, природа, начало&nbsp;— и&nbsp;гармония&nbsp;— искусство, созидание, ремесло, конец. Между ними круговая стрелка: приручение ведёт от&nbsp;хаоса к&nbsp;гармонии, одичание возвращает обратно. Процесс не&nbsp;заканчивается.</p>
+
+      <!-- Два полюса, каждый в своей рамке, и замкнутый круг между ними: сплошная
+           «приручение» вперёд и пунктирное «одичание» назад, а в середине круговая
+           двойная стрелка — она вращается непрерывно и показывает, что процесс
+           не заканчивается. Два варианта одной схемы: широкий и узкий. -->
+      <figure class="myth sq" style="--d:6.5s">
+        <svg class="myth__svg myth--wide" viewBox="0 0 720 316" aria-hidden="true">
+          <path class="myth__ln" d="M116 54V16H280"/>
+          <text class="myth__k" x="360" y="16" dy=".35em">Приручение</text>
+          <path class="myth__ln" d="M440 16H604V54 M600.4 48L604 54L607.6 48"/>
+
+          <rect class="myth__bx myth__bx--chaos" x="1" y="54" width="230" height="208" rx="2"/>
+          <text class="myth__t myth__t--chaos" x="116" y="110" dy=".35em">Хаос</text>
+          <text class="myth__s" x="116" y="162" dy=".35em">ОГОНЬ</text>
+          <text class="myth__s" x="116" y="184" dy=".35em">СТИХИЯ</text>
+          <text class="myth__s" x="116" y="206" dy=".35em">ПРИРОДА</text>
+          <text class="myth__s" x="116" y="228" dy=".35em">НАЧАЛО</text>
+
+          <g transform="translate(360 158) scale(1.5)"><g class="myth__spin">
+              <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+                                from="0 0 0" to="360 0 0" dur="12s" repeatCount="indefinite"/>
+              <path class="myth__cyc" d="M-20.67 -7.52A22 22 0 0 1 20.67 -7.52"/>
+              <path class="myth__cyc" d="M15.8 -12.13L20.67 -7.52L21.44 -14.19"/>
+              <path class="myth__cyc" d="M20.67 7.52A22 22 0 0 1 -20.67 7.52"/>
+              <path class="myth__cyc" d="M-15.8 12.13L-20.67 7.52L-21.44 14.19"/>
+            </g></g>
+
+          <rect class="myth__bx myth__bx--order" x="489" y="54" width="230" height="208" rx="2"/>
+          <text class="myth__t myth__t--order" x="604" y="110" dy=".35em">Гармония</text>
+          <text class="myth__s" x="604" y="162" dy=".35em">ИСКУССТВО</text>
+          <text class="myth__s" x="604" y="184" dy=".35em">СОЗИДАНИЕ</text>
+          <text class="myth__s" x="604" y="206" dy=".35em">РЕМЕСЛО</text>
+          <text class="myth__s" x="604" y="228" dy=".35em">КОНЕЦ</text>
+
+          <path class="myth__ln myth__ln--back" d="M604 262V300H418"/>
+          <text class="myth__k myth__k--back" x="360" y="300" dy=".35em">Одичание</text>
+          <path class="myth__ln myth__ln--back" d="M302 300H116V262 M112.4 268L116 262L119.6 268"/>
+        </svg>
+
+        <!-- Узкий вариант: рамки поджаты по полям, круговая стрелка между ними,
+             а подписи повёрнуты вдоль боковых дорожек и разрывают их — так же,
+             как в широком варианте слово разрывает горизонтальную линию. -->
+        <svg class="myth__svg myth--tall" viewBox="0 0 320 464" aria-hidden="true">
+          <rect class="myth__bx myth__bx--chaos" x="62" y="44" width="196" height="164" rx="2"/>
+          <text class="myth__t myth__t--chaos" x="160" y="78" dy=".35em">Хаос</text>
+          <text class="myth__s" x="160" y="116" dy=".35em">ОГОНЬ</text>
+          <text class="myth__s" x="160" y="138" dy=".35em">СТИХИЯ</text>
+          <text class="myth__s" x="160" y="160" dy=".35em">ПРИРОДА</text>
+          <text class="myth__s" x="160" y="182" dy=".35em">НАЧАЛО</text>
+
+          <path class="myth__ln" d="M62 126H26V192"/>
+          <text class="myth__k" x="26" y="252" dy=".35em" transform="rotate(90 26 252)">Приручение</text>
+          <path class="myth__ln" d="M26 312V378H62 M56 374.4L62 378L56 381.6"/>
+
+          <path class="myth__ln myth__ln--back" d="M258 378H294V296"/>
+          <text class="myth__k myth__k--back" x="294" y="252" dy=".35em" transform="rotate(-90 294 252)">Одичание</text>
+          <path class="myth__ln myth__ln--back" d="M294 208V126H258 M264 122.4L258 126L264 129.6"/>
+
+          <g transform="translate(160 252)"><g class="myth__spin">
+              <animateTransform attributeName="transform" attributeType="XML" type="rotate"
+                                from="0 0 0" to="360 0 0" dur="12s" repeatCount="indefinite"/>
+              <path class="myth__cyc" d="M-20.67 -7.52A22 22 0 0 1 20.67 -7.52"/>
+              <path class="myth__cyc" d="M15.8 -12.13L20.67 -7.52L21.44 -14.19"/>
+              <path class="myth__cyc" d="M20.67 7.52A22 22 0 0 1 -20.67 7.52"/>
+              <path class="myth__cyc" d="M-15.8 12.13L-20.67 7.52L-21.44 14.19"/>
+            </g></g>
+
+          <rect class="myth__bx myth__bx--order" x="62" y="296" width="196" height="164" rx="2"/>
+          <text class="myth__t myth__t--order" x="160" y="330" dy=".35em">Гармония</text>
+          <text class="myth__s" x="160" y="368" dy=".35em">ИСКУССТВО</text>
+          <text class="myth__s" x="160" y="390" dy=".35em">СОЗИДАНИЕ</text>
+          <text class="myth__s" x="160" y="412" dy=".35em">РЕМЕСЛО</text>
+          <text class="myth__s" x="160" y="434" dy=".35em">КОНЕЦ</text>
+        </svg>
+      </figure>
+    </div>
+
+    <div class="fb ctx__next">
+      <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+      <div class="rule rule--cont" aria-hidden="true"></div>
+      <h2 class="sq" style="--d:6.8s">Адаптация мифа</h2>
+      <p class="lead sq" style="--d:6.9s">Идея концепции&nbsp;— собрать разрозненные образы Тулы<br>в&nbsp;один нарратив приручения огня.</p>
+      <p class="mt sq" style="--d:7.1s">Сценарий держится на&nbsp;цепочке из&nbsp;пяти состояний: искра разгорается, стихия буйствует, стихию приручают&nbsp;— и&nbsp;она становится ремеслом; внутри ремесла рождается новая искра, замысел, а&nbsp;воплощённый замысел становится искусством. Оба конца истории держит искра: огонь не&nbsp;гаснет, он&nbsp;меняет природу.</p>
+
+      <!-- Пять состояний одной цепочки. Первые два узла в оттенке пламени,
+           третий — перелом, последние два золотом: цвет ведёт от стихии
+           к искусству. Пунктирный возврат снизу замыкает круг — та же искра,
+           но уже в глазах автора. Два варианта: широкий и узкий. -->
+      <figure class="scen sq" style="--d:7.2s">
+        <svg class="scen__svg scen--wide" viewBox="0 0 768 186" aria-hidden="true">
+          <text class="scen__n" x="64"  y="16" dy=".35em">01</text>
+          <text class="scen__n" x="224" y="16" dy=".35em">02</text>
+          <text class="scen__n" x="384" y="16" dy=".35em">03</text>
+          <text class="scen__n" x="544" y="16" dy=".35em">04</text>
+          <text class="scen__n" x="704" y="16" dy=".35em">05</text>
+
+          <rect class="scen__bx scen__bx--chaos" x="1"   y="40" width="126" height="52" rx="2"/>
+          <text class="scen__t scen__t--chaos" x="64"  y="66" dy=".35em">Искра</text>
+          <text class="scen__s" x="64"  y="112" dy=".35em">ВСПЫШКА</text>
+
+          <path class="scen__ln" d="M127 66H161 M155 62.4L161 66L155 69.6"/>
+
+          <rect class="scen__bx scen__bx--chaos" x="161" y="40" width="126" height="52" rx="2"/>
+          <text class="scen__t scen__t--chaos" x="224" y="66" dy=".35em">Стихия</text>
+          <text class="scen__s" x="224" y="112" dy=".35em">БУЙСТВО</text>
+
+          <path class="scen__ln" d="M287 66H321 M315 62.4L321 66L315 69.6"/>
+
+          <rect class="scen__bx scen__bx--turn" x="321" y="40" width="126" height="52" rx="2"/>
+          <text class="scen__t scen__t--turn" x="384" y="66" dy=".35em">Ремесло</text>
+          <text class="scen__s" x="384" y="112" dy=".35em">ПРИРУЧЕНИЕ</text>
+
+          <path class="scen__ln" d="M447 66H481 M475 62.4L481 66L475 69.6"/>
+
+          <rect class="scen__bx scen__bx--order" x="481" y="40" width="126" height="52" rx="2"/>
+          <text class="scen__t scen__t--order" x="544" y="66" dy=".35em">Замысел</text>
+          <text class="scen__s" x="544" y="112" dy=".35em">НОВАЯ ИСКРА</text>
+
+          <path class="scen__ln" d="M607 66H641 M635 62.4L641 66L635 69.6"/>
+
+          <rect class="scen__bx scen__bx--order" x="641" y="40" width="126" height="52" rx="2"/>
+          <text class="scen__t scen__t--order" x="704" y="66" dy=".35em">Искусство</text>
+          <text class="scen__s" x="704" y="112" dy=".35em">ВОПЛОЩЕНИЕ</text>
+
+          <path class="scen__ln scen__ln--back" d="M704 92V166H438"/>
+          <text class="scen__k scen__k--back" x="384" y="166" dy=".35em">новый виток</text>
+          <path class="scen__ln scen__ln--back" d="M330 166H64V92 M60.4 98L64 92L67.6 98"/>
+        </svg>
+
+        <!-- Узкий вариант: та же цепочка сверху вниз, возврат уведён
+             на правое поле, подпись повёрнута вдоль него и разрывает линию. -->
+        <svg class="scen__svg scen--tall" viewBox="0 0 320 540" aria-hidden="true">
+          <text class="scen__n" x="32" y="57"  dy=".35em">01</text>
+          <rect class="scen__bx scen__bx--chaos" x="62" y="24" width="196" height="66" rx="2"/>
+          <text class="scen__t scen__t--chaos" x="160" y="50" dy=".35em">Искра</text>
+          <text class="scen__s" x="160" y="74" dy=".35em">ВСПЫШКА</text>
+
+          <path class="scen__ln" d="M160 90V130 M156.4 124L160 130L163.6 124"/>
+
+          <text class="scen__n" x="32" y="163" dy=".35em">02</text>
+          <rect class="scen__bx scen__bx--chaos" x="62" y="130" width="196" height="66" rx="2"/>
+          <text class="scen__t scen__t--chaos" x="160" y="156" dy=".35em">Стихия</text>
+          <text class="scen__s" x="160" y="180" dy=".35em">БУЙСТВО</text>
+
+          <path class="scen__ln" d="M160 196V236 M156.4 230L160 236L163.6 230"/>
+
+          <text class="scen__n" x="32" y="269" dy=".35em">03</text>
+          <rect class="scen__bx scen__bx--turn" x="62" y="236" width="196" height="66" rx="2"/>
+          <text class="scen__t scen__t--turn" x="160" y="262" dy=".35em">Ремесло</text>
+          <text class="scen__s" x="160" y="286" dy=".35em">ПРИРУЧЕНИЕ</text>
+
+          <path class="scen__ln" d="M160 302V342 M156.4 336L160 342L163.6 336"/>
+
+          <text class="scen__n" x="32" y="375" dy=".35em">04</text>
+          <rect class="scen__bx scen__bx--order" x="62" y="342" width="196" height="66" rx="2"/>
+          <text class="scen__t scen__t--order" x="160" y="368" dy=".35em">Замысел</text>
+          <text class="scen__s" x="160" y="392" dy=".35em">НОВАЯ ИСКРА</text>
+
+          <path class="scen__ln" d="M160 408V448 M156.4 442L160 448L163.6 442"/>
+
+          <text class="scen__n" x="32" y="481" dy=".35em">05</text>
+          <rect class="scen__bx scen__bx--order" x="62" y="448" width="196" height="66" rx="2"/>
+          <text class="scen__t scen__t--order" x="160" y="474" dy=".35em">Искусство</text>
+          <text class="scen__s" x="160" y="498" dy=".35em">ВОПЛОЩЕНИЕ</text>
+
+          <path class="scen__ln scen__ln--back" d="M258 481H294V317"/>
+          <text class="scen__k scen__k--back" x="294" y="269" dy=".35em" transform="rotate(-90 294 269)">новый виток</text>
+          <path class="scen__ln scen__ln--back" d="M294 221V57H258 M264 53.4L258 57L264 60.6"/>
+        </svg>
+
+        <p class="vh">Цепочка из&nbsp;пяти состояний: искра&nbsp;— вспышка; стихия&nbsp;— буйство; ремесло&nbsp;— приручение; замысел&nbsp;— новая искра; искусство&nbsp;— воплощение. Пунктирный возврат от&nbsp;искусства к&nbsp;искре замыкает круг: новый виток.</p>
+      </figure>
+    </div>
+
+    <div class="fb ctx__next">
+      <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+      <div class="rule rule--cont" aria-hidden="true"></div>
+      <h2 class="sq" style="--d:7.4s">Персонажи и&nbsp;образы</h2>
+      <p class="lead sq" style="--d:7.55s">Герои входят по&nbsp;одному<br>и&nbsp;складывают ту&nbsp;же цепочку: огонь&nbsp;→ ремесло&nbsp;→ искусство.</p>
+
+      <div class="layers">
+        <div class="layer fb" style="--i:0">
+          <div class="layer__k">I&nbsp;· Стихия</div>
+          <h3>Искра</h3>
+          <p>С&nbsp;неё всё начинается: одна точка света в&nbsp;темноте, которая ещё ничего не&nbsp;умеет. Она проходит через всю работу и&nbsp;в&nbsp;финале становится ровным, спокойным светом.</p>
+        </div>
+        <div class="layer fb" style="--i:1">
+          <div class="layer__k">II&nbsp;· Ритм</div>
+          <h3>Молот</h3>
+          <p>Не&nbsp;фигура, а&nbsp;удар. Молот задаёт такт, и&nbsp;с&nbsp;него стихия впервые подчиняется счёту: вспышка и&nbsp;звук совпадают&nbsp;— это и&nbsp;есть момент приручения.</p>
+        </div>
+        <div class="layer fb" style="--i:2">
+          <div class="layer__k">III&nbsp;· Мастер</div>
+          <h3>Левша</h3>
+          <p>Показан рукой и&nbsp;силуэтом, без лица: тульский мастер как принцип, а&nbsp;не&nbsp;портрет. Делает невозможное молча&nbsp;— и&nbsp;не&nbsp;объясняет как.</p>
+        </div>
+        <div class="layer fb" style="--i:3">
+          <div class="layer__k">IV&nbsp;· Чудо</div>
+          <h3>Нимфозория</h3>
+          <p>Подкованная стальная блоха&nbsp;— предел мастерства и&nbsp;любимая тульская шутка о&nbsp;нём. Даёт работе смену масштаба: после огромного фасада зритель ищет глазами крошечное.</p>
+        </div>
+        <div class="layer fb" style="--i:4">
+          <div class="layer__k">V&nbsp;· Радость</div>
+          <h3>Глиняные игрушки</h3>
+          <p>Филимоновская барыня и&nbsp;свистулька: три открытых цвета и&nbsp;тонкий голос. Единственное место, где работа позволяет себе чистый цвет и&nbsp;прямую радость,&nbsp;— кульминация на&nbsp;2:05.</p>
+        </div>
+        <div class="layer fb" style="--i:5">
+          <div class="layer__k">VI&nbsp;· Слово</div>
+          <h3>Толстой</h3>
+          <p>Ясная Поляна&nbsp;— вторая, тихая Тула. Толстой замыкает путь: огонь, прошедший через ремесло, становится зеркалом, в&nbsp;которое смотрят.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ 3. BUILDING ============ -->
-<section class="band" id="s-setup" data-nav="Здание">
+<section class="band" id="s-setup" data-nav="Контекст">
   <div class="wrap rv">
-    <div class="eyebrow"><i>02</i>Контекст</div>
+    <div class="eyebrow"><i>03</i>Контекст</div>
     <div class="rule"></div>
     <div class="setup">
       <div class="fb">
@@ -120,8 +568,16 @@
              aria-label="Модель Штаба Гвардейского корпуса без текстур: камера обходит фасад"></video>
       <img class="render setup__still" src="assets/setup-frame.webp"
            alt="Базовый рендер фасада Штаба Гвардейского корпуса без текстур">
+      <!-- Тот же кадр, но с уже сведёнными краями: printToPDF теряет альфу
+           и в mask-image, и в градиентах, поэтому растворение запечено в файл. -->
+      <img class="setup__print" src="assets/setup-frame-print.webp" alt="" aria-hidden="true">
     </figure>
 
+    <!-- В печати хроника уезжает на свой слайд вместе с шапкой раздела.
+         На экране обёртка прозрачна (display:contents) — вёрстка та же. -->
+    <div class="pslide">
+    <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>03</i>Контекст</div>
+    <div class="rule rule--cont" aria-hidden="true"></div>
     <div class="syncbox fb">
     <div class="sync__lead">Связь здания и&nbsp;Тульского региона во&nbsp;времени</div>
     <div class="sync">
@@ -144,7 +600,14 @@
     </div>
 
     <div class="sync__lead">Связь архитектора с&nbsp;Тульским регионом</div>
-    <p class="sync__note"><b>Александр Брюллов</b>, архитектор Штаба гвардейского корпуса,&nbsp;— автор проекта <a href="https://kulpole.ru/places/memorial-na-krasnom-holme#video" target="_blank" rel="noopener">мемориала <b>на&nbsp;Красном холме</b></a>, главного символа Куликовской битвы. Памятник поставлен <b>в&nbsp;1850&nbsp;году</b>, через семь лет после петербургского здания.</p>
+    <div class="sync__arch">
+      <p class="sync__note"><b>Александр Брюллов</b>, архитектор Штаба гвардейского корпуса,&nbsp;— автор проекта <a href="https://kulpole.ru/places/memorial-na-krasnom-holme#video" target="_blank" rel="noopener">мемориала <b>на&nbsp;Красном холме</b></a>, главного символа Куликовской битвы. Памятник высотой <b>30&nbsp;метров</b> поставлен <b>в&nbsp;1850&nbsp;году</b>, через семь лет после петербургского здания.</p>
+      <figure class="sync__fig">
+        <img class="sync__ico" src="assets/icons/memorial.webp" alt="" aria-hidden="true">
+        <figcaption class="sync__cap">Чугун + золото</figcaption>
+      </figure>
+    </div>
+    </div>
     </div>
   </div>
 </section>
@@ -152,7 +615,7 @@
 <!-- ============ 4. THEME ============ -->
 <section class="band" id="s-theme" data-nav="Тема">
   <div class="wrap rv">
-    <div class="eyebrow"><i>03</i>Тема</div>
+    <div class="eyebrow"><i>04</i>Тема</div>
     <div class="rule"></div>
     <h2>Отражение&nbsp;— трижды</h2>
     <p class="lead lead--wide">Тема конкурса раскрывается в&nbsp;проекте на&nbsp;трёх уровнях одновременно: буквальном, ремесленном и&nbsp;смысловом.</p>
@@ -177,9 +640,9 @@
 </section>
 
 <!-- ============ 5. METAPHORS ============ -->
-<section class="band band--tint" id="s-lang" data-nav="Язык">
+<section class="band band--tint" id="s-lang" data-nav="Визуальный язык">
   <div class="wrap rv">
-    <div class="eyebrow"><i>04</i>Визуальный язык</div>
+    <div class="eyebrow"><i>05</i>Визуальный язык</div>
     <div class="rule"></div>
     <h2>Пять решений</h2>
     <div class="meta-grid">
@@ -215,7 +678,7 @@
 <!-- ============ 6. COLOUR ============ -->
 <section class="band" id="s-color" data-nav="Цвет">
   <div class="wrap rv">
-    <div class="eyebrow"><i>05</i>Цвет</div>
+    <div class="eyebrow"><i>06</i>Цвет</div>
     <div class="rule"></div>
     <h2>Цвет как&nbsp;температура</h2>
     <p class="lead lead--wide">Палитра взята у&nbsp;палехской лаковой миниатюры: тёплый свет, идущий изнутри тёмной поверхности. Цвет здесь не&nbsp;украшает, а&nbsp;измеряет&nbsp;— по&nbsp;нему видно, на&nbsp;какой стадии приручения находится огонь.</p>
@@ -223,52 +686,80 @@
     <div class="grad fb">
       <div class="grad__bar" aria-hidden="true"></div>
       <div class="grad__ends">
-        <span>0:00&nbsp;· холодный камень</span>
-        <span>2:30&nbsp;· зеркало</span>
+        <span>холодный камень</span>
+        <span>зеркало</span>
       </div>
     </div>
 
     <ul class="swatches fb">
       <li style="--c:var(--coal)"><i></i><b>Уголь</b><span>#2A1408</span><em>Фон всей работы и&nbsp;первая сцена</em></li>
-      <li style="--c:var(--flame)"><i></i><b>Пламя</b><span>#7A2E0C</span><em>Дикий огонь, 0:15&nbsp;—&nbsp;0:35</em></li>
-      <li style="--c:var(--ember)"><i></i><b>Жар</b><span>#F2A03D</span><em>Горн и&nbsp;расплав, 0:35&nbsp;—&nbsp;1:15</em></li>
+      <li style="--c:var(--flame)"><i></i><b>Пламя</b><span>#7A2E0C</span><em>Дикий огонь</em></li>
+      <li style="--c:var(--ember)"><i></i><b>Жар</b><span>#F2A03D</span><em>Горн и&nbsp;расплав</em></li>
       <li style="--c:var(--gold)"><i></i><b>Золото</b><span>#E8C87A</span><em>Всечка, застывший металл</em></li>
-      <li style="--c:var(--brass)"><i></i><b>Латунь</b><span>#B07B32</span><em>Самовар и&nbsp;пар, 1:35</em></li>
-      <li style="--c:var(--crimson)"><i></i><b>Малиновый</b><span>#C8365A</span><em>Филимоновский пик, 2:05</em></li>
-      <li style="--c:var(--mirror)"><i></i><b>Зеркало</b><span>#7FA4B8</span><em>Финал, 2:20&nbsp;—&nbsp;2:30</em></li>
+      <li style="--c:var(--brass)"><i></i><b>Латунь</b><span>#B07B32</span><em>Самовар и&nbsp;пар</em></li>
+      <li style="--c:var(--crimson)"><i></i><b>Малиновый</b><span>#C8365A</span><em>Филимоновский пик</em></li>
+      <li style="--c:var(--mirror)"><i></i><b>Зеркало</b><span>#7FA4B8</span><em>Финал</em></li>
     </ul>
 
-    <div class="layers">
-      <div class="layer fb" style="--i:0">
-        <div class="layer__k">Правило&nbsp;I</div>
-        <h3>Один источник</h3>
-        <p>Свет всегда идёт изнутри материала: раскалённый камень, тлеющая нить всечки, глазурь на&nbsp;прянике. Наружной подсветки нет ни&nbsp;в&nbsp;одной сцене&nbsp;— фасад светится сам.</p>
-      </div>
-      <div class="layer fb" style="--i:1">
-        <div class="layer__k">Правило&nbsp;II</div>
-        <h3>Открытый цвет&nbsp;— событие</h3>
-        <p>Чистые цвета филимоновской росписи звучат один раз, на&nbsp;кульминации. Всё до&nbsp;неё&nbsp;— оттенки нагрева.</p>
-        <div class="triad" aria-hidden="true">
-          <span style="background:var(--crimson)"></span>
-          <span style="background:var(--yellow)"></span>
-          <span style="background:var(--leaf)"></span>
-        </div>
-      </div>
-      <div class="layer fb" style="--i:2">
-        <div class="layer__k">Правило&nbsp;III</div>
-        <h3>Тёмное, но&nbsp;не&nbsp;чёрное</h3>
-        <p>Фон держится на&nbsp;угле, а&nbsp;не&nbsp;на&nbsp;нуле: в&nbsp;нём остаётся тепло. Поэтому здание не&nbsp;выглядит вырезанным из&nbsp;ночи&nbsp;— оно в&nbsp;ней стоит.</p>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- ============ 7. STORYBOARD ============ -->
+<!-- ============ 7. TEXTURES ============ -->
+<section class="band" id="s-tex" data-nav="Текстуры">
+  <div class="wrap rv">
+    <div class="eyebrow"><i>07</i>Текстуры</div>
+    <div class="rule"></div>
+    <h2>Из&nbsp;чего сделан свет</h2>
+    <p class="lead lead--wide">Проекция работает не&nbsp;цветом, а&nbsp;материалом: каждая сцена&nbsp;— узнаваемая поверхность, доведённая до&nbsp;свечения. Фактуры набираются с&nbsp;натуры&nbsp;— по&nbsp;съёмке тульских мастерских и&nbsp;музейных предметов.</p>
+
+    <ul class="swatches swatches--tex fb">
+      <li><b>Уголь</b><span>Начало</span><em>Почти чёрная тлеющая корка, сквозь трещины которой пробивается жар.</em></li>
+      <li><b>Глина</b><span>До обжига</span><em>Сырая и&nbsp;коричневая: держит след пальца и&nbsp;не&nbsp;бликует совсем.</em></li>
+      <li><b>Кирпич</b><span>Кремль</span><em>Обожжённый красный: тот, из&nbsp;которого сложены стены Тульского кремля.</em></li>
+      <li><b>Пряник</b><span>Оттиск</span><em>Матовая корка, глянец глазури, зеркальный узор доски.</em></li>
+      <li><b>Огонь</b><span>Свет</span><em>Не&nbsp;поверхность, а&nbsp;свечение изнутри: пламя, искры, марево над кровлей.</em></li>
+      <li><b>Латунь</b><span>Отражение</span><em>Единственная зеркальная поверхность: в&nbsp;боку самовара видна площадь.</em></li>
+      <li><b>Металл</b><span>Ковань</span><em>Горячий&nbsp;— текучий, остывший&nbsp;— матовый, в&nbsp;окалине и&nbsp;следах молота.</em></li>
+      <li><b>Глина</b><span>После обжига</span><em>Печь выбеливает черепок&nbsp;— белая заготовка под филимоновскую роспись.</em></li>
+      <li><b>Небо</b><span>Природа</span><em>Нерукотворная фактура: облака и&nbsp;листва над Ясной Поляной.</em></li>
+    </ul>
+
+    <!-- Вертикальная лента фактур: срез по верхушке фасада, повёрнутый на 90°,
+         узкой полосой справа от карточек. Нужна только в мобильной вёрстке, где
+         карточки идут одной колонкой; на десктопе и в печати скрыта, и фон
+         у display:none не загружается. Собрана из Textures_3.png (3840×2160):
+         на ленту кадр идёт почти без уменьшения, поэтому источник нужен
+         крупнее, чем для картинки здания.
+         Стоит после списка не случайно: в сетке .wrap лента занимает вторую
+         колонку, а список первую, и при автораскладке элемент с definite-
+         колонкой попадает в одну строку с предыдущим только если его колонка
+         идёт следом. В обратном порядке лента уезжала в собственную строку
+         и схлопывалась в нулевую высоту. -->
+    <div class="texstrip fb" aria-hidden="true"></div>
+
+    <figure class="texview fb">
+      <!-- Без .render: маска этого класса растворяет края на 16%, а здесь фасад
+           наоборот должен доходить до границ ряда. Кадр обрезает сам контейнер,
+           поэтому и в печати картинка одна — печатный дубль не нужен.
+           Порядок подписей в ряду выше повторяет порядок полос на фасаде,
+           поэтому при пересборке рендера ряд надо пересортировать вместе с ним.
+           Ширины полос в рендере неодинаковые — точного совпадения границ
+           подписи и полосы нет, читается только последовательность.
+           Кадр собран из Textures_3.png (3840×2160) и сведён к 2000px: на слайде
+           картинка идёт во всю ширину ряда, 1808px, — прежние 1637px там
+           растягивались. -->
+      <img src="assets/tex-building.webp"
+           alt="Фасад Штаба Гвардейского корпуса, разбитый по вертикали на девять фактур: уголь, сырая глина, кирпич, пряник, огонь, латунь, металл, обожжённая глина, небо">
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 8. STORYBOARD ============ -->
 <section class="band band--tint" id="storyboard" data-nav="Раскадровка">
   <div class="wrap rv">
-    <div class="eyebrow"><i>06</i>Раскадровка · 2:30</div>
+    <div class="eyebrow"><i>08</i>Раскадровка · 2:30</div>
     <div class="rule"></div>
-    <h2>Путь огня</h2>
+    <h2>Путь Искры</h2>
     <p class="lead lead--wide lead--tight">Девять состояний: от&nbsp;слепой стихии до&nbsp;тихого зеркала. Драматургия ведёт зрителя через страх, усилие, восхищение, тепло и&nbsp;радость&nbsp;— к&nbsp;покою.</p>
     <div class="factline">
       <span>Хронометраж&nbsp;— <b>2&nbsp;мин 30&nbsp;сек</b></span>
@@ -313,7 +804,13 @@
       </div>
     </div>
 
-    <div class="scene fb pb" data-start="35" data-dur="20" style="--accent:#F2A03D">
+    <!-- Раскадровка идёт на четырёх слайдах: два кадра на первом,
+         дальше по три. Шапка раздела повторяется на каждом.
+         На экране обёртка прозрачна и вёрстка не меняется. -->
+    <div class="pslide">
+    <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>08</i>Раскадровка · 2:30</div>
+    <div class="rule rule--cont" aria-hidden="true"></div>
+    <div class="scene fb" data-start="35" data-dur="20" style="--accent:#F2A03D">
       <div class="scene__tc">0:35—0:55<span>Сцена 03</span></div>
       <div class="scene__body">
         <div>
@@ -337,7 +834,7 @@
       </div>
     </div>
 
-    <div class="scene fb pb" data-start="75" data-dur="20" style="--accent:#E8C87A">
+    <div class="scene fb" data-start="75" data-dur="20" style="--accent:#E8C87A">
       <div class="scene__tc">1:15—1:35<span>Сцена 05</span></div>
       <div class="scene__body">
         <div>
@@ -348,7 +845,14 @@
         <div class="frame" data-slot="s05"></div>
       </div>
     </div>
+    </div>
 
+    <!-- Раскадровка идёт на четырёх слайдах: два кадра на первом,
+         дальше по три. Шапка раздела повторяется на каждом.
+         На экране обёртка прозрачна и вёрстка не меняется. -->
+    <div class="pslide">
+    <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>08</i>Раскадровка · 2:30</div>
+    <div class="rule rule--cont" aria-hidden="true"></div>
     <div class="scene fb" data-start="95" data-dur="15" style="--accent:#B07B32">
       <div class="scene__tc">1:35—1:50<span>Сцена 06</span></div>
       <div class="scene__body">
@@ -361,7 +865,7 @@
       </div>
     </div>
 
-    <div class="scene fb pb" data-start="110" data-dur="15" style="--accent:#C98A4B">
+    <div class="scene fb" data-start="110" data-dur="15" style="--accent:#C98A4B">
       <div class="scene__tc">1:50—2:05<span>Сцена 07</span></div>
       <div class="scene__body">
         <div>
@@ -384,8 +888,15 @@
         <div class="frame" data-slot="s08"></div>
       </div>
     </div>
+    </div>
 
-    <div class="scene final fb pb" data-start="140" data-dur="10" style="--accent:#7FA4B8">
+    <!-- Раскадровка идёт на четырёх слайдах: два кадра на первом,
+         дальше по три. Шапка раздела повторяется на каждом.
+         На экране обёртка прозрачна и вёрстка не меняется. -->
+    <div class="pslide">
+    <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>08</i>Раскадровка · 2:30</div>
+    <div class="rule rule--cont" aria-hidden="true"></div>
+    <div class="scene final fb" data-start="140" data-dur="10" style="--accent:#7FA4B8">
       <div class="scene__tc">2:20—2:30<span>Сцена 09 · финал</span></div>
       <div class="scene__body">
         <div>
@@ -396,13 +907,14 @@
         <div class="frame" data-slot="s09"></div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
-<!-- ============ 8. SOUND ============ -->
+<!-- ============ 9. SOUND ============ -->
 <section class="band" id="s-sound" data-nav="Звук">
   <div class="wrap rv">
-    <div class="eyebrow"><i>07</i>Звук</div>
+    <div class="eyebrow"><i>09</i>Звук</div>
     <div class="rule"></div>
     <div class="two">
       <div class="fb">
@@ -436,14 +948,14 @@
   </div>
 </section>
 
-<!-- ============ 9. TOOLS ============ -->
-<section class="band band--tint" id="s-tools" data-nav="Инструменты">
+<!-- ============ 10. TOOLS ============ -->
+<section class="band" id="s-tools" data-nav="Стек">
   <div class="wrap rv">
-    <div class="eyebrow"><i>08</i>Стек</div>
+    <div class="eyebrow"><i>10</i>Стек</div>
     <div class="rule"></div>
     <div class="two">
       <ul class="specs fb">
-        <li><b>3D и 2D анимация</b>Blender, After Effects, нейросети, Cavalry</li>
+        <li><b>3D и 2D анимация</b>Blender, After Effects, Cavalry, нейросети</li>
         <li><b>2D статика</b>Figma, Adobe Illustrator</li>
         <li><b>Композ и сборка</b>After Effects</li>
         <li><b>Звук</b>Нейросети</li>
@@ -452,12 +964,15 @@
   </div>
 </section>
 
-<!-- ============ 10. CLOSING ============ -->
+<!-- ============ 11. CLOSING ============ -->
 <section class="closing" id="s-end" data-nav="Финал">
   <div class="wrap rv">
     <div class="closing__q fb">
-      <q class="magma">Огонь перестал быть хаосом и&nbsp;стал узором, теплом, вкусом, светом&nbsp;— искусством.</q>
+      <q class="magma"><b class="ac">Огонь</b> перестал быть хаосом и&nbsp;<b class="ac">стал</b> узором, теплом, вкусом, светом, идеей&nbsp;— <b class="ac">искусством.</b></q>
     </div>
+    <!-- Финал — единственный слайд без шапки раздела, поэтому номер
+         ставится отдельным элементом. Только для печати. -->
+    <div class="pnum" aria-hidden="true"></div>
     <div class="credits fb">
       <div><b>Александр Миндрин</b></div>
       <div>Тула · 2026</div>

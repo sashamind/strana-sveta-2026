@@ -20,7 +20,7 @@ var doc=document.documentElement;
    появления, — классом fonts. Раньше запуск висел на animationstart самого
    видео, и в Safari это не срабатывало: у анимации, которая стартует уже
    в состоянии paused, событие не приходит, и ролик стоял на первом кадре.
-   Через autoplay нельзя: он отыграл бы свои 2,4 секунды, пока кадр прозрачен.
+   Через autoplay нельзя: он отыграл бы свои 8 секунд, пока кадр прозрачен.
 
    Если браузер откажет в воспроизведении (в iOS так делает режим
    энергосбережения даже для беззвучного видео) или файл не проиграется —
@@ -135,6 +135,24 @@ if(coarse){
   }
 }
 
+/* Схема ремёсел на тач-экранах. Наведения там нет, поэтому узел выбирается
+   касанием: id уходит в data-lit на <figure>, а дальше всё делает CSS — теми
+   же правилами, что и для :hover. Повторное касание и клик мимо снимают выбор. */
+if(coarse){
+  var flow=document.querySelector('.flow');
+  if(flow){
+    [].slice.call(flow.querySelectorAll('.flow__n')).forEach(function(g){
+      g.addEventListener('click',function(e){
+        e.stopPropagation();
+        var id=g.getAttribute('data-node');
+        if(flow.getAttribute('data-lit')===id) flow.removeAttribute('data-lit');
+        else flow.setAttribute('data-lit',id);
+      });
+    });
+    document.addEventListener('click',function(){ flow.removeAttribute('data-lit'); });
+  }
+}
+
 /* Иконки символов и промыслов. Пока файла нет, в слоте стоит пунктирная рамка;
    достаточно положить assets/icons/<имя>.svg — скрипт подхватит его сам, как это
    уже сделано с кадрами раскадровки. Имя слота лежит в data-ico. */
@@ -188,9 +206,18 @@ var railFill=document.getElementById('railFill');
 var railTicks=document.getElementById('railTicks');
 var hero=document.querySelector('.hero');
 var sections=[].slice.call(document.querySelectorAll('section[data-nav]'));
+/* Метки шкалы берутся со всех [data-nav], а не только с секций: «Концепция»
+   по разметке лежит внутри «Малой родины», но для читателя это отдельный
+   раздел — в презентации он идёт под своим номером. Затемнение при уходе
+   с экрана осталось за секциями (см. ниже), поэтому список отдельный. */
+var navPoints=[].slice.call(document.querySelectorAll('[data-nav]'));
 var ticks=[];
 
-sections.forEach(function(sec,i){
+/* offsetTop у вложенного блока считается от секции (у section своё
+   position:relative), поэтому позиция берётся от документа. */
+function docTop(el){ return Math.round(el.getBoundingClientRect().top+window.scrollY); }
+
+navPoints.forEach(function(sec){
   var li=document.createElement('li');
   var b=document.createElement('button');
   b.className='rail__tick';
@@ -198,19 +225,25 @@ sections.forEach(function(sec,i){
   b.innerHTML='<span class="rail__name"></span><span class="rail__dash"></span>';
   b.querySelector('.rail__name').textContent=sec.getAttribute('data-nav');
   b.addEventListener('click',function(){
-    window.scrollTo({top:sec.offsetTop,behavior:reduced?'auto':'smooth'});
+    window.scrollTo({top:docTop(sec),behavior:reduced?'auto':'smooth'});
   });
   li.appendChild(b);
   railTicks.appendChild(li);
-  ticks.push({el:li,btn:b,sec:sec});
+  ticks.push({el:li,btn:b,sec:sec,top:0});
 });
 
 function placeTicks(){
-  var max=scrollMax();
-  ticks.forEach(function(t){
-    /* 3…95%, иначе подписи крайних разделов срезаются краем экрана */
-    t.el.style.top=clamp(t.sec.offsetTop/max*100,3,95)+'%';
-  });
+  /* 3…95%, иначе подписи крайних разделов срезаются краем экрана */
+  var max=scrollMax(), n=ticks.length, gap=20/window.innerHeight*100, p=[], i;
+  ticks.forEach(function(t){ t.top=docTop(t.sec); p.push(clamp(t.top/max*100,3,95)); });
+  /* Последние разделы короткие и на шкале сходятся в одну точку — разводим
+     их на минимальный зазор, иначе «Стек» и «Финал» печатаются друг на друге. */
+  for(i=1;i<n;i++) if(p[i]-p[i-1]<gap) p[i]=p[i-1]+gap;
+  if(p[n-1]>95){
+    p[n-1]=95;
+    for(i=n-2;i>=0;i--) if(p[i]>p[i+1]-gap) p[i]=p[i+1]-gap;
+  }
+  ticks.forEach(function(t,k){ t.el.style.top=p[k]+'%'; });
 }
 
 /* Каждая секция гаснет в чёрное, когда уходит с экрана.
@@ -245,7 +278,7 @@ function onScroll(){
   fadeSections();
 
   var mid=window.scrollY+window.innerHeight*.4, cur=0;
-  sections.forEach(function(sec,i){ if(sec.offsetTop<=mid) cur=i; });
+  ticks.forEach(function(t,i){ if(t.top<=mid) cur=i; });
   ticks.forEach(function(t,i){ t.btn.setAttribute('aria-current',i===cur?'true':'false'); });
 
   syncTimeline();
@@ -258,7 +291,15 @@ function onScroll(){
    сильнее, чем дальше они от центра. Глубина затемнения переключается в CSS:
    при прокрутке сильная, в покое мягкая. */
 
-var blocks=[].slice.call(document.querySelectorAll('.fb'));
+/* .lore__item в списке фокуса ради телефона: там пункты идут в столбик
+   по одному на экран, и каждый гаснет отдельно. На широком экране они стоят
+   в один ряд, --f у них одинаковый, а CSS его там и не читает. */
+var blocks=[].slice.call(document.querySelectorAll('.fb, .lore__item'));
+/* Иконки «Малой родины» меряем отдельно от пунктов: пункт вместе со сводкой
+   занимает почти весь экран, и его центр к иконке отношения не имеет. Слот
+   получает свой --c — близость к центру экрана, — по которому CSS на телефоне
+   раздувает и снова ужимает картинку. */
+var icons=[].slice.call(document.querySelectorAll('.lore__item .lore__ico'));
 var fRaf=0, idleTimer=0;
 
 function markScrolling(){
@@ -273,22 +314,45 @@ function queueFocus(){ if(!fRaf) fRaf=requestAnimationFrame(applyFocus); }
 function applyFocus(){
   fRaf=0;
   var vh=window.innerHeight, mid=vh*.5, range=vh*.5;
+  /* У пунктов «Малой родины» окно уже и несимметричное: снизу — чтобы пункт
+     разгорался позже, ближе к центру; сверху — ещё уже, чтобы уходил раньше,
+     как только строка минует центр. У остальных блоков окно прежнее. */
+  var lateIn=vh*.28, earlyOut=vh*.16;
   blocks.forEach(function(b){
     var f=1;
     if(!reduced){
-      var r=b.getBoundingClientRect();
+      var r=b.getBoundingClientRect(), tight=b.classList.contains('lore__item');
       if(r.top<=mid&&r.bottom>=mid) f=1;
-      else{
-        var d=r.top>mid?r.top-mid:mid-r.bottom;
-        f=clamp(1-d/range,0,1);
-        f=f*f*(3-2*f); /* сглаживание, чтобы край не «щёлкал» */
-      }
+      else if(r.top>mid) f=clamp(1-(r.top-mid)/(tight?lateIn:range),0,1);
+      else f=clamp(1-(mid-r.bottom)/(tight?earlyOut:range),0,1);
+      f=f*f*(3-2*f); /* сглаживание, чтобы край не «щёлкал» */
     }
     b.style.setProperty('--f',f.toFixed(3));
+  });
+  /* Окно роста симметричное: иконка одинаково разгорается на подходе к центру
+     и ужимается, сойдя с него. Внутри hold от центра она стоит в полном
+     размере — иначе рост и спад сходятся в одной точке и иконка «клюёт»;
+     ramp короче hold, так что переход быстрый, а полка длинная. */
+  var hold=vh*.19, ramp=vh*.12;
+  icons.forEach(function(ic){
+    var c=1;
+    if(!reduced){
+      var q=ic.getBoundingClientRect();
+      c=clamp(1-(Math.abs((q.top+q.bottom)/2-mid)-hold)/ramp,0,1);
+      c=c*c*(3-2*c);
+    }
+    ic.style.setProperty('--c',c.toFixed(3));
   });
 }
 
 applyFocus();
+
+/* Круговая стрелка «Базового мифа» крутится через SVG-шный animateTransform,
+   а его CSS не выключает — снимаем вручную, когда система просит меньше
+   движения. */
+if(reduced){
+  document.querySelectorAll('.myth__spin animateTransform').forEach(function(a){ a.remove(); });
+}
 
 /* ============ 2. Подсветка карточек за курсором ============ */
 
@@ -321,7 +385,12 @@ if(cvs&&!reduced){
      они быстрее и мечутся из стороны в сторону, потом поток успокаивается
      до ровного подъёма. Затухание по времени, а не по кадрам: на слабой
      машине покадровое шло бы дольше и разогрев растянулся бы. */
-  var BASE=76, t0=performance.now();
+  /* На телефоне искр вдвое меньше и в потоке, и во всплеске: то же число
+     на узком экране читается заметно гуще — площадь канваса меньше,
+     а искры те же, — и без нужды греет слабый GPU. Порог тот же 900 px,
+     что и у мобильной вёрстки в styles.css. */
+  var narrow=window.matchMedia('(max-width:900px)').matches;
+  var BASE=narrow?38:76, BURST=narrow?52:105, t0=performance.now();
   function heat(){ return Math.exp(-(performance.now()-t0)/2600); }
   /* отсчёт с момента, когда канвас реально начал проявляться: у него своя
      задержка в 2,3 с, и без этого всплеск отгорел бы ещё до появления */
@@ -356,7 +425,7 @@ if(cvs&&!reduced){
   size();
   for(var i=0;i<BASE;i++) parts.push(spawn(Math.random()*h));
   /* всплеск стартует снизу, от огня */
-  for(var j=0;j<105;j++) parts.push(spawn(h*(.5+Math.random()*.55),true));
+  for(var j=0;j<BURST;j++) parts.push(spawn(h*(.5+Math.random()*.55),true));
   draw();
   window.addEventListener('resize',size);
   /* не крутить анимацию, когда обложка ушла из вида */
@@ -391,9 +460,14 @@ if(cvs&&!reduced){
   }).catch(function(){});
 })();
 
+/* Порог в долях площади не годится: «Малая родина» вместе с «Концепцией»
+   переросла экран телефона в десять раз, её видимая доля не поднимается
+   выше 0,10 — порог 0,12 не срабатывал никогда, и весь раздел оставался
+   невидимым. Условие height-independent: блок проявляется, когда его верх
+   поднимается выше 88% высоты экрана. */
 var io=new IntersectionObserver(function(es){
   es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-},{threshold:.12});
+},{threshold:0, rootMargin:'0px 0px -12% 0px'});
 document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
 
 /* ============ 5. Скраббер раскадровки ============ */
@@ -639,12 +713,36 @@ pdfBtn.addEventListener('click',function(e){
   });
 });
 
+/* ============ 9. Концы цветовой шкалы ============
+   На телефоне шкала стоит вдоль колонки образцов и растягивается на всю её
+   высоту. Но карточка начинается полем над плашкой и кончается подписью под
+   ней, поэтому полоса выходила за плашки с обоих концов: сверху — раньше
+   «Угля», снизу — ниже «Зеркала». Отмеряем оба выступа и поджимаем полосу,
+   чтобы она шла ровно от верха первой плашки до низа последней. Поля и высота
+   подписи зависят от кегля и переносов, поэтому меряем, а не считаем в CSS;
+   --head и --tail читает только мобильная вёрстка. */
+
+var gradEl=document.querySelector('#s-color .grad');
+var gradBar=document.querySelector('#s-color .grad__bar');
+var firstChip=document.querySelector('#s-color .swatches li:first-child i');
+var lastChip=document.querySelector('#s-color .swatches li:last-child i');
+
+function fitGrad(){
+  if(!gradEl||!gradBar||!firstChip||!lastChip) return;
+  var box=gradEl.getBoundingClientRect();
+  var head=firstChip.getBoundingClientRect().top-box.top;
+  var tail=box.bottom-lastChip.getBoundingClientRect().bottom;
+  gradBar.style.setProperty('--head',Math.max(0,Math.round(head))+'px');
+  gradBar.style.setProperty('--tail',Math.max(0,Math.round(tail))+'px');
+}
+
 /* ============ запуск ============ */
 
 window.addEventListener('scroll',onScroll,{passive:true});
-window.addEventListener('resize',function(){ placeTicks(); onScroll(); applyFocus(); });
-window.addEventListener('load',placeTicks);
+window.addEventListener('resize',function(){ placeTicks(); onScroll(); applyFocus(); fitGrad(); });
+window.addEventListener('load',function(){ placeTicks(); fitGrad(); });
 placeTicks();
 onScroll();
+fitGrad();
 
 })();
