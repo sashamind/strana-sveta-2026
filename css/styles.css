@@ -112,9 +112,13 @@ h2{
   font-family:var(--f-display); font-weight:300; font-size:clamp(30px,4.4vw,54px);
   line-height:1.1; letter-spacing:-.01em; margin-bottom:28px; color:var(--gold);
 }
+/* Интерлиньяж свой, а не унаследованный от body: 1,65 — мера для основного
+   текста, и на антикве в заголовке двухстрочный набор разъезжался (заметнее
+   всего на телефоне, где в карточку влезает по два-три слова в строку).
+   1,2 — та же плотность, что у h2, с поправкой на меньший кегль. */
 h3{
   font-family:var(--f-display); font-weight:600; font-size:23px;
-  letter-spacing:.01em; margin-bottom:10px; color:var(--paper);
+  line-height:1.2; letter-spacing:.01em; margin-bottom:10px; color:var(--paper);
 }
 /* Мера набора одна на весь сайт: 44ch. Раньше было 64ch — строка тянулась
    почти во всю колонку и читалась тяжело. Узкие колонки этим пределом
@@ -759,32 +763,27 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .myth__cyc{fill:none; stroke:rgba(232,200,122,.42); stroke-width:1.6;
            stroke-linecap:round; stroke-linejoin:round}
 
-/* ---------- «Адаптация мифа»: цепочка из пяти состояний ---------- */
+/* ---------- «Адаптация мифа»: цепочка состояний ---------- */
 .scen{margin:52px 0 0}
 .scen__svg{display:block; width:100%; height:auto; margin-inline:auto}
-.scen--wide{max-width:768px}
+.scen--wide{max-width:1160px}
 .scen--tall{display:none}
 .scen__ln{fill:none; stroke:rgba(232,200,122,.5); stroke-width:1;
           stroke-linecap:round; stroke-linejoin:round}
-/* Возврат тише прямого хода: пунктир и приглушённая латунь — он не спорит
-   с цепочкой, а показывает, что она замыкается. */
-.scen__ln--back{stroke:rgba(176,123,50,.4); stroke-dasharray:4 6}
 .scen__bx{fill:none; stroke-width:1}
 .scen__bx--chaos{stroke:rgba(242,160,61,.42)}
 .scen__bx--turn{stroke:rgba(207,193,172,.34)}
 .scen__bx--order{stroke:rgba(232,200,122,.38)}
-.scen__t{font-family:var(--f-display); font-size:21px; text-anchor:middle}
+.scen__t{font-family:var(--f-display); font-size:19px; text-anchor:middle}
 .scen__t--chaos{fill:var(--ember)}
 .scen__t--turn{fill:var(--muted)}
 .scen__t--order{fill:var(--gold)}
-/* Номер шага — той же мелкой моноширинной строкой, что и рубрики разделов. */
-.scen__n{font-family:var(--f-mono); font-size:10px; letter-spacing:.2em;
-         fill:rgba(207,193,172,.5); text-anchor:middle}
-.scen__s{font-family:var(--f-mono); font-size:10.5px; letter-spacing:.14em;
+/* Переход над стрелкой — золотом: действие ведёт цепочку и читается первым.
+   Подпись под рамкой приглушена: она не шаг, а уточнение, чем искра стала. */
+.scen__k{font-family:var(--f-mono); font-size:9.5px; letter-spacing:.12em;
+         fill:var(--gold); text-anchor:middle}
+.scen__s{font-family:var(--f-mono); font-size:10px; letter-spacing:.14em;
          fill:var(--muted); text-anchor:middle}
-.scen__k{font-family:var(--f-display); font-size:19px; fill:var(--gold);
-         text-anchor:middle}
-.scen__k--back{font-size:17px; fill:rgba(176,123,50,.58)}
 
 .vh{position:absolute; width:1px; height:1px; overflow:hidden;
     clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap}
@@ -812,6 +811,13 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 
 /* ---------- тема: три отражения ---------- */
 .layers{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); margin-top:16px}
+/* Колода героев — восемь карточек. В трёх колонках последний ряд остаётся
+   неполным и слайд перерастает высоту страницы, поэтому у «Персонажей»
+   ряд шире: 4×2. На средних ширинах четыре колонки текста становятся
+   слишком узкими — там колода складывается в две. Мобильное правило
+   в одну колонку идёт ниже по файлу и перебивает оба. */
+.layers--cast{grid-template-columns:repeat(4,1fr)}
+@media screen and (max-width:1180px){ .layers--cast{grid-template-columns:repeat(2,1fr)} }
 .layer{background:var(--ink); padding:40px 32px 64px; position:relative; overflow:hidden}
 .layer::after{
   content:''; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .4s;
@@ -822,6 +828,55 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
   font-family:var(--f-mono); font-size:10px; letter-spacing:.24em;
   color:var(--brass); text-transform:uppercase; margin-bottom:18px;
 }
+/* Иконки героев — только в «Персонажах и образах»: те же .layers собирают
+   «Тему», и там карточки без картинок. Пропорции у файлов разные (Левша
+   вытянут, блоха широкая), поэтому коробке задана высота, а ширина идёт
+   от неё: в ряду иконки встают на одну базовую линию, а не по габариту.
+   Стоят в правом верхнем углу. Обтеканием, а не абсолютом: рубрика
+   и заголовок сами поджимаются под иконку, а сводка ниже забирает
+   всю ширину обратно — при абсолюте поле под картинку пришлось бы
+   держать на всю высоту карточки, и текст в трёх колонках рвался бы
+   по два слова. Флоат никуда не вылезет: у карточки overflow:hidden,
+   то есть свой контекст форматирования.
+   Файл одноцветный и уже в палитре, красить нечем — цветом играет
+   прозрачность: в покое иконка приглушена и разгорается вместе
+   с подсветкой карточки. */
+.layer__ico{
+  float:right; display:block; width:auto;
+  --ih:76px;                 /* высота ряда, одна на брейкпоинт */
+  height:calc(var(--ih) * var(--k,.8));
+  margin:0 0 14px 22px;
+  opacity:.34;
+  transition:opacity .45s ease, filter .45s ease, transform .45s ease;
+}
+/* Наведение разжигает иконку: она выходит из тени, чуть подаётся вперёд
+   и обрастает тёплым ореолом. Ореол именно drop-shadow, а не box-shadow:
+   тень считается по альфе файла, поэтому светится сам контур рисунка,
+   а не его рамка. Рост — трансформом: иконка плавает справа, и в потоке
+   она места не занимает, так что соседний текст от этого не дёргается. */
+.layer:hover .layer__ico{
+  opacity:1; transform:scale(1.07);
+  filter:drop-shadow(0 0 15px rgba(242,160,61,.5));
+}
+/* Левша и Толстой нарисованы фигурами в рост: на общей высоте они читаются
+   мельче предметных иконок, поэтому идут в полный рост ряда, а остальные —
+   на 20% ниже. Коэффициент, а не своя высота: брейкпоинты меняют только --ih. */
+.layer__ico--tall{--k:1}
+/* Карточка в покое приглушена целиком — не только иконка: под курсором
+   остаётся одна, и колода читается по одной, а не шестью одинаковыми
+   блоками сразу. Гасим текст, а не саму карточку: у .layer уже своя
+   прозрачность от фокуса чтения (--f), и вторая на том же элементе
+   перемножилась бы с ней до нечитаемого.
+   Только в «Персонажах»: те же .layers собирают «Тему», там карточек три
+   и каждая читается сама по себе. */
+.layers--cast .layer__k,
+.layers--cast .layer h3,
+.layers--cast .layer p{
+  opacity:.3; transition:opacity .45s ease;
+}
+.layers--cast .layer:hover .layer__k,
+.layers--cast .layer:hover h3,
+.layers--cast .layer:hover p{opacity:1}
 .layer h3{font-family:var(--f-display); font-size:20px}
 .layer p{font-size:14.5px; position:relative}
 
@@ -1160,6 +1215,42 @@ body.scrolling{--dim:.26}
   .band{padding:84px 0}
   .ctx,.two,.setup{grid-template-columns:1fr; gap:40px}   /* .setup тоже: в две колонки текст рвался по два слова */
   .layers,.meta-grid{grid-template-columns:1fr}
+  /* Наведения на тач-экране нет — роль курсора берёт прокрутка: иконка
+     разгорается, когда карточка подходит к центру экрана, и гаснет, сойдя
+     с него. --c ставит скрипт, тот же, что ведёт иконки «Малой родины»;
+     без него (нет JS, reduce) остаётся полная яркость.
+     Ореол задан постоянным и гаснет вместе с иконкой сам: opacity множит
+     уже отфильтрованный слой. Так браузер считает размытие один раз
+     и на прокрутке двигает только прозрачность. */
+  .layer__ico{
+    --ih:64px; margin-left:18px;
+    opacity:calc(.28 + .72 * var(--c,1));
+    transform:scale(calc(1 + .07 * var(--c,1)));
+    filter:drop-shadow(0 0 12px rgba(242,160,61,.5));
+    transition:opacity .12s linear, transform .12s linear;
+  }
+  /* Текст гаснет и разгорается по той же прокрутке, что иконка: --c теперь
+     стоит на самой карточке и наследуется обоим, поэтому карточка просыпается
+     целиком — как под курсором на широком экране.
+     Размах уже, чем там (.45, а не .3): поверх лежит ещё прозрачность самой
+     карточки от фокуса чтения, и два приглушения перемножаются. В сумме
+     спящая карточка выходит примерно на те же 0,3.
+     Правило наведения перекрыто тем же весом: «залипший» после касания
+     :hover иначе навсегда высветлил бы одну карточку из шести. */
+  .layers--cast .layer__k,
+  .layers--cast .layer h3,
+  .layers--cast .layer p,
+  .layers--cast .layer:hover .layer__k,
+  .layers--cast .layer:hover h3,
+  .layers--cast .layer:hover p{opacity:calc(.45 + .55 * var(--c,1))}
+  /* тем же весом, что правило наведения: иначе «залипший» после касания
+     :hover навсегда оставил бы иконку в полную силу, и прокрутка перестала
+     бы на неё влиять */
+  .layer:hover .layer__ico{
+    opacity:calc(.28 + .72 * var(--c,1));
+    transform:scale(calc(1 + .07 * var(--c,1)));
+    filter:drop-shadow(0 0 12px rgba(242,160,61,.5));
+  }
   .swatches{grid-template-columns:repeat(2,1fr)}
   /* При нечётном числе образцов в сетке оставалась пустая ячейка — она
      показывала цвет контейнера сплошным прямоугольником. Последняя карточка
@@ -1440,7 +1531,7 @@ body.scrolling{--dim:.26}
   .myth{margin-top:56px}
   .myth--wide{max-width:1100px}
   .scen{margin-top:56px}
-  .scen--wide{max-width:1100px}
+  .scen--wide{max-width:1400px}
   /* Второй слайд раздела: сноски, которые на сайте всплывают по наведению,
      здесь выложены разом — наводить в PDF нечем, а факты нужны. */
   .h2--cont{display:block}
@@ -1654,6 +1745,14 @@ body.scrolling{--dim:.26}
   /* «Цвет»: узкая мера набора добавила разделу строк — снимаем их
      полем карточек, оно там чисто декоративное. */
   .layer{padding:22px 32px}
+  /* Слайд шире экрана — иконка растёт вместе с карточкой, иначе
+     в углу теряется. */
+  .layer__ico{--ih:104px; margin-left:28px; opacity:.9; filter:none}
+  /* На слайде наводить нечем, а приглушены были бы все шесть карточек
+     разом — в печати колода идёт в полную силу. */
+  .layers--cast .layer__k,
+  .layers--cast .layer h3,
+  .layers--cast .layer p{opacity:1}
   /* «Тема» и «Визуальный язык» — короткие слайды. Пока колода центрировалась,
      карточки приходилось ужимать; с выравниванием по верху место освободилось,
      и кегли можно вернуть к презентационным. Правки адресные: те же .layers

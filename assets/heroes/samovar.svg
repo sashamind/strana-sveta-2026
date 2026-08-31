@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 241.55 241.96">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #da9f69;
+        stroke-width: 7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .cls-2 {
+        fill: #da9f69;
+      }
+    </style>
+  </defs>
+  <g id="samovar">
+    <!-- конфорка и труба -->
+    <path class="cls-1" d="M97,28h48"/>
+    <path class="cls-1" d="M106,28v18M136,28v18"/>
+    <!-- крышка -->
+    <path class="cls-1" d="M87,62c3-14,64-14,68,0"/>
+    <path class="cls-1" d="M84,62h74"/>
+    <!-- плечо -->
+    <path class="cls-1" d="M72,70h98"/>
+    <path class="cls-1" d="M74,76h94"/>
+    <!-- тулово -->
+    <path class="cls-1" d="M74,76c-10,28-6,72,24,96"/>
+    <path class="cls-1" d="M168,76c10,28,6,72-24,96"/>
+    <!-- ручки -->
+    <path class="cls-1" d="M74,84c-24-4-34,12-28,26,4,10,14,12,21,9"/>
+    <path class="cls-1" d="M168,84c24-4,34,12,28,26-4,10-14,12-21,9"/>
+    <!-- кран с ключом -->
+    <path class="cls-1" d="M110,136h21"/>
+    <path class="cls-1" d="M120.8,136v10"/>
+    <path class="cls-1" d="M114,146h14v10h-14z"/>
+    <path class="cls-1" d="M121,156v9"/>
+    <!-- ножка и поддон -->
+    <path class="cls-1" d="M98,172c6,8,6,16,2,22"/>
+    <path class="cls-1" d="M144,172c-6,8-6,16-2,22"/>
+    <path class="cls-1" d="M92,194h58v13h-58z"/>
+    <path class="cls-2" d="M95,207h13v9c0,1.4-1.1,2.5-2.5,2.5h-8c-1.4,0-2.5-1.1-2.5-2.5v-9Z"/>
+    <path class="cls-2" d="M134,207h13v9c0,1.4-1.1,2.5-2.5,2.5h-8c-1.4,0-2.5-1.1-2.5-2.5v-9Z"/>
+  </g>
+</svg>
