@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 241.55 241.96">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #da9f69;
+        stroke-width: 7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .cls-2 {
+        fill: #da9f69;
+      }
+    </style>
+  </defs>
+  <g id="garmon">
+    <!-- корпуса -->
+    <path class="cls-1" d="M46,62h24v118h-24c-4.4,0-8-3.6-8-8v-102c0-4.4,3.6-8,8-8Z"/>
+    <path class="cls-1" d="M195.5,62h-24v118h24c4.4,0,8-3.6,8-8v-102c0-4.4-3.6-8-8-8Z"/>
+    <!-- меха: кромки зигзагом -->
+    <path class="cls-1" d="M70,72l16,12,16-12,16,12,16-12,16,12,16-12"/>
+    <path class="cls-1" d="M70,170l16-12,16,12,16-12,16,12,16-12,16,12"/>
+    <!-- складки -->
+    <path class="cls-1" d="M86,84v74M102,72v98M118,84v74M134,72v98M150,84v74"/>
+    <!-- кнопки -->
+    <circle class="cls-2" cx="54" cy="92" r="5"/>
+    <circle class="cls-2" cx="54" cy="115" r="5"/>
+    <circle class="cls-2" cx="54" cy="138" r="5"/>
+    <circle class="cls-2" cx="187.5" cy="92" r="5"/>
+    <circle class="cls-2" cx="187.5" cy="115" r="5"/>
+    <circle class="cls-2" cx="187.5" cy="138" r="5"/>
+  </g>
+</svg>

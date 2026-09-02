@@ -62,8 +62,60 @@
   <div class="veil" aria-hidden="true"></div>
 </section>
 
+<!-- ============ 2. CONTENTS ============ -->
+<section class="band" id="s-toc" data-nav="Содержание">
+  <div class="wrap rv">
+    <div class="eyebrow">Навигация</div>
+    <div class="rule"></div>
+    <h2>Содержание</h2>
+    <!-- Номера страниц проставлены вручную и живут только в печати: Chrome
+         не умеет считать страницу цели (target-counter), а на сайте номер
+         странице и не нужен — там строка работает ссылкой на раздел.
+         Меняется состав слайдов — правятся и цифры (см. README). -->
+    <ol class="toc">
+        <li class="toc__i fb" style="--i:0">
+          <a class="toc__l" href="#s-city"><i class="toc__n">01</i><span class="toc__t">Малая родина</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">3</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:1">
+          <a class="toc__l" href="#s-concept"><i class="toc__n">02</i><span class="toc__t">Концепция</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">4</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:2">
+          <a class="toc__l" href="#s-setup"><i class="toc__n">03</i><span class="toc__t">Контекст</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">21</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:3">
+          <a class="toc__l" href="#s-theme"><i class="toc__n">04</i><span class="toc__t">Тема</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">23</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:4">
+          <a class="toc__l" href="#s-lang"><i class="toc__n">05</i><span class="toc__t">Визуальный&nbsp;язык</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">24</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:5">
+          <a class="toc__l" href="#s-color"><i class="toc__n">06</i><span class="toc__t">Цвет</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">25</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:6">
+          <a class="toc__l" href="#s-tex"><i class="toc__n">07</i><span class="toc__t">Текстуры</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">26</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:7">
+          <a class="toc__l" href="#storyboard"><i class="toc__n">08</i><span class="toc__t">Раскадровка</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">27</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:8">
+          <a class="toc__l" href="#s-sound"><i class="toc__n">09</i><span class="toc__t">Звук</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">31</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:9">
+          <a class="toc__l" href="#s-tools"><i class="toc__n">10</i><span class="toc__t">Инструменты</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">32</b></a>
+        </li>
+        <li class="toc__i fb" style="--i:10">
+          <a class="toc__l" href="#s-end"><i class="toc__n">11</i><span class="toc__t">Финал</span><span class="toc__d" aria-hidden="true"></span><b class="toc__p">33</b></a>
+        </li>
+    </ol>
+  </div>
+</section>
+
 <!-- ============ 2. CONTEXT ============ -->
 <section class="band band--tint" id="s-city" data-nav="Малая родина">
+  <div class="interlude" data-interlude="city-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>01</i>Малая родина</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv seq">
     <div class="eyebrow sq" style="--d:0s"><i>01</i>Малая родина</div>
     <div class="rule sq" style="--d:.12s"></div>
@@ -82,28 +134,32 @@
 
       <div class="fb ctx__text">
         <div class="lore lore--flame">
-          <div class="lore__lead sq" style="--d:2.35s">Узнаваемые символы и&nbsp;образы</div>
+          <div class="lore__lead sq" style="--d:.55s">Узнаваемые символы и&nbsp;образы</div>
           <ul class="lore__list">
-            <li class="lore__item sq" style="--d:2.47s" tabindex="0"><span class="lore__word">Самовар</span><span class="lore__ico" data-ico="samovar" aria-hidden="true"></span><span class="lore__tip">Около 150&nbsp;форм. Первая фабрика открыта в&nbsp;1778&nbsp;году.</span></li>
-            <li class="lore__item sq" style="--d:2.59s" tabindex="0"><span class="lore__word">Пряник</span><span class="lore__ico" data-ico="pryanik" aria-hidden="true"></span><span class="lore__tip">Знаменитый тульский печатный пряник: узор режется на&nbsp;доске зеркально и&nbsp;оттискивается в&nbsp;тесте.</span></li>
-            <li class="lore__item sq" style="--d:2.71s" tabindex="0"><span class="lore__word">Оружие</span><span class="lore__ico" data-ico="oruzhie" aria-hidden="true"></span><span class="lore__tip">Казённый оружейный завод с&nbsp;1712&nbsp;года&nbsp;— корень многих ремёсел.</span></li>
-            <li class="lore__item sq" style="--d:2.83s" tabindex="0"><span class="lore__word">Левша</span><span class="lore__ico" data-ico="levsha" aria-hidden="true"></span><span class="lore__tip">Герой Лескова, подковавший блоху. <br class="pbr">Вырос из&nbsp;тульского оружейного дела.</span></li>
-            <li class="lore__item sq" style="--d:2.95s" tabindex="0"><span class="lore__word">Толстой</span><span class="lore__ico" data-ico="tolstoy" aria-hidden="true"></span><span class="lore__tip">Ясная Поляна под Тулой&nbsp;— дом, где он родился, писал и&nbsp;похоронен. Отсюда «Война и&nbsp;мир» и&nbsp;«Анна Каренина».</span></li>
+            <li class="lore__item sq" style="--d:.67s" tabindex="0"><span class="lore__word">Самовар</span><span class="lore__ico" data-ico="samovar" aria-hidden="true"></span><span class="lore__tip">Около 150&nbsp;форм. Первая фабрика открыта в&nbsp;1778&nbsp;году.</span></li>
+            <li class="lore__item sq" style="--d:.79s" tabindex="0"><span class="lore__word">Пряник</span><span class="lore__ico" data-ico="pryanik" aria-hidden="true"></span><span class="lore__tip">Знаменитый тульский печатный пряник: узор режется на&nbsp;доске зеркально и&nbsp;оттискивается в&nbsp;тесте.</span></li>
+            <li class="lore__item sq" style="--d:.91s" tabindex="0"><span class="lore__word">Оружие</span><span class="lore__ico" data-ico="oruzhie" aria-hidden="true"></span><span class="lore__tip">Казённый оружейный завод с&nbsp;1712&nbsp;года&nbsp;— корень многих ремёсел.</span></li>
+            <li class="lore__item sq" style="--d:1.03s" tabindex="0"><span class="lore__word">Левша</span><span class="lore__ico" data-ico="levsha" aria-hidden="true"></span><span class="lore__tip">Герой Лескова, подковавший блоху. <br class="pbr">Вырос из&nbsp;тульского оружейного дела.</span></li>
+            <li class="lore__item sq" style="--d:1.15s" tabindex="0"><span class="lore__word">Толстой</span><span class="lore__ico" data-ico="tolstoy" aria-hidden="true"></span><span class="lore__tip">Ясная Поляна под Тулой&nbsp;— дом, где он родился, писал и&nbsp;похоронен. Отсюда «Война и&nbsp;мир» и&nbsp;«Анна Каренина».</span></li>
           </ul>
         </div>
 
         <div class="lore lore--ember">
-          <div class="lore__lead sq" style="--d:4.05s">Промыслы региона</div>
+          <div class="lore__lead sq" style="--d:1.9s">Промыслы региона</div>
           <ul class="lore__list">
-            <li class="lore__item sq" style="--d:4.2s" tabindex="0"><span class="lore__word">Керамика</span><span class="lore__ico" data-ico="keramika" aria-hidden="true"></span><span class="lore__tip">Глина разошлась по&nbsp;региону несколькими промыслами: филимоновская игрушка, тульская городская игрушка, яснополянская керамика, белёвская и&nbsp;богородицкая глиняные игрушки.</span></li>
-            <li class="lore__item sq" style="--d:4.32s" tabindex="0"><span class="lore__word">Всечка</span><span class="lore__ico" data-ico="vsechka" aria-hidden="true"></span><span class="lore__tip">Металлическая нить, вбитая в&nbsp;дерево ребром. Выросла из&nbsp;оружейного дела: так украшали ружейные ложа.</span></li>
-            <li class="lore__item sq" style="--d:4.44s" tabindex="0"><span class="lore__word">Гармонь</span><span class="lore__ico" data-ico="garmon" aria-hidden="true"></span><span class="lore__tip">Хромка, изобретена в&nbsp;Туле, из&nbsp;неё вырос баян. Дело подняли оружейники и&nbsp;самоварщики: первую фабрику открыл оружейник Тимофей Воронцов.</span></li>
+            <li class="lore__item sq" style="--d:2.02s" tabindex="0"><span class="lore__word">Керамика</span><span class="lore__ico" data-ico="keramika" aria-hidden="true"></span><span class="lore__tip">Глина разошлась по&nbsp;региону несколькими промыслами: филимоновская игрушка, тульская городская игрушка, яснополянская керамика, белёвская и&nbsp;богородицкая глиняные игрушки.</span></li>
+            <li class="lore__item sq" style="--d:2.14s" tabindex="0"><span class="lore__word">Всечка</span><span class="lore__ico" data-ico="vsechka" aria-hidden="true"></span><span class="lore__tip">Металлическая нить, вбитая в&nbsp;дерево ребром. Выросла из&nbsp;оружейного дела: так украшали ружейные ложа.</span></li>
+            <li class="lore__item sq" style="--d:2.26s" tabindex="0"><span class="lore__word">Гармонь</span><span class="lore__ico" data-ico="garmon" aria-hidden="true"></span><span class="lore__tip">Хромка, изобретена в&nbsp;Туле, из&nbsp;неё вырос баян. Дело подняли оружейники и&nbsp;самоварщики: первую фабрику открыл оружейник Тимофей Воронцов.</span></li>
           </ul>
         </div>
       </div>
     </div>
 
-    <div class="fb ctx__next" data-nav="Концепция">
+    <div class="interlude" data-interlude="concept-open" aria-hidden="true">
+      <div class="eyebrow eyebrow--cont"><i>02</i>Концепция</div>
+      <div class="rule rule--cont"></div>
+    </div>
+    <div class="fb ctx__next" id="s-concept" data-nav="Концепция">
       <div class="eyebrow sq" style="--d:4.5s"><i>02</i>Концепция</div>
       <div class="rule sq" style="--d:4.6s"></div>
       <h2 class="sq" style="--d:4.7s">Почему Огонь?</h2>
@@ -324,6 +380,10 @@
       </figure>
     </div>
 
+    <div class="interlude" data-interlude="story-open" aria-hidden="true">
+      <div class="eyebrow eyebrow--cont"><i>02</i>Концепция</div>
+      <div class="rule rule--cont"></div>
+    </div>
     <div class="fb ctx__next">
       <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
       <div class="rule rule--cont" aria-hidden="true"></div>
@@ -407,12 +467,16 @@
       </figure>
     </div>
 
+    <div class="interlude" data-interlude="myth-open" aria-hidden="true">
+      <div class="eyebrow eyebrow--cont"><i>02</i>Концепция</div>
+      <div class="rule rule--cont"></div>
+    </div>
     <div class="fb ctx__next">
       <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
       <div class="rule rule--cont" aria-hidden="true"></div>
       <h2 class="sq" style="--d:6.8s">Адаптация мифа</h2>
       <p class="lead sq" style="--d:6.9s">Идея концепции&nbsp;— собрать разные образы Тулы,<br>связанные с&nbsp;ремеслом и&nbsp;искусством,<br>в&nbsp;один нарратив приручения огня.</p>
-      <p class="mt sq" style="--d:7.1s">В&nbsp;основе сценария&nbsp;— путь искры, которая вначале ещё просто физическое явление: она разжигает огонь, огонь буйствует стихией, стихию приручают&nbsp;— и&nbsp;она становится ремеслом; внутри ремесла рождается новая искра, уже идея и&nbsp;замысел, а&nbsp;воплощённый замысел становится искусством. Оба конца истории держит искра: огонь не&nbsp;гаснет, он&nbsp;меняет природу.</p>
+      <p class="mt sq" style="--d:7.1s">В&nbsp;основе сценария&nbsp;— путь искры, которая вначале ещё просто физическое явление: она разжигает огонь, огонь буйствует стихией, стихию приручают&nbsp;— и&nbsp;она становится ремеслом; внутри ремесла рождается новая искра, в&nbsp;виде идеи или замысла, а&nbsp;воплощённый замысел уже становится искусством. Оба конца истории держит искра: огонь не&nbsp;гаснет, он&nbsp;меняет природу.</p>
 
       <!-- Шесть состояний одной цепочки, переход подписан над стрелкой.
            Первые три узла в оттенке пламени, «Ремесло» — перелом, последние
@@ -509,6 +573,10 @@
       </figure>
     </div>
 
+    <div class="interlude" data-interlude="cast-open" aria-hidden="true">
+      <div class="eyebrow eyebrow--cont"><i>02</i>Концепция</div>
+      <div class="rule rule--cont"></div>
+    </div>
     <div class="fb ctx__next">
       <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
       <div class="rule rule--cont" aria-hidden="true"></div>
@@ -521,57 +589,228 @@
           <div class="layer__k">I&nbsp;· Начало</div>
           <h3>Искра</h3>
           <p>С&nbsp;неё всё начинается: одна точка света в&nbsp;темноте, которая ещё ничего не&nbsp;умеет. Она начало истории, огня и&nbsp;искусства.</p>
+          <a class="layer__go" href="#hero-iskra"><span class="vh">Искра&nbsp;— разворот</span></a>
         </div>
         <div class="layer fb" style="--i:1">
           <img class="layer__ico" src="assets/heroes/ogon.svg" alt="" aria-hidden="true">
           <div class="layer__k">II&nbsp;· Стихия</div>
           <h3>Огонь</h3>
           <p>Искра разжигает огонь&nbsp;— то, что станет основой для&nbsp;ремесла.</p>
+          <a class="layer__go" href="#hero-ogon"><span class="vh">Огонь&nbsp;— разворот</span></a>
         </div>
         <div class="layer fb" style="--i:2">
           <img class="layer__ico" src="assets/heroes/bloha.svg" alt="" aria-hidden="true">
           <div class="layer__k">III&nbsp;· Метафора</div>
           <h3>Нимфозория</h3>
-          <p>Механическая блоха&nbsp;— метафора неуправляемой природы, огня и&nbsp;технологий, которые нужно приручить.</p>
+          <p>Механическая блоха&nbsp;— метафора неуправляемого огня, природы и&nbsp;технологий, которые нужно приручить.</p>
+          <a class="layer__go" href="#hero-bloha"><span class="vh">Нимфозория&nbsp;— разворот</span></a>
         </div>
         <div class="layer fb" style="--i:3">
           <img class="layer__ico layer__ico--tall" src="assets/heroes/levsha.svg" alt="" aria-hidden="true">
           <div class="layer__k">IV&nbsp;· Мастер</div>
           <h3>Левша</h3>
           <p>Безликий образ мастера, который вызвался сразиться с&nbsp;Нимфозорией и&nbsp;приручить её.</p>
+          <a class="layer__go" href="#hero-levsha"><span class="vh">Левша&nbsp;— разворот</span></a>
         </div>
         <div class="layer fb" style="--i:4">
           <img class="layer__ico" src="assets/heroes/molot.svg" alt="" aria-hidden="true">
           <div class="layer__k">V&nbsp;· Инструмент</div>
           <h3>Молот</h3>
-          <p>Волшебный инструмент, который помогает Левше приручить Нимфозорию&nbsp;— подковать блоху.</p>
+          <p>Волшебный инструмент, который помогает Левше приручить Нимфозорию&nbsp;— подковать блоху и&nbsp;освоить ремесло.</p>
+          <a class="layer__go" href="#hero-molot"><span class="vh">Молот&nbsp;— разворот</span></a>
         </div>
         <div class="layer fb" style="--i:5">
           <img class="layer__ico" src="assets/heroes/samovar.svg" alt="" aria-hidden="true">
           <div class="layer__k">VI&nbsp;· Тепло</div>
           <h3>Самовар</h3>
-          <p>Латунь, пайка, лужение&nbsp;— то&nbsp;же ремесло, что и&nbsp;оружие, но&nbsp;с&nbsp;другим итогом. Огонь спрятан внутрь и&nbsp;обращён в&nbsp;кипяток: вокруг самовара собирается стол.</p>
+          <p>Символ хранилища тепла: искра уходит внутрь и&nbsp;переносит традиции и&nbsp;отношения на&nbsp;годы вперёд.</p>
+          <a class="layer__go" href="#hero-samovar"><span class="vh">Самовар&nbsp;— разворот</span></a>
         </div>
         <div class="layer fb" style="--i:6">
-          <img class="layer__ico" src="assets/heroes/igrushka.svg" alt="" aria-hidden="true">
-          <div class="layer__k">VII&nbsp;· Оживление</div>
-          <h3>Глиняные игрушки</h3>
-          <p>Филимоновская барыня и&nbsp;свистулька: три открытых цвета и&nbsp;тонкий голос. Единственное место, где работа позволяет себе чистый цвет и&nbsp;прямую радость,&nbsp;— кульминация на&nbsp;2:05.</p>
+          <img class="layer__ico" src="assets/heroes/pryanik.svg" alt="" aria-hidden="true">
+          <div class="layer__k">VII&nbsp;· Вкус</div>
+          <h3>Пряник</h3>
+          <p>Печатный пряник: узор режется на&nbsp;доске зеркально и&nbsp;оттискивается в&nbsp;тесте&nbsp;— огонь становится вкусом.</p>
+          <a class="layer__go" href="#hero-pryanik"><span class="vh">Пряник&nbsp;— разворот</span></a>
         </div>
         <div class="layer fb" style="--i:7">
+          <img class="layer__ico" src="assets/heroes/igrushka.svg" alt="" aria-hidden="true">
+          <div class="layer__k">VIII&nbsp;· Оживление</div>
+          <h3>Глиняные игрушки</h3>
+          <p>Керамическая форма, которая, обжигаясь и&nbsp;застывая, сохраняет в&nbsp;себе образы прошлого.</p>
+          <a class="layer__go" href="#hero-igrushka"><span class="vh">Глиняные игрушки&nbsp;— разворот</span></a>
+        </div>
+        <div class="layer fb" style="--i:8">
+          <img class="layer__ico" src="assets/heroes/garmon.svg" alt="" aria-hidden="true">
+          <div class="layer__k">IX&nbsp;· Голос</div>
+          <h3>Гармонь</h3>
+          <p>Тульская хромка: металл оружейников и&nbsp;меха самоварщиков сошлись в&nbsp;одном инструменте&nbsp;— огонь становится звуком.</p>
+          <a class="layer__go" href="#hero-garmon"><span class="vh">Гармонь&nbsp;— разворот</span></a>
+        </div>
+        <div class="layer fb" style="--i:9">
           <img class="layer__ico layer__ico--tall" src="assets/heroes/tolstoy.svg" alt="" aria-hidden="true">
-          <div class="layer__k">VIII&nbsp;· Слово</div>
+          <div class="layer__k">X&nbsp;· Слово</div>
           <h3>Толстой</h3>
-          <p>Ясная Поляна&nbsp;— вторая, тихая Тула. Толстой замыкает путь: огонь, прошедший через ремесло, становится зеркалом, в&nbsp;которое смотрят.</p>
+          <p>Толстой замыкает путь: огонь, прошедший через ремесло, отделяется от&nbsp;материи и&nbsp;становится словом&nbsp;— универсальным метаискусством.</p>
+          <a class="layer__go" href="#hero-tolstoy"><span class="vh">Толстой&nbsp;— разворот</span></a>
         </div>
 
       </div>
+
+      <!-- Развороты героев: на сайте идут галереей под колодой, в PDF каждый
+           уходит на свой слайд. Кадр — не иконка, а фрагмент финальной графики
+           на чёрном фоне, поэтому он положен режимом screen: чёрное растворяется
+           в фоне слайда, светится только сама графика. -->
+      <div class="shots">
+      <div class="shot fb" id="hero-iskra" style="--i:0">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">I&nbsp;· Начало</div>
+          <h3>Искра</h3>
+          <p>Одна точка света в&nbsp;темноте: работа начинается почти с&nbsp;пустоты. Из&nbsp;этой точки разворачивается весь фасад&nbsp;— и&nbsp;к&nbsp;финалу она возвращается ровным светом.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="iskra"><span class="shot__hint">assets/heroes/shots/iskra</span></div>
+      </div>
+      <div class="shot fb" id="hero-ogon" style="--i:1">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">II&nbsp;· Стихия</div>
+          <h3>Огонь</h3>
+          <p>Стихия, которой ещё никто не&nbsp;управляет: пламя идёт по&nbsp;колоннаде снизу вверх, не&nbsp;считаясь с&nbsp;архитектурой.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="ogon"><span class="shot__hint">assets/heroes/shots/ogon</span></div>
+      </div>
+      <div class="shot fb" id="hero-bloha" style="--i:2">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">III&nbsp;· Метафора</div>
+          <h3>Нимфозория</h3>
+          <p>Механическая блоха в&nbsp;увеличении: сталь, шарниры и&nbsp;завод. Природа и&nbsp;техника, которые ещё предстоит приручить.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="bloha"><span class="shot__hint">assets/heroes/shots/bloha</span></div>
+      </div>
+      <div class="shot fb" id="hero-levsha" style="--i:3">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">IV&nbsp;· Мастер</div>
+          <h3>Левша</h3>
+          <p>Рука и&nbsp;силуэт, без лица: мастер показан жестом. На&nbsp;фасаде это тень, которая работает, пока горит огонь.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="levsha"><span class="shot__hint">assets/heroes/shots/levsha</span></div>
+      </div>
+      <div class="shot fb" id="hero-molot" style="--i:4">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">V&nbsp;· Инструмент</div>
+          <h3>Молот</h3>
+          <p>Удар, от&nbsp;которого стихия начинает слушаться счёта: вспышка и&nbsp;звук совпадают, и&nbsp;хаос становится ритмом.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="molot"><span class="shot__hint">assets/heroes/shots/molot</span></div>
+      </div>
+      <div class="shot fb" id="hero-samovar" style="--i:5">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">VI&nbsp;· Тепло</div>
+          <h3>Самовар</h3>
+          <p>Латунь, в&nbsp;которой отражается площадь. Огонь ушёл внутрь: снаружи остались только тепло и&nbsp;пар над&nbsp;кровлей.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="samovar"><span class="shot__hint">assets/heroes/shots/samovar</span></div>
+      </div>
+      <div class="shot fb" id="hero-pryanik" style="--i:6">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">VII&nbsp;· Вкус</div>
+          <h3>Пряник</h3>
+          <p>Доска и&nbsp;оттиск: узор, вырезанный зеркально, проступает на&nbsp;фасаде так&nbsp;же, как проступает в&nbsp;тесте.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="pryanik"><span class="shot__hint">assets/heroes/shots/pryanik</span></div>
+      </div>
+      <div class="shot fb" id="hero-igrushka" style="--i:7">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">VIII&nbsp;· Оживление</div>
+          <h3>Глиняные игрушки</h3>
+          <p>Филимоновская барыня и&nbsp;свистулька: три открытых цвета и&nbsp;тонкий голос&nbsp;— единственное место, где работа позволяет себе прямую радость.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="igrushka"><span class="shot__hint">assets/heroes/shots/igrushka</span></div>
+      </div>
+      <div class="shot fb" id="hero-garmon" style="--i:8">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">IX&nbsp;· Голос</div>
+          <h3>Гармонь</h3>
+          <p>Меха раскрываются во&nbsp;всю колоннаду: металл оружейников и&nbsp;дыхание самоварщиков сходятся в&nbsp;одном инструменте.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="garmon"><span class="shot__hint">assets/heroes/shots/garmon</span></div>
+      </div>
+      <div class="shot fb" id="hero-tolstoy" style="--i:9">
+        <div class="eyebrow eyebrow--cont" aria-hidden="true"><i>02</i>Концепция</div>
+        <div class="rule rule--cont" aria-hidden="true"></div>
+        <div class="shot__head">
+          <div class="shot__k">X&nbsp;· Слово</div>
+          <h3>Толстой</h3>
+          <p>Портрет, собранный из&nbsp;линий: слово отделяется от&nbsp;материи, и&nbsp;огонь становится зеркалом, в&nbsp;которое смотрят.</p>
+        </div>
+        <!-- Кадр ложится сюда, как только в assets/heroes/shots/ появится файл
+             с этим именем: скрипт сам переберёт webp, jpg и png. До тех пор
+             в слоте стоит рамка с именем файла. -->
+        <div class="shot__fr" data-shot="tolstoy"><span class="shot__hint">assets/heroes/shots/tolstoy</span></div>
+      </div>
+      </div>
+      <div class="interlude" data-interlude="concept-close" aria-hidden="true">
+        <div class="eyebrow eyebrow--cont"><i>02</i>Концепция</div>
+        <div class="rule rule--cont"></div>
+      </div>
     </div>
+  </div>
+  <div class="interlude" data-interlude="city-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>01</i>Малая родина</div>
+    <div class="rule rule--cont"></div>
   </div>
 </section>
 
 <!-- ============ 3. BUILDING ============ -->
 <section class="band" id="s-setup" data-nav="Контекст">
+  <div class="interlude" data-interlude="setup-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>03</i>Контекст</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
     <div class="eyebrow"><i>03</i>Контекст</div>
     <div class="rule"></div>
@@ -637,20 +876,28 @@
     </div>
     </div>
   </div>
+  <div class="interlude" data-interlude="setup-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>03</i>Контекст</div>
+    <div class="rule rule--cont"></div>
+  </div>
 </section>
 
 <!-- ============ 4. THEME ============ -->
 <section class="band" id="s-theme" data-nav="Тема">
+  <div class="interlude" data-interlude="theme-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>04</i>Тема</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
     <div class="eyebrow"><i>04</i>Тема</div>
     <div class="rule"></div>
-    <h2>Отражение&nbsp;— трижды</h2>
-    <p class="lead lead--wide">Тема конкурса раскрывается в&nbsp;проекте на&nbsp;трёх уровнях одновременно: буквальном, ремесленном и&nbsp;смысловом.</p>
+    <h2>Отражение</h2>
+    <p class="lead lead--wide">Тема конкурса раскрывается в&nbsp;проекте сразу на&nbsp;нескольких уровнях: в&nbsp;материале, в&nbsp;ремесле, в&nbsp;городе и&nbsp;в&nbsp;слове.</p>
     <div class="layers">
       <div class="layer fb" style="--i:0">
-        <div class="layer__k">Буквально</div>
-        <h3 class="mir">Зеркало<span class="mir__g" aria-hidden="true">Зеркало</span></h3>
-        <p>Укрощённый огонь в&nbsp;финале становится зеркалом. Бушующая стихия успокаивается до&nbsp;неподвижной глади&nbsp;— полированной латуни, глазури, воды Оки.</p>
+        <div class="layer__k">В&nbsp;материале</div>
+        <h3 class="mir">Латунь<span class="mir__g" aria-hidden="true">Латунь</span></h3>
+        <p>Металл, латунь, золото. Укрощённый огонь застывает полированной гладью, и&nbsp;она возвращает свет: в&nbsp;боку самовара видна площадь.</p>
       </div>
       <div class="layer fb" style="--i:1">
         <div class="layer__k">В&nbsp;ремесле</div>
@@ -658,16 +905,29 @@
         <p>Пряничная доска режется зеркально: мастер вырезает то, чего не&nbsp;увидит, ради&nbsp;отпечатка. Отражение здесь&nbsp;— сама технология.</p>
       </div>
       <div class="layer fb" style="--i:2">
-        <div class="layer__k">По&nbsp;смыслу</div>
-        <h3 class="mir">Город в&nbsp;своём деле<span class="mir__g" aria-hidden="true">Город в&nbsp;своём деле</span></h3>
-        <p>Искусство&nbsp;— то, в&nbsp;чём город узнаёт себя. В&nbsp;последнем кадре фасад петербургского здания на&nbsp;мгновение отражает Тулу.</p>
+        <div class="layer__k">В&nbsp;городе</div>
+        <h3 class="mir">Тула<span class="mir__g" aria-hidden="true">Тула</span></h3>
+        <p>Тула&nbsp;— отражение огня: из&nbsp;него выросли её ремёсла. А&nbsp;искусство города&nbsp;— отражение этих ремёсел, то, в&nbsp;чём он узнаёт себя.</p>
+      </div>
+      <div class="layer fb" style="--i:3">
+        <div class="layer__k">В&nbsp;слове</div>
+        <h3 class="mir">Слово<span class="mir__g" aria-hidden="true">Слово</span></h3>
+        <p>Искусство слова отражает реальность. Огонь на&nbsp;фасаде&nbsp;— сегодняшнюю: в&nbsp;последнем кадре петербургское здание на&nbsp;мгновение отражает Тулу.</p>
       </div>
     </div>
+  </div>
+  <div class="interlude" data-interlude="theme-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>04</i>Тема</div>
+    <div class="rule rule--cont"></div>
   </div>
 </section>
 
 <!-- ============ 5. METAPHORS ============ -->
 <section class="band band--tint" id="s-lang" data-nav="Визуальный язык">
+  <div class="interlude" data-interlude="lang-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>05</i>Визуальный язык</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
     <div class="eyebrow"><i>05</i>Визуальный язык</div>
     <div class="rule"></div>
@@ -700,10 +960,18 @@
       </div>
     </div>
   </div>
+  <div class="interlude" data-interlude="lang-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>05</i>Визуальный язык</div>
+    <div class="rule rule--cont"></div>
+  </div>
 </section>
 
 <!-- ============ 6. COLOUR ============ -->
 <section class="band" id="s-color" data-nav="Цвет">
+  <div class="interlude" data-interlude="color-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>06</i>Цвет</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
     <div class="eyebrow"><i>06</i>Цвет</div>
     <div class="rule"></div>
@@ -729,10 +997,18 @@
     </ul>
 
   </div>
+  <div class="interlude" data-interlude="color-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>06</i>Цвет</div>
+    <div class="rule rule--cont"></div>
+  </div>
 </section>
 
 <!-- ============ 7. TEXTURES ============ -->
 <section class="band" id="s-tex" data-nav="Текстуры">
+  <div class="interlude" data-interlude="tex-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>07</i>Текстуры</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
     <div class="eyebrow"><i>07</i>Текстуры</div>
     <div class="rule"></div>
@@ -784,10 +1060,18 @@
            alt="Фасад Штаба Гвардейского корпуса, разбитый по вертикали на девять фактур: уголь, сырая глина, кирпич, пряник, огонь, латунь, металл, обожжённая глина, небо">
     </figure>
   </div>
+  <div class="interlude" data-interlude="tex-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>07</i>Текстуры</div>
+    <div class="rule rule--cont"></div>
+  </div>
 </section>
 
 <!-- ============ 8. STORYBOARD ============ -->
 <section class="band band--tint" id="storyboard" data-nav="Раскадровка">
+  <div class="interlude" data-interlude="storyboard-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>08</i>Раскадровка · 2:30</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
     <div class="eyebrow"><i>08</i>Раскадровка · 2:30</div>
     <div class="rule"></div>
@@ -941,10 +1225,18 @@
     </div>
     </div>
   </div>
+  <div class="interlude" data-interlude="storyboard-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>08</i>Раскадровка · 2:30</div>
+    <div class="rule rule--cont"></div>
+  </div>
 </section>
 
 <!-- ============ 9. SOUND ============ -->
 <section class="band" id="s-sound" data-nav="Звук">
+  <div class="interlude" data-interlude="sound-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>09</i>Звук</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
     <div class="eyebrow"><i>09</i>Звук</div>
     <div class="rule"></div>
@@ -955,49 +1247,60 @@
         <p class="mt">Ритмическая основа приходит из&nbsp;кузни: удар молота задаёт темп монтажа в&nbsp;первой половине работы. К&nbsp;финалу ударные исчезают, остаётся один затихающий тон.</p>
       </div>
       <div class="cues">
-        <div class="cue fb" style="--from:0;--to:23.3;--i:0">
-          <h3>0:00—0:35</h3>
-          <div class="cue__bar"><span></span></div>
+        <div class="cue fb" style="--i:0">
+          <h3>Гул</h3>
           <p>Гул, низкие частоты, дыхание меха. Ни&nbsp;одного узнаваемого инструмента.</p>
         </div>
-        <div class="cue fb" style="--from:23.3;--to:63.3;--i:1">
-          <h3>0:35—1:35</h3>
-          <div class="cue__bar"><span></span></div>
+        <div class="cue fb" style="--i:1">
+          <h3>Удар</h3>
           <p>Молот входит как&nbsp;бит. Первые голоса гармони&nbsp;— отдельными нотами.</p>
         </div>
-        <div class="cue fb" style="--from:63.3;--to:93.3;--i:2">
-          <h3>1:35—2:20</h3>
-          <div class="cue__bar"><span></span></div>
+        <div class="cue fb" style="--i:2">
+          <h3>Мелодия</h3>
           <p>Хромка ведёт мелодию. К&nbsp;пику добавляется свистулька и&nbsp;частушечный ритм.</p>
         </div>
-        <div class="cue fb" style="--from:93.3;--to:100;--i:3">
-          <h3>2:20—2:30</h3>
-          <div class="cue__bar"><span></span></div>
+        <div class="cue fb" style="--i:3">
+          <h3>Тишина</h3>
           <p>Всё смолкает. Один тон, затухающий до&nbsp;тишины.</p>
         </div>
       </div>
     </div>
   </div>
+  <div class="interlude" data-interlude="sound-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>09</i>Звук</div>
+    <div class="rule rule--cont"></div>
+  </div>
 </section>
 
 <!-- ============ 10. TOOLS ============ -->
-<section class="band" id="s-tools" data-nav="Стек">
+<section class="band" id="s-tools" data-nav="Инструменты">
+  <div class="interlude" data-interlude="tools-open" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>10</i>Инструменты</div>
+    <div class="rule rule--cont"></div>
+  </div>
   <div class="wrap rv">
-    <div class="eyebrow"><i>10</i>Стек</div>
+    <div class="eyebrow"><i>10</i>Инструменты</div>
     <div class="rule"></div>
     <div class="two">
       <ul class="specs fb">
         <li><b>3D и 2D анимация</b>Blender, After Effects, Cavalry, нейросети</li>
         <li><b>2D статика</b>Figma, Adobe Illustrator</li>
         <li><b>Композ и сборка</b>After Effects</li>
-        <li><b>Звук</b>Нейросети</li>
+        <li><b>Звук</b>Ableton, After Effects, нейросети</li>
       </ul>
     </div>
+  </div>
+  <div class="interlude" data-interlude="tools-close" aria-hidden="true">
+    <div class="eyebrow eyebrow--cont"><i>10</i>Инструменты</div>
+    <div class="rule rule--cont"></div>
   </div>
 </section>
 
 <!-- ============ 11. CLOSING ============ -->
 <section class="closing" id="s-end" data-nav="Финал">
+  <div class="interlude" data-interlude="end-open" aria-hidden="true">
+    <div class="pnum" aria-hidden="true"></div>
+  </div>
   <div class="wrap rv">
     <div class="closing__q fb">
       <q class="magma"><b class="ac">Огонь</b> перестал быть хаосом и&nbsp;<b class="ac">стал</b> узором, теплом, вкусом, светом, идеей&nbsp;— <b class="ac">искусством.</b></q>
@@ -1011,6 +1314,9 @@
       <div class="mt-s">Конкурс современного медиаискусства «Страна СВЕТА»</div>
       <div>Штаб Гвардейского корпуса · Дворцовая площадь</div>
     </div>
+  </div>
+  <div class="interlude" data-interlude="end-close" aria-hidden="true">
+    <div class="pnum" aria-hidden="true"></div>
   </div>
 </section>
 

@@ -153,32 +153,53 @@ if(coarse){
   }
 }
 
-/* Иконки символов и промыслов. Пока файла нет, в слоте стоит пунктирная рамка;
-   достаточно положить assets/icons/<имя>.svg — скрипт подхватит его сам, как это
-   уже сделано с кадрами раскадровки. Имя слота лежит в data-ico. */
-(function(){
-  var slots=[].slice.call(document.querySelectorAll('.lore__ico[data-ico]'));
+/* Слоты под картинки, которых может ещё не быть. Правило одно на три места:
+   имя файла лежит в data-атрибуте слота, скрипт перебирает расширения и, найдя
+   файл, вставляет картинку и ставит слоту класс is-filled — по нему CSS убирает
+   рамку-заглушку, а перебивку вообще показывает (без файла её нет ни на сайте,
+   ни в PDF). Достаточно положить файл в нужную папку, разметку не трогают. */
+function fillSlots(sel, attr, dir, exts, cls, onFill){
+  var slots=[].slice.call(document.querySelectorAll(sel));
   if(!slots.length) return;
-  var EXT=['webp','png','svg'];   /* растровые иконки попадаются чаще — их и пробуем первыми */
   slots.forEach(function(slot){
-    var name=slot.getAttribute('data-ico');
-    EXT.reduce(function(chain,ext){
+    var name=slot.getAttribute(attr);
+    exts.reduce(function(chain,ext){
       return chain.then(function(found){
         if(found) return found;
         return new Promise(function(res){
           var im=new Image();
           im.onload=function(){ res(im.src); };
           im.onerror=function(){ res(null); };
-          im.src='assets/icons/'+name+'.'+ext;
+          im.src=dir+name+'.'+ext;
         });
       });
     },Promise.resolve(null)).then(function(src){
       if(!src) return;
       var im=new Image(); im.src=src; im.alt='';
+      if(cls) im.className=cls;
       slot.appendChild(im); slot.classList.add('is-filled');
+      if(onFill) onFill(slot);
     });
   });
-})();
+}
+
+/* Иконки символов и промыслов «Малой родины». Растровые попадаются чаще —
+   их расширения и пробуем первыми. */
+fillSlots('.lore__ico[data-ico]','data-ico','assets/icons/',['webp','png','svg']);
+
+/* Кадры разворотов героев: имя слота в data-shot совпадает с именем иконки. */
+fillSlots('.shot__fr[data-shot]','data-shot','assets/heroes/shots/',['webp','jpg','png']);
+
+/* Перебивки — кадр во весь слайд перед разделом или после него. Слоты стоят
+   у каждого раздела, но пустой слот не показывается и лишней страницы в PDF
+   не делает: раздел получает перебивку ровно тогда, когда в assets/interludes/
+   лежит файл с его именем. */
+/* Наблюдать слот отдачей, а не сразу: пустая перебивка скрыта, а скрытый
+   элемент в поле зрения не попадает и класс in никогда бы не получил.
+   Обсервер объявлен ниже по файлу, но к этому колбэку — он асинхронный —
+   уже инициализирован. */
+fillSlots('.interlude[data-interlude]','data-interlude','assets/interludes/',['webp','jpg','png'],'render',
+          function(slot){ io.observe(slot); });
 
 /* Касание по карте подбрасывает метку. На мыши это делает :hover, но на
    тач-экранах он залипает, поэтому там прыжок вешается классом и снимается
@@ -237,7 +258,7 @@ function placeTicks(){
   var max=scrollMax(), n=ticks.length, gap=20/window.innerHeight*100, p=[], i;
   ticks.forEach(function(t){ t.top=docTop(t.sec); p.push(clamp(t.top/max*100,3,95)); });
   /* Последние разделы короткие и на шкале сходятся в одну точку — разводим
-     их на минимальный зазор, иначе «Стек» и «Финал» печатаются друг на друге. */
+     их на минимальный зазор, иначе «Инструменты» и «Финал» печатаются друг на друге. */
   for(i=1;i<n;i++) if(p[i]-p[i-1]<gap) p[i]=p[i-1]+gap;
   if(p[n-1]>95){
     p[n-1]=95;

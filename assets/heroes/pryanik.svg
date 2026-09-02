@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 241.55 241.96">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #da9f69;
+        stroke-width: 7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .cls-2 {
+        fill: #da9f69;
+      }
+    </style>
+  </defs>
+  <g id="pryanik">
+    <!-- плитка пряника -->
+    <path class="cls-1" d="M70,60h101.5c14.4,0,26,11.6,26,26v70c0,14.4-11.6,26-26,26H70c-14.4,0-26-11.6-26-26v-70c0-14.4,11.6-26,26-26Z"/>
+    <!-- рамка оттиска -->
+    <path class="cls-1" d="M76,78h89.5c6.1,0,11,4.9,11,11v64c0,6.1-4.9,11-11,11H76c-6.1,0-11-4.9-11-11v-64c0-6.1,4.9-11,11-11Z"/>
+    <!-- печатная розетка -->
+    <circle class="cls-1" cx="120.8" cy="121" r="22"/>
+    <path class="cls-1" d="M120.8,88v11M120.8,143v11M87.5,121h11M143,121h11"/>
+    <path class="cls-1" d="M97,97.5l8,8M144.5,145l-8-8M97,144.5l8-8M144.5,97l-8,8"/>
+    <!-- уголки рамки -->
+    <rect class="cls-2" x="74" y="90" width="7" height="7"/>
+    <rect class="cls-2" x="160.5" y="90" width="7" height="7"/>
+    <rect class="cls-2" x="74" y="145" width="7" height="7"/>
+    <rect class="cls-2" x="160.5" y="145" width="7" height="7"/>
+  </g>
+</svg>
