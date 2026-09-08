@@ -11,3 +11,7 @@ assets/Textures_*.png
 assets/hero_2.mp4
 assets/v_1.png
 assets/icons/tolstoy.png
+
+# Исходники разворотов героев в PNG (по 2 МБ каждый): в дело идут
+# пережатые JPEG в assets/heroes/shots/, туда же смотрит страница.
+assets/chars/

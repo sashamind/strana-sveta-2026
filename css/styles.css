@@ -1,5 +1,6 @@
 :root{
-  --ink:#0A0705;
+  --ink:#000000;   /* чистый чёрный: кадры героев и перебивки сняты на чёрном,
+                       и на любом другом фоне их края читались бы прямоугольником */
   --ink-2:#140D07;
   --ink-3:#1C120A;
   /* температурная шкала работы: от угля к зеркалу.
@@ -64,7 +65,7 @@ img,video,canvas{display:block;max-width:100%}
 }
 .rail__name{
   font-family:var(--f-mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--ash); white-space:nowrap; background:rgba(10,7,5,.88); padding:4px 8px;
+  color:var(--ash); white-space:nowrap; background:rgba(0,0,0,.88); padding:4px 8px;
   opacity:0; transform:translateX(8px); transition:opacity .3s, transform .3s, color .3s;
 }
 .rail__dash{width:9px; height:1px; background:var(--ash); transition:width .3s, background .3s}
@@ -462,10 +463,10 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
   content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
   transform:translateZ(0);
   background:
-    linear-gradient(180deg, var(--ink) 0%, rgba(10,7,5,.34) 22%,
-                    rgba(10,7,5,.34) 74%, var(--ink) 100%),
-    linear-gradient(90deg, rgba(10,7,5,.80) 0%, rgba(10,7,5,.40) 45%,
-                    rgba(10,7,5,.58) 100%),
+    linear-gradient(180deg, var(--ink) 0%, rgba(0,0,0,.34) 22%,
+                    rgba(0,0,0,.34) 74%, var(--ink) 100%),
+    linear-gradient(90deg, rgba(0,0,0,.80) 0%, rgba(0,0,0,.40) 45%,
+                    rgba(0,0,0,.58) 100%),
     url("../assets/bg-tula.webp") center/cover no-repeat;
 }
 #s-city > .wrap{position:relative; z-index:1}
@@ -488,10 +489,10 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
   left:calc(50% - 50vw); right:calc(50% - 50vw);
   transform:translateZ(0);
   background:
-    linear-gradient(180deg, var(--ink) 0%, rgba(10,7,5,.34) 22%,
-                    rgba(10,7,5,.34) 74%, var(--ink) 100%),
-    linear-gradient(90deg, rgba(10,7,5,.80) 0%, rgba(10,7,5,.40) 45%,
-                    rgba(10,7,5,.58) 100%),
+    linear-gradient(180deg, var(--ink) 0%, rgba(0,0,0,.34) 22%,
+                    rgba(0,0,0,.34) 74%, var(--ink) 100%),
+    linear-gradient(90deg, rgba(0,0,0,.80) 0%, rgba(0,0,0,.40) 45%,
+                    rgba(0,0,0,.58) 100%),
     url("../assets/bg-tula.webp") center/cover no-repeat;
 }
 
@@ -1410,6 +1411,12 @@ body.scrolling{--dim:.26}
     transform:scale(calc(1 + .07 * var(--c,1)));
     filter:drop-shadow(0 0 12px rgba(242,160,61,.5));
   }
+  /* Развороты героев: на телефоне два в ряд ужимали кадр до полоски,
+     а подпись под ним обрезалась на середине имени файла. Одна колонка —
+     кадр во всю ширину, выравнивать в ряду больше нечего. */
+  .shots{grid-template-columns:1fr; gap:44px; margin-top:44px; padding-top:40px}
+  .shot{display:block}
+  .shot p{max-width:none}
   .swatches{grid-template-columns:repeat(2,1fr)}
   /* При нечётном числе образцов в сетке оставалась пустая ячейка — она
      показывала цвет контейнера сплошным прямоугольником. Последняя карточка
@@ -2008,12 +2015,25 @@ body.scrolling{--dim:.26}
 
   /* Развороты героев: каждый — свой слайд. Шапка раздела повторяется
      (.eyebrow--cont), под ней название, подпись и кадр во всю ширину полосы.
-     Кадр по-прежнему идёт режимом screen: он снят на чёрном, и в PDF
-     подложка слайда такая же — стык не читается. */
+     Кадр снят на чёрном и на сайте ложится режимом screen. В PDF Chrome
+     этот режим теряет: все кадры уходят в файл с /BM /Normal — проверено
+     по внутренностям готового PDF. Поэтому слайду дан собственный чисто
+     чёрный фон: чернота кадра совпадает с подложкой, и стык не читается
+     хоть со смешиванием, хоть без него. Ширина 1920 и вынос из полей
+     .wrap — иначе фон обрывался бы по краю полосы. */
   .shots{display:block; margin:0; padding:0; border-top:0}
   /* На слайде выравнивать нечего — разворот один на страницу. */
   .shot{display:block}
-  .shot{break-before:page; page-break-before:always; padding-top:60px}
+  .shot{
+    break-before:page; page-break-before:always;
+    background:#000;
+    width:1920px; margin-left:calc(50% - 960px);
+    height:1080px; overflow:hidden;
+    padding:60px 90px 0;
+  }
+  /* Нижнее поле секции (60px) прибавлялось к последнему развороту и выносило
+     за ним пустую страницу — подбираем его отрицательным полем. */
+  .shot:last-child{margin-bottom:-60px}
   .shot__head{max-width:1180px}
   .shot__k{font-size:13px; margin-bottom:16px}
   .shot h3{font-size:54px; margin-bottom:14px}
