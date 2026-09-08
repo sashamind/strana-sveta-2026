@@ -770,6 +770,28 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .scen--tall{display:none}
 .scen__ln{fill:none; stroke:rgba(232,200,122,.5); stroke-width:1;
           stroke-linecap:round; stroke-linejoin:round}
+/* Пункт цепочки — группа: рамка, название, подпись и переход к следующему.
+   На мыши наведение разжигает пункт вместе с его переходом, а соседние
+   приглушает: цепочка читается по одному шагу. На тач-экранах наведения нет,
+   и роль курсора берёт прокрутка — там --c ставит скрипт (см. main.js). */
+.scen__g{transition:opacity .3s ease, filter .3s ease}
+/* Рамка нарисована без заливки, и без pointer-events наведение ловилось бы
+   только по самой линии — курсор внутри рамки на неё не попадал. */
+.scen__bx{pointer-events:all}
+/* Невидимая зона наведения на всю ширину шага: рамка, подпись под ней,
+   переходное слово и стрелка к следующему пункту. Без неё курсор между
+   рамками попадал в пустоту, все пункты возвращались в полную силу —
+   и схема читалась как подсвеченная целиком. */
+.scen__hit{fill:none; stroke:none; pointer-events:all}
+@media (hover:hover){
+  /* :has, а не :hover у самой схемы: иначе наведение на пустое поле рядом
+     с цепочкой гасило бы все пункты разом, не подсветив ни одного. */
+  .scen__svg:has(.scen__g:hover) .scen__g{opacity:.35}
+  /* Подсветка тоже через :has: вес :has считается по аргументу, и правило
+     приглушения иначе перебивает её — гаснет вся схема, включая наведённый шаг. */
+  .scen__svg:has(.scen__g:hover) .scen__g:hover{opacity:1;
+    filter:drop-shadow(0 0 9px rgba(242,160,61,.45))}
+}
 .scen__bx{fill:none; stroke-width:1}
 .scen__bx--chaos{stroke:rgba(242,160,61,.42)}
 .scen__bx--turn{stroke:rgba(207,193,172,.34)}
@@ -862,7 +884,17 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
    именем, и тогда его нет ни на экране, ни в печати: display:none снимает
    и разрыв страницы, поэтому пустые слоты не плодят пустых слайдов. */
 .interlude{display:none}
-.interlude.is-filled{display:flex; align-items:center; justify-content:center; margin:96px 0}
+.interlude.is-filled{display:flex; flex-direction:column; align-items:center;
+                     justify-content:center; margin:96px 0}
+/* Подпись под кадром — тихая сноска, а не заголовок: моношрифт вразрядку,
+   приглушённый цвет. В разметке она стоит выше картинки (скрипт вставляет
+   кадр в конец слота), поэтому порядок задан order, а не версткой. */
+.interlude img{order:1}
+.interlude__cap{
+  order:2; margin-top:18px; max-width:52ch; text-align:center;
+  font-size:13px; line-height:1.5; letter-spacing:.02em;
+  color:var(--ash); opacity:.62;
+}
 /* Кадр показан так же, как модель на обложке: класс .render вешает скрипт,
    от него приходят растворение краёв маской и screen поверх фона. Размеры
    тоже обложечные — перебивка читается как ещё один «первый экран».
@@ -1335,8 +1367,13 @@ body.scrolling{--dim:.26}
   .layers,.meta-grid{grid-template-columns:1fr}
   /* на телефоне оглавление идёт одной колонкой подряд: раскладка по двум
      столбцам снимается вместе с позициями строк */
-  .toc{grid-template-columns:1fr; grid-template-rows:none}
+  .toc{grid-template-columns:1fr; grid-template-rows:none; margin-top:18px}
   .toc__i:nth-child(n){grid-column:1; grid-row:auto}
+  /* Одиннадцать строк в столбец занимали почти экран целиком — оглавление
+     на телефоне плотнее: кегль ниже, поле строки вдвое меньше. */
+  .toc__l{padding:11px 2px; gap:0 14px}
+  .toc__t{font-size:17px}
+  .toc__n{font-size:9px; letter-spacing:.18em}
   /* Наведения на тач-экране нет — роль курсора берёт прокрутка: иконка
      разгорается, когда карточка подходит к центру экрана, и гаснет, сойдя
      с него. --c ставит скрипт, тот же, что ведёт иконки «Малой родины»;
@@ -1503,7 +1540,9 @@ body.scrolling{--dim:.26}
   .hero{min-height:100vh; min-height:100svh}
   .hero__hint{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
   .tl__title{display:none}
-  .tl__seg b{font-size:8px}
+  /* 21 сегмент на телефоне: короткие сцены уже двузначного номера,
+     он всё равно обрезался бы — оставляем цветную партитуру без цифр. */
+  .tl__seg b{display:none}
   .tools{bottom:16px; right:16px; gap:8px}
   .pdf{padding:11px 14px; font-size:9px; letter-spacing:.14em}
   /* карта в полный рост занимала пол-экрана и забивала текст */
@@ -1537,6 +1576,10 @@ body.scrolling{--dim:.26}
   .scen{margin-top:38px}
   .scen--wide{display:none}
   .scen--tall{display:block; max-width:300px; margin-inline:auto}
+  /* Прокрутка вместо наведения: пункт разгорается, подходя к центру экрана,
+     и гаснет, сойдя с него. --c ставит тот же скрипт, что ведёт иконки
+     «Малой родины»; без него (нет JS, reduce) остаётся полная яркость. */
+  .scen--tall .scen__g{opacity:calc(.35 + .65 * var(--c,1))}
   .lore__lead{text-align:center}
   .lore__item{display:block; text-align:center; margin-bottom:88px}
   /* Общая обёртка на телефоне вытягивается на несколько экранов, и фокус
@@ -1933,9 +1976,17 @@ body.scrolling{--dim:.26}
     break-inside:avoid; page-break-inside:avoid;
     break-after:page; page-break-after:always;
   }
-  .interlude.is-filled img{margin:auto; max-width:100%; max-height:100%;
+  /* Кадр с подписью центрируются в остатке слайда парой: свободное место
+     делится поровну над кадром и под подписью. */
+  /* Потолок кадра оставляет место подписи: при max-height:100% кадр занимал
+     весь остаток слайда и сноску срезало overflow'ом контейнера. */
+  .interlude.is-filled img{margin:auto auto 0; max-width:100%; max-height:820px;
                            width:auto; height:auto;
                            opacity:1!important; transform:none!important}
+  /* Мера шире экранной: на слайде подпись должна укладываться в строку,
+     при 52ch она рвалась надвое. */
+  .interlude__cap{position:relative; z-index:1; margin:22px auto auto;
+                  max-width:80ch; font-size:19px; letter-spacing:.02em; opacity:.5}
   /* Края кадра растворяются в чёрном: поверх слайда лежит крестовина из двух
      градиентов — к краям чёрный, в середине прозрачный. Кадр под ней остаётся
      нетронутым, а стык с полем слайда уходит. */
@@ -1995,6 +2046,12 @@ body.scrolling{--dim:.26}
   /* описание кадра идёт колонкой, а не строкой во всю ширину слайда */
   #storyboard .scene p{max-width:640px}
   #storyboard .pslide .scene{min-height:285px}
+  /* Слайды с двумя кадрами (конец раскадровки) добираются по высоте:
+     иначе фон секции обрывался посреди слайда видимой границей. */
+  #storyboard .pslide{min-height:880px}
+  /* Последний слайд раздела — до самого низа страницы: на нём кончается
+     секция, и подложка иначе обрывалась бы видимой полосой. */
+  #storyboard .pslide:last-of-type{min-height:1019px}
   .scene__tc{opacity:1}
   /* разрыв ПЕРЕД сценой, а не после: с break-after Chrome терял один разрыв
      и склеивал два слайда раскадровки в один */

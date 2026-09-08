@@ -325,7 +325,7 @@ var blocks=[].slice.call(document.querySelectorAll('.fb, .lore__item'));
    и иконке, и тексту, поэтому карточка просыпается вся разом, как под
    курсором на широком экране. */
 var icons=[].slice.call(document.querySelectorAll(
-  '.lore__item .lore__ico, .layers--cast .layer'));
+  '.lore__item .lore__ico, .layers--cast .layer, .scen--tall .scen__g'));
 var fRaf=0, idleTimer=0;
 
 function markScrolling(){
