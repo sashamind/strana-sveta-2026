@@ -268,8 +268,9 @@ html.fonts .hero__facts,html.fonts .hero__hint,html.fonts .hero h1{
    Высота задана через vh, чтобы вся обложка всегда оставалась одним экраном */
 .hero__stage{margin:40px 0 0; position:relative}
 /* На экране живёт ролик, статика лежит запасным вариантом и включается там,
-   где видео не работает: в печати и при отключённой анимации. Обе картинки
-   в потоке одновременно сдвинули бы вёрстку, поэтому лишняя всегда display:none. */
+   где видео не работает: в печати, при отключённой анимации и если браузер
+   отказался проигрывать файл. Обе картинки в потоке одновременно сдвинули бы
+   вёрстку, поэтому лишняя всегда display:none. */
 /* Селекторы с тегом: .render объявлен ниже и с равной силой перебил бы
    простой .hero__still, снова показав картинку поверх ролика. */
 img.hero__still{display:none}
@@ -760,8 +761,10 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
    CSS-анимацией: у CSS-поворота внутри SVG точка отсчёта зависит от
    transform-box, и в разных движках группа либо крутится на месте, либо стоит.
    animateTransform поворачивает вокруг (0 0) собственных координат группы —
-   ровно вокруг центра круга. Снимается в main.js при prefers-reduced-motion. */
-.myth__cyc{fill:none; stroke:rgba(232,200,122,.42); stroke-width:1.6;
+   ровно вокруг центра круга. Снимается в main.js при prefers-reduced-motion.
+   Цвет красно-оранжевый: стрелка — единственная горячая деталь схемы, среди
+   золотых линий и рамок она читается как огонь, а не как ещё одна связь. */
+.myth__cyc{fill:none; stroke:rgba(230,84,26,.92); stroke-width:1.8;
            stroke-linecap:round; stroke-linejoin:round}
 
 /* ---------- «Адаптация мифа»: цепочка состояний ---------- */
@@ -1235,9 +1238,11 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .credits b{color:var(--paper); font-weight:500}
 
 /* ---------- кнопки в углу ---------- */
-/* кнопка появляется только когда начали листать */
+/* Кнопка появляется только когда начали листать. Держим её слева: справа
+   во всю высоту стоит шкала разделов, и в нижнем правом углу кнопка
+   налезала на её деления. */
 .tools{
-  position:fixed; bottom:26px; right:26px; z-index:70; display:flex; gap:10px; align-items:center;
+  position:fixed; bottom:26px; left:26px; z-index:70; display:flex; gap:10px; align-items:center;
   opacity:0; visibility:hidden;
   transition:opacity .45s ease, visibility 0s linear .45s;
 }
@@ -1550,7 +1555,7 @@ body.scrolling{--dim:.26}
   /* 21 сегмент на телефоне: короткие сцены уже двузначного номера,
      он всё равно обрезался бы — оставляем цветную партитуру без цифр. */
   .tl__seg b{display:none}
-  .tools{bottom:16px; right:16px; gap:8px}
+  .tools{bottom:16px; left:16px; gap:8px}
   .pdf{padding:11px 14px; font-size:9px; letter-spacing:.14em}
   /* карта в полный рост занимала пол-экрана и забивала текст */
   /* Заголовки разделов по центру. Только h2: подзаголовки карточек (h3)
@@ -1750,7 +1755,7 @@ body.scrolling{--dim:.26}
     font-size:15px; line-height:1.55;
   }
   .lore__tip::after{display:none}
-  /* видео в PDF не попадает — печатаем последний кадр статикой */
+  /* видео в PDF не попадает — печатаем статичный кадр обложки */
   video.hero__vid{display:none!important}
   img.hero__still{display:block!important}
   .mapline{height:300px}
