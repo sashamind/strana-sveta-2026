@@ -1880,7 +1880,6 @@ body.scrolling{--dim:.26}
                 border-bottom:1px solid rgba(176,123,50,.5)}
   /* Заглушка: ссылки на материалы ещё нет, поэтому подчёркивание пунктиром
      и приглушённый цвет — видно, что место занято, но вести пока некуда. */
-  .hero__note-soon{color:var(--brass)!important; border-bottom-style:dashed!important}
 
   /* Растворение краёв кадра запечено в отдельный файл. printToPDF теряет
      альфу и в mask-image, и в градиентах — оба обхода печатались сплошной
