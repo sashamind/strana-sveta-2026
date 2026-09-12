@@ -897,19 +897,19 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .interlude__cap{
   order:2; margin-top:18px; max-width:52ch; text-align:center;
   font-size:13px; line-height:1.5; letter-spacing:.02em;
-  color:var(--ash); opacity:.62;
+  color:var(--ash); opacity:calc(var(--o,0) * .62);
 }
 /* Кадр показан так же, как модель на обложке: класс .render вешает скрипт,
    от него приходят растворение краёв маской и screen поверх фона. Размеры
    тоже обложечные — перебивка читается как ещё один «первый экран».
-   Появляется кадр проявлением, без наезда: масштаб держится, меняется только
-   прозрачность. Класс in ставит тот же обсервер, что открывает разделы, —
-   слот наблюдается наравне с .rv. */
+   Проявление и уход — только прозрачностью, без наезда: масштаб держится.
+   Силу даёт --o, которую ведёт прокрутка (см. «Фокус чтения» в main.js):
+   кадр разгорается на подходе к центру экрана и гаснет, сойдя с него,
+   поэтому перехода здесь нет — он бы отставал от прокрутки. */
 .interlude img{
   max-width:min(1460px,100%); max-height:52vh;
-  opacity:0; transition:opacity 1.1s ease;
+  opacity:var(--o,0);
 }
-.interlude.in img{opacity:1}
 
 /* ---------- развороты героев ----------
    На сайте — галерея под колодой: кадр, название, короткая подпись.
@@ -1119,7 +1119,7 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .triad span{width:38px; height:38px; display:block}
 
 /* ---------- раскадровка ---------- */
-/* скраббер 2:30 — липнет к верху, пока идёт секция */
+/* скраббер раскадровки — липнет к верху, пока идёт секция */
 .tl{
   position:sticky; top:0; z-index:40; padding:16px 0 18px; margin-bottom:6px;
   background:linear-gradient(180deg,var(--ink-2) 72%,rgba(20,13,7,.86));
@@ -1127,15 +1127,17 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
   border-bottom:1px solid var(--line);
 }
 .tl__head{display:flex; align-items:baseline; gap:16px; margin-bottom:11px}
-.tl__now{font-family:var(--f-mono); font-size:13px; color:var(--ember); min-width:46px}
+.tl__now{font-family:var(--f-mono); font-size:13px; color:var(--ember); min-width:24px}
 .tl__title{
   flex:1; font-family:var(--f-display); font-size:16px; font-weight:600;
   color:var(--paper); letter-spacing:.01em;
 }
 .tl__total{font-family:var(--f-mono); font-size:10px; letter-spacing:.18em; color:var(--ash)}
 .tl__bar{position:relative; display:flex; gap:2px; height:28px}
+/* Ширина сегмента больше не зависит от длительности: у раскадровки её нет,
+   и двадцать одна сцена делит полосу поровну. */
 .tl__seg{
-  position:relative; flex:var(--d) 1 0; height:100%; border:0; padding:0; cursor:pointer;
+  position:relative; flex:1 1 0; height:100%; border:0; padding:0; cursor:pointer;
   background:rgba(255,255,255,.045); overflow:hidden; transition:background .3s;
 }
 .tl__seg::before{content:''; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--a); opacity:.5; transition:opacity .3s, height .3s}
@@ -1327,7 +1329,6 @@ body.scrolling{--dim:.26}
 .rv.in .craft{opacity:1; transform:none; transition-delay:calc(var(--i,0) * .07s + .15s)}
 
 @media (prefers-reduced-motion:reduce){
-  .interlude img{opacity:1; transition:none}
   .rv,.rv .craft{opacity:1; transform:none; transition:none}
   .seq .sq{opacity:1; transform:none; transition:none}
   .seq .mapline path{stroke-dasharray:none; stroke-dashoffset:0}
@@ -1535,8 +1536,8 @@ body.scrolling{--dim:.26}
   .hero{min-height:100vh; min-height:100svh}
   .hero__hint{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
   .tl__title{display:none}
-  /* 21 сегмент на телефоне: короткие сцены уже двузначного номера,
-     он всё равно обрезался бы — оставляем цветную партитуру без цифр. */
+  /* 21 сегмент на телефоне: на ширину двузначного номера сегмента не хватает,
+     цифры обрезались бы — оставляем цветную партитуру без них. */
   .tl__seg b{display:none}
   .tools{bottom:16px; left:16px; gap:8px}
   .pdf{padding:11px 14px; font-size:9px; letter-spacing:.14em}
@@ -1945,6 +1946,11 @@ body.scrolling{--dim:.26}
      но кадры перебивок сами уходят в чёрный по краям — на чёрном слайде
      стык не читается, как и на обложке. */
   .interlude.is-filled{
+    /* На бумаге прокрутки нет, а с ней и проявления: силу кадра возвращаем
+       на единицу прямо здесь, чтобы --o, оставшаяся от экрана, не утащила
+       перебивку в пустой чёрный слайд. !important — потому что на экране
+       --o приходит инлайном от прокрутки и обычное правило его не перебьёт. */
+    --o:1!important;
     /* Подложка слайда — чистый чёрный, а не фон страницы: кадры сняты на чёрном,
        и на нём же стык кадра с полем слайда не читается. Секция при этом может
        быть тонированной (.band--tint), поэтому цвет задан прямо здесь. */

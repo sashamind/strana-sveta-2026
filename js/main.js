@@ -194,12 +194,12 @@ fillSlots('.shot__fr[data-shot]','data-shot','assets/heroes/shots/',['webp','jpg
    у каждого раздела, но пустой слот не показывается и лишней страницы в PDF
    не делает: раздел получает перебивку ровно тогда, когда в assets/interludes/
    лежит файл с его именем. */
-/* Наблюдать слот отдачей, а не сразу: пустая перебивка скрыта, а скрытый
-   элемент в поле зрения не попадает и класс in никогда бы не получил.
-   Обсервер объявлен ниже по файлу, но к этому колбэку — он асинхронный —
-   уже инициализирован. */
+/* Заполненные слоты собираются сюда, и дальше их прозрачность ведёт прокрутка
+   (см. «Фокус чтения»): кадр разгорается на подходе к центру экрана и гаснет,
+   сойдя с него. Пустые в список не попадают — им и гаснуть нечем. */
+var interludes=[];
 fillSlots('.interlude[data-interlude]','data-interlude','assets/interludes/',['webp','jpg','png'],'render',
-          function(slot){ io.observe(slot); });
+          function(slot){ interludes.push(slot); applyFocus(); });
 
 /* Касание по карте подбрасывает метку. На мыши это делает :hover, но на
    тач-экранах он залипает, поэтому там прыжок вешается классом и снимается
@@ -369,6 +369,22 @@ function applyFocus(){
     }
     ic.style.setProperty('--c',c.toFixed(3));
   });
+  /* Перебивки: кадр во весь экран разгорается на подходе к центру и гаснет,
+     сойдя с него. Окно несимметричное, как у пунктов «Малой родины»: снизу
+     шире — кадр начинает проявляться позже, уже заметно войдя в экран;
+     сверху уже — уходит раньше, не дожидаясь края. Внутри полки вокруг
+     центра кадр стоит в полную силу, иначе разгон и спад сошлись бы
+     в одной точке и он «клевал» бы на проходе. */
+  var iHold=vh*.20, iIn=vh*.30, iOut=vh*.24;
+  interludes.forEach(function(el){
+    var o=1;
+    if(!reduced){
+      var q=el.getBoundingClientRect(), d=(q.top+q.bottom)/2-mid;
+      o=clamp(1-(Math.abs(d)-iHold)/(d>0?iIn:iOut),0,1);
+      o=o*o*(3-2*o);
+    }
+    el.style.setProperty('--o',o.toFixed(3));
+  });
 }
 
 applyFocus();
@@ -498,29 +514,27 @@ document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
 
 /* ============ 5. Скраббер раскадровки ============ */
 
-var scenes=[].slice.call(document.querySelectorAll('.scene[data-start]'));
+/* Раскадровка — последовательность, а не хронометраж: тайминга у сцен нет,
+   скраббер отсчитывает кадры. Сегменты поэтому равной ширины, а не
+   пропорциональны длительности, и головка идёт по номеру кадра. */
+var scenes=[].slice.call(document.querySelectorAll('.scene[data-scene]'));
 var tl=document.getElementById('tl');
 var tlBar=document.getElementById('tlBar');
 var tlNow=document.getElementById('tlNow');
 var tlTitle=document.getElementById('tlTitle');
-var TOTAL=150, segs=[], play=null;
+var segs=[], play=null;
 
-function mmss(s){
-  var m=Math.floor(s/60), r=Math.floor(s%60);
-  return m+':'+(r<10?'0':'')+r;
-}
+function nn(i){ return (i<9?'0':'')+(i+1); }
 
 scenes.forEach(function(sc,i){
-  var dur=+sc.getAttribute('data-dur');
   var accent=sc.style.getPropertyValue('--accent').trim();
   var b=document.createElement('button');
   b.className='tl__seg';
   b.type='button';
-  b.style.setProperty('--d',dur);
   b.style.setProperty('--a',accent);
   b.title=sc.querySelector('h3').textContent;
   b.setAttribute('aria-label','Сцена '+(i+1)+' — '+b.title);
-  b.innerHTML='<b>'+(i<9?'0':'')+(i+1)+'</b>';
+  b.innerHTML='<b>'+nn(i)+'</b>';
   b.addEventListener('click',function(){
     var y=sc.getBoundingClientRect().top+window.scrollY-tl.offsetHeight-28;
     window.scrollTo({top:y,behavior:reduced?'auto':'smooth'});
@@ -543,11 +557,12 @@ function syncTimeline(){
     if(r.top<=line){ cur=i; within=clamp((line-r.top)/r.height,0,1); }
   });
   var sc=scenes[cur];
-  var t=+sc.getAttribute('data-start')+ +sc.getAttribute('data-dur')*within;
 
-  tlNow.textContent=mmss(t);
+  tlNow.textContent=nn(cur);
   tlTitle.textContent=sc.querySelector('h3').textContent;
-  play.style.left=clamp(t/TOTAL*100,0,100)+'%';
+  /* Головка внутри сегмента текущей сцены: доля прокрутки по ней и даёт
+     положение, раз общей шкалы времени больше нет. */
+  play.style.left=clamp((cur+within)/scenes.length*100,0,100)+'%';
 
   segs.forEach(function(s,i){
     s.classList.toggle('cur',i===cur);
@@ -680,11 +695,13 @@ function openLb(frame){
   var media=frame.querySelector('img,video');
   if(!media) return;
   var scene=frame.closest('.scene');
-  var tc=scene?scene.querySelector('.scene__tc').firstChild.textContent.trim():'';
+  /* Первая строка .scene__tc — номер кадра; пометка («пик», «финал») лежит
+     в дочернем span и в подпись не идёт. */
+  var num=scene?scene.querySelector('.scene__tc').firstChild.textContent.trim():'';
   var name=scene?scene.querySelector('h3').textContent:'';
   lbStage.innerHTML='';
   lbStage.appendChild(media.cloneNode(true));
-  lbCap.textContent=tc+' · '+name;
+  lbCap.textContent=num+' · '+name;
   lb.hidden=false;
   requestAnimationFrame(function(){lb.classList.add('on')});
   document.body.style.overflow='hidden';
