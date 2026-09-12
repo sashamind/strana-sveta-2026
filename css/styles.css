@@ -894,6 +894,7 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
    приглушённый цвет. В разметке она стоит выше картинки (скрипт вставляет
    кадр в конец слота), поэтому порядок задан order, а не версткой. */
 .interlude img{order:1}
+.interlude .frames{order:1}
 .interlude__cap{
   order:2; margin-top:18px; max-width:52ch; text-align:center;
   font-size:13px; line-height:1.5; letter-spacing:.02em;
@@ -909,6 +910,47 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .interlude img{
   max-width:min(1460px,100%); max-height:52vh;
   opacity:var(--o,0);
+}
+/* ---------- перебивка из нескольких кадров ----------
+   Коробка держит размер по базовому кадру, добавочные лежат поверх него
+   абсолютом. Прозрачность от прокрутки переезжает сюда: внутри коробки
+   ею распоряжается анимация, и два источника на одном свойстве подрались бы. */
+/* Screen остаётся на самих кадрах, как у одиночной перебивки. Пробовал
+   перенести его на коробку, чтобы кадры смешивались обычной прозрачностью:
+   на бумаге это выглядит правильнее, но замер показал обратное. Кадры сняты
+   с разных положений лица, и светлые места у них не совпадают — среднее
+   арифметическое двух таких кадров тускнеет на 22%. Screen же складывает
+   свет, и яркость на стыке держится ровно (замер: 27.1 против 27.3 в покое). */
+.interlude .frames{position:relative; display:flex; opacity:var(--o,0)}
+.interlude .frames img{opacity:1}
+.frames__f:not(.frames__f--base){
+  position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+}
+/* Пока добавочные кадры не загрузились, анимации нет: иначе базовый кадр
+   мигал бы в одиночку, уходя в пустоту на месте ещё не пришедших. */
+.frames.is-seq .frames__f{
+  /* Цикл: три секунды на смену всех четырёх кадров, дальше пять секунд покоя.
+     Отсюда 8s. Доли ниже считаны от числа кадров: шаг — 3s/4 = 0.75s, а это
+     9.375% цикла; пробег кончается на 37.5% (те самые 3 секунды), дальше
+     до конца держится базовый кадр. Кадров станет больше или меньше —
+     пересчитывать нужно и шаг, и доли. */
+  animation:frameHold 8s linear infinite;
+}
+.frames.is-seq .frames__f:not(.frames__f--base){
+  animation-name:frameBlip;
+  /* Каждый следующий кадр выходит на шаг позже предыдущего;
+     --n приходит из скрипта и равен порядковому номеру кадра. */
+  animation-delay:calc(var(--n,1) * 0.75s - 0.75s);
+  animation-fill-mode:both;
+}
+/* Базовый кадр: уходит на время пробега и возвращается к покою. Держится
+   в нуле, пока идут три добавочных, — это с 9.375% по 28.125%. */
+@keyframes frameHold{
+  0%{opacity:1} 9.375%{opacity:0} 28.125%{opacity:0} 37.5%{opacity:1} 100%{opacity:1}
+}
+/* Добавочный: выходит на своём месте пробега и снова уступает. */
+@keyframes frameBlip{
+  0%{opacity:0} 9.375%{opacity:1} 18.75%{opacity:0} 100%{opacity:0}
 }
 
 /* ---------- развороты героев ----------
@@ -1202,11 +1244,95 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 
 /* ---------- звук ---------- */
 .two{display:grid; grid-template-columns:1fr 1fr; gap:64px}
-.cues{display:flex; flex-direction:column; gap:24px}
-.cue{border-left:1px solid var(--line-2); padding-left:22px; transition:border-color .35s}
-.cue:hover{border-left-color:var(--ember)}
-.cue h3{font-size:17px; font-family:var(--f-mono); font-weight:400; letter-spacing:.08em; color:var(--gold); margin-bottom:8px}
-.cue p{font-size:14px}
+/* ---------- слои «Звука» ----------
+   Три слоя лежат друг на друге и разделены линией — так же, как сцены
+   раскадровки, и по той же причине: это последовательность равных по весу
+   блоков, а не колода карточек. Рубрика с названием стоит слева отдельной
+   колонкой, чтобы взгляд шёл по ней сверху вниз и слои читались списком. */
+.tier{
+  display:grid; grid-template-columns:220px 1fr; gap:48px;
+  padding:38px 0; border-top:1px solid var(--line);
+}
+.tier:last-child{border-bottom:1px solid var(--line)}
+.tier__k{
+  font-family:var(--f-mono); font-size:10px; letter-spacing:.24em;
+  color:var(--brass); text-transform:uppercase; margin-bottom:12px;
+}
+.tier h3{font-family:var(--f-display); font-size:26px; font-weight:600}
+.tier__body p{font-size:15px; max-width:68ch}
+@media screen and (max-width:900px){
+  /* На узком экране колонка рубрики съела бы ширину у текста: шапка встаёт
+     над слоем, разделительная линия остаётся и порядок чтения не меняется. */
+  .tier{grid-template-columns:1fr; gap:16px}
+}
+
+/* Партитура дорожки: пять состояний одной строкой внутри слоя «Музыка».
+   Список нумерованный по смыслу — это последовательность, — но маркеры сняты:
+   порядок держат стрелки. Строка переносится по словам, стрелка уходит
+   на новую строку вместе со своим состоянием и не повисает в конце. */
+.score{
+  list-style:none; display:flex; flex-wrap:wrap; align-items:center;
+  margin-top:20px; padding-top:16px; border-top:1px solid var(--line);
+  font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ash);
+}
+.score li{display:flex; align-items:center}
+.score li + li::before{content:'\2192'; margin:0 8px; color:var(--brass); opacity:.75}
+
+/* ---------- проигрыватель «Звука» ----------
+   Пустой слот не показывается: пока в assets/sound/ нет дорожки, блока нет
+   ни на экране, ни в печати. Класс is-filled ставит скрипт, найдя файл. */
+.player{display:none}
+.player.is-filled{display:block; margin-top:26px}
+.player__row{display:flex; align-items:center; gap:20px}
+/* Кнопка — латунный кружок, как засечки шкалы: тот же вес линии и цвет. */
+.player__play{
+  flex:none; width:46px; height:46px; border:1px solid var(--line-2); border-radius:50%;
+  background:transparent; color:var(--ember); cursor:pointer; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .3s, color .3s, background .3s;
+}
+.player__play svg{width:19px; height:19px; fill:currentColor}
+.player__play:hover{border-color:var(--ember); background:rgba(242,160,61,.08)}
+.player__play:focus-visible{outline:1px solid var(--brass); outline-offset:3px}
+/* Пауза показывается вместо треугольника, когда дорожка играет. */
+.player__bars{display:none}
+.player.is-playing .player__tri{display:none}
+.player.is-playing .player__bars{display:block}
+/* Полоса: та же тонкая линия, что разделители разделов, с огнём поверх.
+   Высота набрана прозрачными полями — нитка в 2 px не поймала бы курсор. */
+.player__bar{
+  position:relative; flex:1; height:22px; cursor:pointer;
+  display:flex; align-items:center;
+}
+.player__bar::before{
+  content:''; position:absolute; left:0; right:0; height:2px; background:var(--line);
+}
+.player__fill{
+  position:absolute; left:0; height:2px; width:0;
+  background:linear-gradient(90deg,var(--flame),var(--ember));
+}
+/* Головка держится за правый край заполнения; при переносе не «плывёт»,
+   потому что сдвинута на половину своей ширины, а не спозиционирована. */
+.player__head{
+  position:absolute; left:0; width:9px; height:9px; margin-left:-4.5px; border-radius:50%;
+  background:var(--ember); opacity:0; transition:opacity .3s;
+}
+.player.is-filled:hover .player__head,.player.is-playing .player__head{opacity:1}
+.player__bar:focus-visible{outline:1px solid var(--brass); outline-offset:4px}
+.player__t{
+  flex:none; font-family:var(--f-mono); font-size:11px; letter-spacing:.1em; color:var(--ash);
+  font-variant-numeric:tabular-nums;
+}
+.player__now{color:var(--paper); font-weight:400}
+.player__cap{
+  margin-top:16px; font-family:var(--f-mono); font-size:10px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--ash); opacity:.7;
+}
+@media (max-width:760px){
+  .player__row{gap:14px}
+  .player__t{font-size:10px; letter-spacing:.06em}
+}
 
 /* ---------- финал ----------
    Цитата держит экран одна: пока она в центре, выходные данные приглушены.
@@ -1329,6 +1455,10 @@ body.scrolling{--dim:.26}
 .rv.in .craft{opacity:1; transform:none; transition-delay:calc(var(--i,0) * .07s + .15s)}
 
 @media (prefers-reduced-motion:reduce){
+  /* Смена кадров перебивки — движение ради движения: при просьбе его убавить
+     остаётся один базовый кадр. */
+  .frames.is-seq .frames__f{animation:none}
+  .frames__f:not(.frames__f--base){opacity:0}
   .rv,.rv .craft{opacity:1; transform:none; transition:none}
   .seq .sq{opacity:1; transform:none; transition:none}
   .seq .mapline path{stroke-dasharray:none; stroke-dashoffset:0}
@@ -1669,8 +1799,10 @@ body.scrolling{--dim:.26}
   }
   html,body{background:var(--ink)!important; color:var(--paper)!important}
 
-  /* всё интерактивное из печати убирается */
-  .rail,.tools,.lb,.tl,
+  /* всё интерактивное из печати убирается. Проигрыватель — тоже: на бумаге
+     звук не играет, а немая полоса воспроизведения только обещала бы то,
+     чего в PDF нет. Ссылка на интерактивную версию есть на обложке. */
+  .rail,.tools,.lb,.tl,.player,
   .hero__embers,.hero__hint,.veil,.mir__g{display:none!important}
   /* «Малая родина» — самый плотный слайд: второй заголовок и разъезд между
      рядами в печати ужаты, иначе раздел уходит на лишнюю страницу. */
@@ -1940,6 +2072,17 @@ body.scrolling{--dim:.26}
   #s-theme .layer__k{font-size:13px; margin-bottom:18px}
   #s-theme .layer h3{font-size:34px; margin-bottom:16px}
   #s-theme .layer p{font-size:21px; line-height:1.62}
+  /* Слои «Звука» на слайде: кегли презентационные, но поля ужаты — три слоя
+     подряд должны уложиться в один лист вместе с заголовком и вводкой.
+     Плеера в печати нет, и место под ним не резервируется. */
+  .tier{grid-template-columns:300px 1fr; gap:56px; padding:22px 0}
+  /* Вводка раздела длиннее обычной, и при штатном отбиве три слоя не влезали
+     в лист: секция набирала 1103 px при слайде в 1080. */
+  #s-sound .lead--wide{margin-bottom:32px}
+  .tier__k{font-size:13px; margin-bottom:14px}
+  .tier h3{font-size:34px}
+  .tier__body p{font-size:21px; line-height:1.62; max-width:none}
+  #s-sound .score{font-size:13px; letter-spacing:.14em; margin-top:22px; padding-top:18px}
 
   /* Перебивка — свой слайд: кадр вписан по центру, как модель на обложке,
      и не растянут на весь лист. Маску в PDF Chrome теряет (см. «Здание»),
@@ -1981,6 +2124,20 @@ body.scrolling{--dim:.26}
   .interlude.is-filled img{margin:auto auto 0; max-width:100%; max-height:820px;
                            width:auto; height:auto;
                            opacity:1!important; transform:none!important}
+  /* Перебивка из нескольких кадров: на бумаге кадр один — тот, что помечен
+     классом печатного (его называет data-print, по умолчанию базовый).
+     Остальные сняты вместе с анимацией, а коробка встаёт на место кадра
+     и центрируется теми же полями, поэтому слайд выглядит как у одиночной
+     перебивки. Печатный кадр возвращается в поток: добавочные лежат
+     абсолютом, и если на бумагу уходит один из них, без этого коробка
+     схлопнулась бы в нулевую высоту вместе со слайдом. */
+  .interlude.is-filled .frames{display:block; margin:auto auto 0; opacity:1!important}
+  .interlude.is-filled .frames__f:not(.frames__f--print){display:none!important}
+  .interlude.is-filled .frames__f--print{
+    position:relative!important; inset:auto!important;
+    width:auto!important; height:auto!important;
+  }
+  .frames.is-seq .frames__f{animation:none!important}
   /* Мера шире экранной: на слайде подпись должна укладываться в строку,
      при 52ch она рвалась надвое. */
   .interlude__cap{position:relative; z-index:1; margin:22px auto auto;

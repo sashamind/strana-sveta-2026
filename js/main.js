@@ -158,22 +158,28 @@ if(coarse){
    файл, вставляет картинку и ставит слоту класс is-filled — по нему CSS убирает
    рамку-заглушку, а перебивку вообще показывает (без файла её нет ни на сайте,
    ни в PDF). Достаточно положить файл в нужную папку, разметку не трогают. */
+/* Поиск файла по имени: расширения перебираются по очереди, побеждает первое
+   загрузившееся. Вынесено отдельно, потому что тем же способом ищутся
+   и добавочные кадры перебивок-последовательностей. */
+function findImg(dir,name,exts){
+  return exts.reduce(function(chain,ext){
+    return chain.then(function(found){
+      if(found) return found;
+      return new Promise(function(res){
+        var im=new Image();
+        im.onload=function(){ res(im.src); };
+        im.onerror=function(){ res(null); };
+        im.src=dir+name+'.'+ext;
+      });
+    });
+  },Promise.resolve(null));
+}
+
 function fillSlots(sel, attr, dir, exts, cls, onFill){
   var slots=[].slice.call(document.querySelectorAll(sel));
   if(!slots.length) return;
   slots.forEach(function(slot){
-    var name=slot.getAttribute(attr);
-    exts.reduce(function(chain,ext){
-      return chain.then(function(found){
-        if(found) return found;
-        return new Promise(function(res){
-          var im=new Image();
-          im.onload=function(){ res(im.src); };
-          im.onerror=function(){ res(null); };
-          im.src=dir+name+'.'+ext;
-        });
-      });
-    },Promise.resolve(null)).then(function(src){
+    findImg(dir,slot.getAttribute(attr),exts).then(function(src){
       if(!src) return;
       var im=new Image(); im.src=src; im.alt='';
       if(cls) im.className=cls;
@@ -199,7 +205,51 @@ fillSlots('.shot__fr[data-shot]','data-shot','assets/heroes/shots/',['webp','jpg
    сойдя с него. Пустые в список не попадают — им и гаснуть нечем. */
 var interludes=[];
 fillSlots('.interlude[data-interlude]','data-interlude','assets/interludes/',['webp','jpg','png'],'render',
-          function(slot){ interludes.push(slot); applyFocus(); });
+          function(slot){ interludes.push(slot); stackFrames(slot); applyFocus(); });
+
+/* Перебивка из нескольких кадров. Базовый кадр приходит от fillSlots как
+   у любой другой перебивки — его и только его берёт печать. Добавочные
+   перечислены в data-seq, ложатся поверх базового и сменяют друг друга
+   анимацией (тайминг — в CSS, .frames). Нет data-seq — перебивка остаётся
+   одиночной, и ничего из этого не включается. */
+function stackFrames(slot){
+  var seq=(slot.getAttribute('data-seq')||'').split(',')
+            .map(function(n){ return n.trim(); }).filter(Boolean);
+  var base=slot.querySelector('img');
+  if(!seq.length||!base) return;
+  /* Какой из кадров печатается. По умолчанию базовый; data-print позволяет
+     отправить на бумагу другой — например, когда кадр покоя не отвечает
+     подписи под перебивкой. */
+  var printName=slot.getAttribute('data-print')||slot.getAttribute('data-interlude');
+
+  /* Базовый кадр переезжает в общую коробку: она держит размер по нему,
+     а добавочные кладутся поверх абсолютом. Коробка встаёт на место кадра
+     в потоке слота, поэтому порядок с подписью не меняется. */
+  var box=document.createElement('div');
+  box.className='frames';
+  base.parentNode.insertBefore(box,base);
+  box.appendChild(base);
+  base.classList.add('frames__f','frames__f--base');
+  if(printName===slot.getAttribute('data-interlude')) base.classList.add('frames__f--print');
+
+  /* Кадры добавляются по мере загрузки, но встают в порядке data-seq:
+     место под каждый занято заранее, иначе быстрый файл обогнал бы
+     медленный и порядок смены сбился бы. */
+  var holes=seq.map(function(){ var h=document.createComment(''); box.appendChild(h); return h; });
+  seq.forEach(function(name,i){
+    findImg('assets/interludes/',name,['webp','jpg','png']).then(function(src){
+      if(!src) return;
+      var im=new Image();
+      im.src=src; im.alt=''; im.className='render frames__f';
+      if(name===printName) im.classList.add('frames__f--print');
+      /* Нумерация с единицы: базовый кадр — нулевой, от неё считается
+         задержка каждого следующего в CSS. */
+      im.style.setProperty('--n',i+1);
+      box.replaceChild(im,holes[i]);
+      box.classList.add('is-seq');
+    });
+  });
+}
 
 /* Касание по карте подбрасывает метку. На мыши это делает :hover, но на
    тач-экранах он залипает, поэтому там прыжок вешается классом и снимается
@@ -571,6 +621,119 @@ function syncTimeline(){
   });
   scenes.forEach(function(s,i){ s.classList.toggle('is-cur',i===cur); });
 }
+
+/* ============ 5a. Проигрыватель «Звука» ============
+   Дорожка кладётся в assets/sound/ с именем слота: track.mp3, track.m4a и т.д.
+   Пока файла нет, блок скрыт — как пустая перебивка, и по той же причине:
+   он не должен ни занимать место на сайте, ни обещать в PDF того, чего там
+   нет. Расширения перебираются по очереди, потому что заранее неизвестно,
+   в чём придёт сведённая дорожка. */
+
+(function(){
+  var box=document.querySelector('.player[data-audio]');
+  if(!box) return;
+  var au=box.querySelector('.player__a');
+  var btn=box.querySelector('.player__play');
+  var bar=box.querySelector('.player__bar');
+  var fill=box.querySelector('.player__fill');
+  var head=box.querySelector('.player__head');
+  var now=box.querySelector('.player__now');
+  var dur=box.querySelector('.player__dur');
+  var name=box.getAttribute('data-audio');
+
+  function mmss(t){
+    if(!isFinite(t)||t<0) t=0;
+    var m=Math.floor(t/60), r=Math.floor(t%60);
+    return m+':'+(r<10?'0':'')+r;
+  }
+
+  /* Проба файла: canPlayType отсекает форматы, которых браузер не понимает,
+     и до сети дело не доходит. Остальное решает loadedmetadata против error —
+     по ним же узнаём длительность, поэтому отдельного запроса не нужно. */
+  function probe(exts){
+    if(!exts.length) return;                    /* дорожки нет — блок остаётся скрытым */
+    var ext=exts[0], rest=exts.slice(1);
+    var type={mp3:'audio/mpeg', m4a:'audio/mp4', ogg:'audio/ogg', wav:'audio/wav'}[ext];
+    if(type&&!au.canPlayType(type)) return probe(rest);
+    var t=new Audio();
+    t.preload='metadata';
+    t.addEventListener('loadedmetadata',function(){ mount('assets/sound/'+name+'.'+ext, t.duration); });
+    t.addEventListener('error',function(){ probe(rest); });
+    t.src='assets/sound/'+name+'.'+ext;
+  }
+
+  function mount(src,len){
+    au.src=src;
+    dur.textContent=mmss(len);
+    bar.setAttribute('aria-valuetext','0:00 из '+mmss(len));
+    box.classList.add('is-filled');
+  }
+
+  function paint(){
+    var len=au.duration, p=len?clamp(au.currentTime/len,0,1):0;
+    fill.style.width=(p*100)+'%';
+    head.style.left=(p*100)+'%';
+    now.textContent=mmss(au.currentTime);
+    bar.setAttribute('aria-valuenow',Math.round(p*100));
+    bar.setAttribute('aria-valuetext',mmss(au.currentTime)+' из '+mmss(len));
+  }
+
+  btn.addEventListener('click',function(){
+    if(au.paused) au.play(); else au.pause();
+  });
+  /* Состояние ведём по событиям самого элемента, а не по клику: дорожка может
+     остановиться и без нас — кончилась, перебил другой звук в системе. */
+  au.addEventListener('play',function(){
+    box.classList.add('is-playing');
+    btn.setAttribute('aria-label','Пауза');
+  });
+  au.addEventListener('pause',function(){
+    box.classList.remove('is-playing');
+    btn.setAttribute('aria-label','Воспроизвести');
+  });
+  au.addEventListener('ended',function(){ au.currentTime=0; paint(); });
+  au.addEventListener('timeupdate',paint);
+  /* Длительность иногда приходит только со вторым событием (потоковый mp3
+     без точного заголовка) — тогда обновляем подпись. */
+  au.addEventListener('durationchange',function(){ dur.textContent=mmss(au.duration); paint(); });
+
+  /* Перемотка: тянуть можно и мимо полосы — указатель захвачен, пока кнопка
+     нажата, иначе быстрый жест срывался бы с тонкой линии. */
+  function seekTo(clientX){
+    var r=bar.getBoundingClientRect();
+    if(!r.width||!isFinite(au.duration)) return;
+    au.currentTime=clamp((clientX-r.left)/r.width,0,1)*au.duration;
+    paint();
+  }
+  /* Перехват в try: если указатель успел отпуститься (быстрый тап), браузер
+     бросает исключение, и без него перемотка по этому нажатию сорвалась бы. */
+  function grab(fn,id){ try{ return fn.call(bar,id); }catch(e){ return false; } }
+  bar.addEventListener('pointerdown',function(e){
+    grab(bar.setPointerCapture,e.pointerId);
+    seekTo(e.clientX);
+  });
+  bar.addEventListener('pointermove',function(e){
+    if(grab(bar.hasPointerCapture,e.pointerId)) seekTo(e.clientX);
+  });
+  bar.addEventListener('pointerup',function(e){ grab(bar.releasePointerCapture,e.pointerId); });
+
+  /* С клавиатуры: стрелки — на пять секунд, Home и End — к краям,
+     пробел и Enter — пуск и пауза, как в системных плеерах. */
+  bar.addEventListener('keydown',function(e){
+    var k=e.key, len=au.duration;
+    if(!isFinite(len)) return;
+    if(k==='ArrowRight'||k==='ArrowUp') au.currentTime=clamp(au.currentTime+5,0,len);
+    else if(k==='ArrowLeft'||k==='ArrowDown') au.currentTime=clamp(au.currentTime-5,0,len);
+    else if(k==='Home') au.currentTime=0;
+    else if(k==='End') au.currentTime=len;
+    else if(k===' '||k==='Enter'){ if(au.paused) au.play(); else au.pause(); }
+    else return;
+    e.preventDefault();
+    paint();
+  });
+
+  probe(['mp3','m4a','ogg','wav']);
+})();
 
 /* ============ 6. Кадры раскадровки ============
    Файлы кладутся в assets/scenes/ с именем слота: s01.jpg, s04.mp4 и т.д.
