@@ -741,8 +741,14 @@ function syncTimeline(){
    Если файла нет, остаётся плейсхолдер.                                   */
 
 var DIR='assets/scenes/';
-var STUB='assets/setup.webp';   /* рабочая модель фасада вместо пустого слота */
+/* Общий скетч фасада — стоит во всех сценах, у которых ещё нет своего кадра.
+   Показывается как полноценный кадр, а не приглушённая заглушка: раскадровка
+   должна читаться заполненной. Имя не похоже на s01…s16, поэтому листинг
+   папки не примет его за кадр какой-то сцены. */
+var SKETCH=DIR+'sketch.png';
 var VIDEO=['mp4','webm','mov'];
+/* JPEG первым: кадры раскадровки лежат в нём, а на GitHub Pages листинга
+   папки нет — кадр ищется перебором, и первое же расширение попадает в файл. */
 var IMAGE=['jpg','jpeg','png','webp','avif','gif'];
 
 /* Сначала пробуем прочитать список файлов в папке: и Live Server, и GitHub Pages
@@ -834,11 +840,10 @@ function fillSlot(frame,names){
         mount(frame,img,alt);
         return;
       }
-      /* своего кадра нет — ставим заглушку, подпись слота остаётся поверх */
-      var stub=new Image();
-      stub.src=STUB; stub.alt=''; stub.setAttribute('aria-hidden','true');
-      frame.classList.add('frame--stub');
-      frame.insertBefore(stub,frame.firstChild);
+      /* своего кадра нет — ставим общий скетч; появится sNN-файл, он его сменит */
+      var sketch=new Image();
+      sketch.src=SKETCH; sketch.alt=alt;
+      mount(frame,sketch,alt);
     });
   });
 }

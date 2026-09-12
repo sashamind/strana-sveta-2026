@@ -1177,7 +1177,7 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 .tl__total{font-family:var(--f-mono); font-size:10px; letter-spacing:.18em; color:var(--ash)}
 .tl__bar{position:relative; display:flex; gap:2px; height:28px}
 /* Ширина сегмента больше не зависит от длительности: у раскадровки её нет,
-   и двадцать одна сцена делит полосу поровну. */
+   и шестнадцать сцен делят полосу поровну. */
 .tl__seg{
   position:relative; flex:1 1 0; height:100%; border:0; padding:0; cursor:pointer;
   background:rgba(255,255,255,.045); overflow:hidden; transition:background .3s;
@@ -1226,8 +1226,6 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
    а чёрные поля всё равно растворяются режимом Screen */
 .frame img,.frame video{width:100%; height:100%; object-fit:contain; mix-blend-mode:screen}
 .frame--live{border-color:rgba(242,160,61,.62)}
-/* пока своего кадра нет — в рамке стоит рабочая модель фасада */
-.frame--stub img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:.75}
 .scene.is-cur .frame{border-color:var(--accent,var(--line-2))}
 /* заполненный кадр открывается на весь экран */
 .frame--filled{cursor:zoom-in}
@@ -1666,7 +1664,7 @@ body.scrolling{--dim:.26}
   .hero{min-height:100vh; min-height:100svh}
   .hero__hint{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
   .tl__title{display:none}
-  /* 21 сегмент на телефоне: на ширину двузначного номера сегмента не хватает,
+  /* 16 сегментов на телефоне: на ширину двузначного номера сегмента не хватает,
      цифры обрезались бы — оставляем цветную партитуру без них. */
   .tl__seg b{display:none}
   .tools{bottom:16px; left:16px; gap:8px}
@@ -2209,8 +2207,9 @@ body.scrolling{--dim:.26}
   /* описание кадра идёт колонкой, а не строкой во всю ширину слайда */
   #storyboard .scene p{max-width:640px}
   #storyboard .pslide .scene{min-height:285px}
-  /* Слайды с двумя кадрами (конец раскадровки) добираются по высоте:
-     иначе фон секции обрывался посреди слайда видимой границей. */
+  /* Слайд с двумя кадрами добирается по высоте: иначе фон секции обрывался
+     посреди слайда видимой границей. Сейчас такой один — последний, и его
+     дотягивает правило ниже; это остаётся страховкой на перегруппировку. */
   #storyboard .pslide{min-height:880px}
   /* Последний слайд раздела — до самого низа страницы: на нём кончается
      секция, и подложка иначе обрывалась бы видимой полосой. */
@@ -2222,7 +2221,14 @@ body.scrolling{--dim:.26}
   /* Сцена, обёрнутая в печатный слайд, свой разрыв уже не ставит:
      его делает обёртка вместе с повторной шапкой раздела. */
   .pslide .scene.pb{break-before:auto; page-break-before:auto}
-  .frame{background:var(--ink-2); max-width:690px; margin-left:auto}
+  /* Ширина рамки задана явно, а не выведена из содержимого. Раньше рамка
+     жила от картинки внутри: пустая схлопывалась в 4×2 px, и вёрстку слайдов
+     подогнали под невидимые рамки; первый же настоящий кадр вставал в полные
+     690×388, сцена росла с 285 до 445 px, три сцены не влезали в лист,
+     и PDF расползался с 38 страниц до 45. Теперь размер один при любом кадре.
+     400 px — наибольшая ширина с запасом: при 410 слайд с тремя сценами
+     встаёт ровно в предел 1019 px, при 420 уже переваливает за него. */
+  .frame{background:var(--ink-2); width:100%; max-width:400px; margin-left:auto}
   /* видео в печать идёт постером — одноимённым jpg из assets/scenes */
   .frame video{object-fit:contain}
 
