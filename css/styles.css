@@ -1475,7 +1475,10 @@ body.scrolling{--dim:.26}
   .wrap{padding:0 20px}
   .band{padding:84px 0}
   .ctx,.two,.setup{grid-template-columns:1fr; gap:40px}   /* .setup тоже: в две колонки текст рвался по два слова */
-  .layers{grid-template-columns:1fr}
+  /* #s-theme назван отдельно: выше по файлу «Тема» разложена в две колонки
+     правилом с id, а у него вес больше, чем у голого .layers, — и на телефоне
+     её карточки так и шли по две, пока колода героев уже встала в столбик. */
+  .layers,#s-theme .layers{grid-template-columns:1fr}
   /* на телефоне оглавление идёт одной колонкой подряд: раскладка по двум
      столбцам снимается вместе с позициями строк */
   .toc{grid-template-columns:1fr; grid-template-rows:none; margin-top:18px}

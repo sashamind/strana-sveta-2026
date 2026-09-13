@@ -907,34 +907,15 @@ document.addEventListener('keydown',function(e){
 });
 
 /* ============ 8. Кнопка PDF ============
-   Отдаёт готовый priruchenny-ogon.pdf (собирается ./build-pdf.sh).
-   Если файла ещё нет — откат на диалог печати, чтобы кнопка не вела в 404.
-   Проверка только по http(s): по file:// fetch запрещён, а ссылка и так работает. */
-
-var pdfBtn=document.getElementById('pdfBtn');
-
-pdfBtn.addEventListener('click',function(e){
-  /* по file:// fetch запрещён — отдаём клик браузеру как есть */
-  if(location.protocol.indexOf('http')!==0) return;
-  e.preventDefault();
-
-  var name=pdfBtn.getAttribute('download')||'presentation.pdf';
-  fetch(pdfBtn.getAttribute('href'),{cache:'no-store'}).then(function(r){
-    if(!r.ok) throw new Error(r.status);
-    return r.blob();
-  }).then(function(blob){
-    /* скачиваем через blob: файл гарантированно уходит в загрузки
-       с нужным именем, а не открывается во вкладке просмотрщика */
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement('a');
-    a.href=url; a.download=name;
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(function(){ URL.revokeObjectURL(url); },1000);
-  }).catch(function(){
-    /* файла нет или он недоступен — открываем диалог печати, чтобы кнопка не вела в 404 */
-    window.print();
-  });
-});
+   Скрипта у кнопки нет намеренно — скачивание делает сама ссылка атрибутом
+   download. PDF лежит на том же домене, и браузер сразу начинает загрузку
+   со своим прогрессом и нужным именем файла.
+   Раньше клик перехватывался: файл сперва целиком тянулся fetch'ем в память
+   и только потом отдавался как blob. На 8 МБ это 8–10 секунд, в которые
+   на экране ничего не происходило, а Safari к моменту программного клика
+   уже не считал его действием пользователя и мог скачивание не запустить.
+   Свежесть файла после пересборки держит сам GitHub Pages: max-age=600,
+   то есть старый PDF отдаётся не дольше десяти минут. */
 
 /* ============ 9. Концы цветовой шкалы ============
    На телефоне шкала стоит вдоль колонки образцов и растягивается на всю её
