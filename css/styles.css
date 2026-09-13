@@ -929,29 +929,22 @@ body.scrolled .hero__hint{opacity:0; pointer-events:none}
 /* Пока добавочные кадры не загрузились, анимации нет: иначе базовый кадр
    мигал бы в одиночку, уходя в пустоту на месте ещё не пришедших. */
 .frames.is-seq .frames__f{
-  /* Цикл: три секунды на смену всех четырёх кадров, дальше пять секунд покоя.
-     Отсюда 8s. Доли ниже считаны от числа кадров: шаг — 3s/4 = 0.75s, а это
-     9.375% цикла; пробег кончается на 37.5% (те самые 3 секунды), дальше
-     до конца держится базовый кадр. Кадров станет больше или меньше —
-     пересчитывать нужно и шаг, и доли. */
-  animation:frameHold 8s linear infinite;
+  /* Два кадра по очереди: каждый стоит три секунды и за секунду перетекает
+     в другой. Цикл 3 + 1 + 3 + 1 = 8s, отсюда доли: 37.5% — конец стояния
+     базового, 50% — переход закончен, 87.5% — конец стояния второго, 100% —
+     возврат к базовому. Кривые двух кадров зеркальны, и сумма прозрачностей
+     в любой момент — единица. Кадров станет больше — доли пересчитывать. */
+  animation:frameBase 8s linear infinite;
 }
-.frames.is-seq .frames__f:not(.frames__f--base){
-  animation-name:frameBlip;
-  /* Каждый следующий кадр выходит на шаг позже предыдущего;
-     --n приходит из скрипта и равен порядковому номеру кадра. */
-  animation-delay:calc(var(--n,1) * 0.75s - 0.75s);
-  animation-fill-mode:both;
+.frames.is-seq .frames__f:not(.frames__f--base){animation-name:frameAlt}
+@keyframes frameBase{
+  0%{opacity:1} 37.5%{opacity:1} 50%{opacity:0} 87.5%{opacity:0} 100%{opacity:1}
 }
-/* Базовый кадр: уходит на время пробега и возвращается к покою. Держится
-   в нуле, пока идут три добавочных, — это с 9.375% по 28.125%. */
-@keyframes frameHold{
-  0%{opacity:1} 9.375%{opacity:0} 28.125%{opacity:0} 37.5%{opacity:1} 100%{opacity:1}
+@keyframes frameAlt{
+  0%{opacity:0} 37.5%{opacity:0} 50%{opacity:1} 87.5%{opacity:1} 100%{opacity:0}
 }
-/* Добавочный: выходит на своём месте пробега и снова уступает. */
-@keyframes frameBlip{
-  0%{opacity:0} 9.375%{opacity:1} 18.75%{opacity:0} 100%{opacity:0}
-}
+/* Кадр только для печати на экране не показывается вовсе. */
+.frames__f--printonly{display:none}
 
 /* ---------- развороты героев ----------
    На сайте — галерея под колодой: кадр, название, короткая подпись.
@@ -2132,6 +2125,7 @@ body.scrolling{--dim:.26}
   .interlude.is-filled .frames{display:block; margin:auto auto 0; opacity:1!important}
   .interlude.is-filled .frames__f:not(.frames__f--print){display:none!important}
   .interlude.is-filled .frames__f--print{
+    display:block!important;
     position:relative!important; inset:auto!important;
     width:auto!important; height:auto!important;
   }

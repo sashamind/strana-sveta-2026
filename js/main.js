@@ -242,13 +242,25 @@ function stackFrames(slot){
       var im=new Image();
       im.src=src; im.alt=''; im.className='render frames__f';
       if(name===printName) im.classList.add('frames__f--print');
-      /* Нумерация с единицы: базовый кадр — нулевой, от неё считается
-         задержка каждого следующего в CSS. */
-      im.style.setProperty('--n',i+1);
       box.replaceChild(im,holes[i]);
       box.classList.add('is-seq');
     });
   });
+
+  /* Печатный кадр может не входить в смену: на бумагу иногда нужен кадр,
+     которого на сайте нет вовсе. Тогда он грузится отдельно и на экране
+     скрыт (.frames__f--printonly), а в печати остаётся единственным. Без
+     этого data-print, указывающий мимо смены, не пометил бы ни один кадр —
+     и печать сняла бы все, оставив на слайде пустоту. */
+  if(printName!==slot.getAttribute('data-interlude') && seq.indexOf(printName)<0){
+    findImg('assets/interludes/',printName,['webp','jpg','png']).then(function(src){
+      if(!src) return;
+      var im=new Image();
+      im.src=src; im.alt='';
+      im.className='render frames__f frames__f--print frames__f--printonly';
+      box.appendChild(im);
+    });
+  }
 }
 
 /* Касание по карте подбрасывает метку. На мыши это делает :hover, но на
